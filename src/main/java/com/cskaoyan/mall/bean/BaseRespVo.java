@@ -19,4 +19,12 @@ public class BaseRespVo<T> {
         baseRespVo.setData(data);
         return baseRespVo;
     }
+
+    public static BaseRespVo error() {
+        BaseRespVo baseRespVo = new BaseRespVo();
+        baseRespVo.setErrmsg("失败");
+        baseRespVo.setErrno(888);
+        return baseRespVo;
+    }
+
 }
