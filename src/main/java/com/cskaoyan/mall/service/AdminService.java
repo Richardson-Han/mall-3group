@@ -1,4 +1,4 @@
-package com.cskaoyan.mall.service.yang_AdminService;
+package com.cskaoyan.mall.service;
 
 import com.cskaoyan.mall.bean.BaseData;
 

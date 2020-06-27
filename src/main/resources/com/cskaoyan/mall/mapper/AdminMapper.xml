@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.cskaoyan.mall.mapper.yang_Admin.AdminMapper">
-  <resultMap id="BaseResultMap" type="com.cskaoyan.mall.bean.yang_AdminModel.Admin">
+<mapper namespace="com.cskaoyan.mall.mapper.AdminMapper">
+  <resultMap id="BaseResultMap" type="com.cskaoyan.mall.bean.Admin">
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="username" jdbcType="VARCHAR" property="username" />
     <result column="password" jdbcType="VARCHAR" property="password" />
@@ -75,7 +75,27 @@
     id, username, password, last_login_ip, last_login_time, avatar, add_time, update_time, 
     deleted, role_ids
   </sql>
-  <select id="selectByExample" parameterType="com.cskaoyan.mall.bean.yang_AdminModel.AdminExample" resultMap="BaseResultMap">
+  <resultMap id="SelectAdminListMap" type="com.cskaoyan.mall.bean.AdminListBO">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="username" jdbcType="VARCHAR" property="username" />
+    <result column="avatar" jdbcType="VARCHAR" property="avatar" />
+    <result column="role_ids" jdbcType="VARCHAR" property="roleIds" />
+  </resultMap>
+  <select id="selectAllAdminsByExample" parameterType="com.cskaoyan.mall.bean.AdminExample" resultMap="SelectAdminListMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from cskaoyanmall_admin
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" parameterType="com.cskaoyan.mall.bean.AdminExample" resultMap="BaseResultMap">
     select
     <if test="distinct">
       distinct
@@ -99,13 +119,13 @@
     delete from cskaoyanmall_admin
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <delete id="deleteByExample" parameterType="com.cskaoyan.mall.bean.yang_AdminModel.AdminExample">
+  <delete id="deleteByExample" parameterType="com.cskaoyan.mall.bean.AdminExample">
     delete from cskaoyanmall_admin
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.cskaoyan.mall.bean.yang_AdminModel.Admin">
+  <insert id="insert" parameterType="com.cskaoyan.mall.bean.Admin">
     insert into cskaoyanmall_admin (id, username, password, 
       last_login_ip, last_login_time, avatar, 
       add_time, update_time, deleted, 
@@ -115,7 +135,7 @@
       #{addTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{deleted,jdbcType=BIT}, 
       #{roleIds,jdbcType=VARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.cskaoyan.mall.bean.yang_AdminModel.Admin">
+  <insert id="insertSelective" parameterType="com.cskaoyan.mall.bean.Admin">
     insert into cskaoyanmall_admin
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -182,7 +202,7 @@
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.cskaoyan.mall.bean.yang_AdminModel.AdminExample" resultType="java.lang.Long">
+  <select id="countByExample" parameterType="com.cskaoyan.mall.bean.AdminExample" resultType="java.lang.Long">
     select count(*) from cskaoyanmall_admin
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
@@ -242,7 +262,7 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.cskaoyan.mall.bean.yang_AdminModel.Admin">
+  <update id="updateByPrimaryKeySelective" parameterType="com.cskaoyan.mall.bean.Admin">
     update cskaoyanmall_admin
     <set>
       <if test="username != null">
@@ -275,7 +295,7 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.cskaoyan.mall.bean.yang_AdminModel.Admin">
+  <update id="updateByPrimaryKey" parameterType="com.cskaoyan.mall.bean.Admin">
     update cskaoyanmall_admin
     set username = #{username,jdbcType=VARCHAR},
       password = #{password,jdbcType=VARCHAR},

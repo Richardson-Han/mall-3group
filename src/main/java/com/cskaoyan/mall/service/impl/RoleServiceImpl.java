@@ -2,6 +2,7 @@ package com.cskaoyan.mall.service.impl;
 
 import com.cskaoyan.mall.bean.Role;
 import com.cskaoyan.mall.bean.RoleExample;
+import com.cskaoyan.mall.bean.RoleOptionsVO;
 import com.cskaoyan.mall.mapper.RoleMapper;
 import com.cskaoyan.mall.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,10 +18,8 @@ public class RoleServiceImpl implements RoleService {
 
 
     @Override
-    public List<Role> getRoleList() {
-        RoleExample roleExample = new RoleExample();
-
-        List<Role> roles = roleMapper.selectByExample(roleExample);
+    public List<RoleOptionsVO> getRoleList() {
+        List<RoleOptionsVO> roles = roleMapper.selectRoleOptions();
         return roles;
     }
 }

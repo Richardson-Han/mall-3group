@@ -2,11 +2,15 @@ package com.cskaoyan.mall.mapper;
 
 import com.cskaoyan.mall.bean.Role;
 import com.cskaoyan.mall.bean.RoleExample;
+import com.cskaoyan.mall.bean.RoleOptionsVO;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
 public interface RoleMapper {
+
+    List<RoleOptionsVO> selectRoleOptions();
+
     long countByExample(RoleExample example);
 
     int deleteByExample(RoleExample example);

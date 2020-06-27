@@ -1,12 +1,16 @@
-package com.cskaoyan.mall.mapper.yang_Admin;
+package com.cskaoyan.mall.mapper;
 
-import com.cskaoyan.mall.bean.yang_AdminModel.Admin;
-import com.cskaoyan.mall.bean.yang_AdminModel.AdminExample;
+import com.cskaoyan.mall.bean.Admin;
+import com.cskaoyan.mall.bean.AdminExample;
+import com.cskaoyan.mall.bean.AdminListBO;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
 public interface AdminMapper {
+
+    List<AdminListBO> selectAllAdminsByExample(AdminExample example);
+
     long countByExample(AdminExample example);
 
     int deleteByExample(AdminExample example);

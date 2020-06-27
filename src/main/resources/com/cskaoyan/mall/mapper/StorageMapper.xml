@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.cskaoyan.mall.mapper.RoleMapper">
-  <resultMap id="BaseResultMap" type="com.cskaoyan.mall.bean.Role">
+<mapper namespace="com.cskaoyan.mall.mapper.StorageMapper">
+  <resultMap id="BaseResultMap" type="com.cskaoyan.mall.bean.Storage">
     <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="key" jdbcType="VARCHAR" property="key" />
     <result column="name" jdbcType="VARCHAR" property="name" />
-    <result column="desc" jdbcType="VARCHAR" property="desc" />
-    <result column="enabled" jdbcType="BIT" property="enabled" />
+    <result column="type" jdbcType="VARCHAR" property="type" />
+    <result column="size" jdbcType="INTEGER" property="size" />
+    <result column="url" jdbcType="VARCHAR" property="url" />
     <result column="add_time" jdbcType="TIMESTAMP" property="addTime" />
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
     <result column="deleted" jdbcType="BIT" property="deleted" />
@@ -69,25 +71,18 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, name, desc, enabled, add_time, update_time, deleted
+    id, `key`, `name`, `type`, size, url, add_time, update_time, deleted
   </sql>
-  <resultMap id="getRoleOptions" type="com.cskaoyan.mall.bean.RoleOptionsVO">
-    <id column="id" jdbcType="INTEGER" property="value" />
-    <result column="name" jdbcType="VARCHAR" property="label" />
-  </resultMap>
-  <select id="selectRoleOptions" parameterType="com.cskaoyan.mall.bean.RoleOptionsVO" resultMap="getRoleOptions">
-    select id,name from cskaoyanmall_role
-  </select>
-  <select id="selectByExample" parameterType="com.cskaoyan.mall.bean.RoleExample" resultMap="BaseResultMap">
+  <select id="selectByExample" parameterType="com.cskaoyan.mall.bean.StorageExample" resultMap="BaseResultMap">
     select
     <if test="distinct">
       distinct
     </if>
     <include refid="Base_Column_List" />
-    from cskaoyanmall_role
+    from cskaoyanmall_storage
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
-  </if>
+    </if>
     <if test="orderByClause != null">
       order by ${orderByClause}
     </if>
@@ -95,41 +90,50 @@
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
-    from cskaoyanmall_role
+    from cskaoyanmall_storage
     where id = #{id,jdbcType=INTEGER}
   </select>
+  <select id="getLastInsertId" resultType="java.lang.Integer">
+    select LAST_INSERT_ID()
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from cskaoyanmall_role
+    delete from cskaoyanmall_storage
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <delete id="deleteByExample" parameterType="com.cskaoyan.mall.bean.RoleExample">
-    delete from cskaoyanmall_role
+  <delete id="deleteByExample" parameterType="com.cskaoyan.mall.bean.StorageExample">
+    delete from cskaoyanmall_storage
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.cskaoyan.mall.bean.Role">
-    insert into cskaoyanmall_role (id, name, desc, 
-      enabled, add_time, update_time, 
-      deleted)
-    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{desc,jdbcType=VARCHAR}, 
-      #{enabled,jdbcType=BIT}, #{addTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, 
-      #{deleted,jdbcType=BIT})
+  <insert id="insert" parameterType="com.cskaoyan.mall.bean.Storage">
+    insert into cskaoyanmall_storage (id, `key`, `name`,
+      `type`, size, url, add_time,
+      update_time, deleted)
+    values (#{id,jdbcType=INTEGER}, #{key,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
+      #{type,jdbcType=VARCHAR}, #{size,jdbcType=INTEGER}, #{url,jdbcType=VARCHAR}, #{addTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{deleted,jdbcType=BIT})
   </insert>
-  <insert id="insertSelective" parameterType="com.cskaoyan.mall.bean.Role">
-    insert into cskaoyanmall_role
+  <insert id="insertSelective" parameterType="com.cskaoyan.mall.bean.Storage">
+    insert into cskaoyanmall_storage
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
         id,
       </if>
+      <if test="key != null">
+        key,
+      </if>
       <if test="name != null">
         name,
       </if>
-      <if test="desc != null">
-        desc,
+      <if test="type != null">
+        type,
       </if>
-      <if test="enabled != null">
-        enabled,
+      <if test="size != null">
+        size,
+      </if>
+      <if test="url != null">
+        url,
       </if>
       <if test="addTime != null">
         add_time,
@@ -145,14 +149,20 @@
       <if test="id != null">
         #{id,jdbcType=INTEGER},
       </if>
+      <if test="key != null">
+        #{key,jdbcType=VARCHAR},
+      </if>
       <if test="name != null">
         #{name,jdbcType=VARCHAR},
       </if>
-      <if test="desc != null">
-        #{desc,jdbcType=VARCHAR},
+      <if test="type != null">
+        #{type,jdbcType=VARCHAR},
       </if>
-      <if test="enabled != null">
-        #{enabled,jdbcType=BIT},
+      <if test="size != null">
+        #{size,jdbcType=INTEGER},
+      </if>
+      <if test="url != null">
+        #{url,jdbcType=VARCHAR},
       </if>
       <if test="addTime != null">
         #{addTime,jdbcType=TIMESTAMP},
@@ -165,26 +175,32 @@
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.cskaoyan.mall.bean.RoleExample" resultType="java.lang.Long">
-    select count(*) from cskaoyanmall_role
+  <select id="countByExample" parameterType="com.cskaoyan.mall.bean.StorageExample" resultType="java.lang.Long">
+    select count(*) from cskaoyanmall_storage
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </select>
   <update id="updateByExampleSelective" parameterType="map">
-    update cskaoyanmall_role
+    update cskaoyanmall_storage
     <set>
       <if test="record.id != null">
         id = #{record.id,jdbcType=INTEGER},
       </if>
+      <if test="record.key != null">
+        key = #{record.key,jdbcType=VARCHAR},
+      </if>
       <if test="record.name != null">
         name = #{record.name,jdbcType=VARCHAR},
       </if>
-      <if test="record.desc != null">
-        desc = #{record.desc,jdbcType=VARCHAR},
+      <if test="record.type != null">
+        type = #{record.type,jdbcType=VARCHAR},
       </if>
-      <if test="record.enabled != null">
-        enabled = #{record.enabled,jdbcType=BIT},
+      <if test="record.size != null">
+        size = #{record.size,jdbcType=INTEGER},
+      </if>
+      <if test="record.url != null">
+        url = #{record.url,jdbcType=VARCHAR},
       </if>
       <if test="record.addTime != null">
         add_time = #{record.addTime,jdbcType=TIMESTAMP},
@@ -201,11 +217,13 @@
     </if>
   </update>
   <update id="updateByExample" parameterType="map">
-    update cskaoyanmall_role
+    update cskaoyanmall_storage
     set id = #{record.id,jdbcType=INTEGER},
+      key = #{record.key,jdbcType=VARCHAR},
       name = #{record.name,jdbcType=VARCHAR},
-      desc = #{record.desc,jdbcType=VARCHAR},
-      enabled = #{record.enabled,jdbcType=BIT},
+      type = #{record.type,jdbcType=VARCHAR},
+      size = #{record.size,jdbcType=INTEGER},
+      url = #{record.url,jdbcType=VARCHAR},
       add_time = #{record.addTime,jdbcType=TIMESTAMP},
       update_time = #{record.updateTime,jdbcType=TIMESTAMP},
       deleted = #{record.deleted,jdbcType=BIT}
@@ -213,17 +231,23 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.cskaoyan.mall.bean.Role">
-    update cskaoyanmall_role
+  <update id="updateByPrimaryKeySelective" parameterType="com.cskaoyan.mall.bean.Storage">
+    update cskaoyanmall_storage
     <set>
+      <if test="key != null">
+        key = #{key,jdbcType=VARCHAR},
+      </if>
       <if test="name != null">
         name = #{name,jdbcType=VARCHAR},
       </if>
-      <if test="desc != null">
-        desc = #{desc,jdbcType=VARCHAR},
+      <if test="type != null">
+        type = #{type,jdbcType=VARCHAR},
       </if>
-      <if test="enabled != null">
-        enabled = #{enabled,jdbcType=BIT},
+      <if test="size != null">
+        size = #{size,jdbcType=INTEGER},
+      </if>
+      <if test="url != null">
+        url = #{url,jdbcType=VARCHAR},
       </if>
       <if test="addTime != null">
         add_time = #{addTime,jdbcType=TIMESTAMP},
@@ -237,11 +261,13 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.cskaoyan.mall.bean.Role">
-    update cskaoyanmall_role
-    set name = #{name,jdbcType=VARCHAR},
-      desc = #{desc,jdbcType=VARCHAR},
-      enabled = #{enabled,jdbcType=BIT},
+  <update id="updateByPrimaryKey" parameterType="com.cskaoyan.mall.bean.Storage">
+    update cskaoyanmall_storage
+    set key = #{key,jdbcType=VARCHAR},
+      name = #{name,jdbcType=VARCHAR},
+      type = #{type,jdbcType=VARCHAR},
+      size = #{size,jdbcType=INTEGER},
+      url = #{url,jdbcType=VARCHAR},
       add_time = #{addTime,jdbcType=TIMESTAMP},
       update_time = #{updateTime,jdbcType=TIMESTAMP},
       deleted = #{deleted,jdbcType=BIT}
