@@ -3,6 +3,7 @@ package com.cskaoyan.mall.controller;
 import com.cskaoyan.mall.bean.BaseRespVo;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
@@ -41,5 +42,14 @@ public class AuthController {
         data.put("perms", perms);
         data.put("roles", roles);
         return BaseRespVo.ok(data);
+    }
+
+    /**
+     * 退出
+     * @return
+     */
+    @RequestMapping(value = "logout", method = RequestMethod.POST)
+    public BaseRespVo logout(){
+        return BaseRespVo.ok();
     }
 }

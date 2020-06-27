@@ -15,8 +15,10 @@ public class UserController {
     UserService userService;
 
     @RequestMapping("list")
-    public BaseRespVo list(Integer page,Integer limit,String sort,String order){
-        BaseData baseData = userService.queryUsers(page, limit, sort, order);
+    public BaseRespVo list(Integer page, Integer limit, String sort, String order, String username, String mobile){
+        BaseData baseData = userService.queryUsers(page, limit, sort, order, username, mobile);
         return BaseRespVo.ok(baseData);
     }
+
+
 }
