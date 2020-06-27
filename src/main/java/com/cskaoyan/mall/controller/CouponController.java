@@ -34,11 +34,12 @@ public class CouponController {
      * 未完成 goodsValue遇到问题 前台传送[]
      */
     @RequestMapping("create")
-    public BaseRespVo create(@RequestBody Coupon coupon,@RequestBody Object gooodsValue) {
+    public BaseRespVo create(@RequestBody Coupon coupon) {
         // Coupon coupon = assignment(days, desc, discount, endTime, goodsType, goodsValue,
         //         limit, min, name, startTime, status, timeType, total, type);
         Integer insert = couponService.createCoupon(coupon);
         if (insert == 1) {
+            coupon.setGoodsValue("[]");
             return BaseRespVo.ok(coupon);
         } else {
             return BaseRespVo.error("创建优惠卷失败", 888);

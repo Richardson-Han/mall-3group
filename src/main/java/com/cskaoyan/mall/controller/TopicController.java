@@ -33,6 +33,7 @@ public class TopicController {
     public BaseRespVo create(@RequestBody Topic topic) {
         Integer insert = topicService.createTopic(topic);
         if (insert == 1) {
+            topic.setGoods("[]");
             return BaseRespVo.ok(topic);
         } else {
             return BaseRespVo.error("创建失败", 404);

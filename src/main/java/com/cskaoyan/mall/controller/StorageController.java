@@ -56,7 +56,7 @@ public class StorageController {
         storage.setType(endName);
         storage.setSize(fileSize);
         storage.setAddTime(new Date());
-        storage.setUrl("http://localhost:8080/pic/" + newfilename);
+        storage.setUrl("http://localhost:8081/pic/" + newfilename);
 
         storage = storageService.picUpload(storage);
         return BaseRespVo.ok(storage);
