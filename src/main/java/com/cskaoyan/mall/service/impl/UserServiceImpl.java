@@ -1,10 +1,10 @@
-package com.cskaoyan.mall.service.impl.szyIml;
+package com.cskaoyan.mall.service.impl;
 
 import com.cskaoyan.mall.bean.BaseData;
 import com.cskaoyan.mall.bean.User;
 import com.cskaoyan.mall.bean.UserExample;
-import com.cskaoyan.mall.mapper.szyMapper.UserMapper;
-import com.cskaoyan.mall.service.szyService.UserService;
+import com.cskaoyan.mall.mapper.UserMapper;
+import com.cskaoyan.mall.service.UserService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,10 +26,12 @@ public class UserServiceImpl implements UserService {
         //执行查询之前使用分页
         UserExample.Criteria criteria = userExample.createCriteria();
         if (username != null && !username.isEmpty()) {
-            criteria.andUsernameEqualTo(username);
+            //criteria.andUsernameEqualTo(username);
+            criteria.andUsernameLike("%" + username + "%");
         }
         if (mobile != null &&!mobile.isEmpty()) {
-            criteria.andMobileEqualTo(mobile);
+            //criteria.andMobileEqualTo(mobile);
+            criteria.andMobileLike("%" + mobile + "%");
         }
         PageHelper.startPage(page,limit);
         List<User> users = userMapper.selectByExample(userExample);

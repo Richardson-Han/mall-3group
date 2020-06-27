@@ -1,4 +1,4 @@
-package com.cskaoyan.mall.controller.szyController;
+package com.cskaoyan.mall.controller;
 
 import com.cskaoyan.mall.bean.BaseRespVo;
 import org.springframework.web.bind.annotation.RequestBody;

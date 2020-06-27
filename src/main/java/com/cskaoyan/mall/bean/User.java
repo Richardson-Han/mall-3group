@@ -1,4 +1,4 @@
-package com.cskaoyan.mall.bean.szyBean;
+package com.cskaoyan.mall.bean;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 

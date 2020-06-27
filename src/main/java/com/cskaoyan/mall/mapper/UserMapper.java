@@ -1,4 +1,4 @@
-package com.cskaoyan.mall.mapper.szyMapper;
+package com.cskaoyan.mall.mapper;
 
 import com.cskaoyan.mall.bean.User;
 import com.cskaoyan.mall.bean.UserExample;

@@ -1,4 +1,4 @@
-package com.cskaoyan.mall.service.szyService;
+package com.cskaoyan.mall.service;
 
 import com.cskaoyan.mall.bean.BaseData;
 
