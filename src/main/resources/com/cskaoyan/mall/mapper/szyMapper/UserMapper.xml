@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.cskaoyan.mall.mapper.UserMapper">
-  <resultMap id="BaseResultMap" type="com.cskaoyan.mall.bean.User">
+<mapper namespace="com.cskaoyan.mall.mapper.szyMapper.UserMapper">
+  <resultMap id="BaseResultMap" type="com.cskaoyan.mall.bean.szyBean.User">
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="username" jdbcType="VARCHAR" property="username" />
     <result column="password" jdbcType="VARCHAR" property="password" />
@@ -81,7 +81,7 @@
     id, username, password, gender, birthday, last_login_time, last_login_ip, user_level, 
     nickname, mobile, avatar, weixin_openid, status, add_time, update_time, deleted
   </sql>
-  <select id="selectByExample" parameterType="com.cskaoyan.mall.bean.UserExample" resultMap="BaseResultMap">
+  <select id="selectByExample" parameterType="com.cskaoyan.mall.bean.szyBean.UserExample" resultMap="BaseResultMap">
     select
     <if test="distinct">
       distinct
@@ -105,13 +105,13 @@
     delete from cskaoyanmall_user
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <delete id="deleteByExample" parameterType="com.cskaoyan.mall.bean.UserExample">
+  <delete id="deleteByExample" parameterType="com.cskaoyan.mall.bean.szyBean.UserExample">
     delete from cskaoyanmall_user
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.cskaoyan.mall.bean.User">
+  <insert id="insert" parameterType="com.cskaoyan.mall.bean.szyBean.User">
     insert into cskaoyanmall_user (id, username, password, 
       gender, birthday, last_login_time, 
       last_login_ip, user_level, nickname, 
@@ -125,7 +125,7 @@
       #{status,jdbcType=TINYINT}, #{addTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, 
       #{deleted,jdbcType=BIT})
   </insert>
-  <insert id="insertSelective" parameterType="com.cskaoyan.mall.bean.User">
+  <insert id="insertSelective" parameterType="com.cskaoyan.mall.bean.szyBean.User">
     insert into cskaoyanmall_user
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -228,7 +228,7 @@
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.cskaoyan.mall.bean.UserExample" resultType="java.lang.Long">
+  <select id="countByExample" parameterType="com.cskaoyan.mall.bean.szyBean.UserExample" resultType="java.lang.Long">
     select count(*) from cskaoyanmall_user
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
@@ -312,7 +312,7 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.cskaoyan.mall.bean.User">
+  <update id="updateByPrimaryKeySelective" parameterType="com.cskaoyan.mall.bean.szyBean.User">
     update cskaoyanmall_user
     <set>
       <if test="username != null">
@@ -363,7 +363,7 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.cskaoyan.mall.bean.User">
+  <update id="updateByPrimaryKey" parameterType="com.cskaoyan.mall.bean.szyBean.User">
     update cskaoyanmall_user
     set username = #{username,jdbcType=VARCHAR},
       password = #{password,jdbcType=VARCHAR},

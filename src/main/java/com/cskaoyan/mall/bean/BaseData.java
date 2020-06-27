@@ -1,4 +1,4 @@
-package com.cskaoyan.mall.bean;
+package com.cskaoyan.mall.bean.szyBean;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
