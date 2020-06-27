@@ -30,8 +30,13 @@ public class CouponController {
         return BaseRespVo.ok(baseData);
     }
 
+    /**
+     * 未完成 goodsValue遇到问题 前台传送[]
+     */
     @RequestMapping("create")
-    public BaseRespVo create(@RequestBody Coupon coupon) {
+    public BaseRespVo create(@RequestBody Coupon coupon,@RequestBody Object gooodsValue) {
+        // Coupon coupon = assignment(days, desc, discount, endTime, goodsType, goodsValue,
+        //         limit, min, name, startTime, status, timeType, total, type);
         Integer insert = couponService.createCoupon(coupon);
         if (insert == 1) {
             return BaseRespVo.ok(coupon);
@@ -40,15 +45,52 @@ public class CouponController {
         }
     }
 
+    // public Coupon assignment(Short days, String desc, BigDecimal discount, Date endTime,
+    //                          Short goodsType, String[] goodsValue, Short limit, BigDecimal min,
+    //                          String name, Date startTime, Short status, Short timeType,
+    //                          Integer total, Short type) {
+    //     Coupon coupon = new Coupon();
+    //
+    //
+    //     String realGoodsValue = realGoodsValue(goodsValue);
+    //     coupon.setGoodsValue(realGoodsValue);
+    //
+    //
+    //     coupon.setDays(days);
+    //     coupon.setDesc(desc);
+    //     coupon.setDiscount(discount);
+    //     coupon.setEndTime(endTime);
+    //     coupon.setGoodsType(goodsType);
+    //     coupon.setLimit(limit);
+    //     coupon.setMin(min);
+    //     coupon.setName(name);
+    //     coupon.setStartTime(startTime);
+    //     coupon.setStatus(status);
+    //     coupon.setTimeType(timeType);
+    //     coupon.setTotal(total);
+    //     coupon.setType(type);
+    //     return coupon;
+    // }
+
+    // public String realGoodsValue(String[] goodsValue){
+    //     String realGoodsValue ="";
+    //     if (goodsValue.length == 0){
+    //         return realGoodsValue;
+    //     }else {
+    //         for (String value:goodsValue){
+    //             realGoodsValue += value;
+    //         }
+    //         return realGoodsValue;
+    //     }
+    // }
+
     @RequestMapping("read")
     public BaseRespVo read(Integer id) {
         Coupon coupon = couponService.readCoupon(id);
         return BaseRespVo.ok(coupon);
     }
 
-    /**
-     * 未完成
-     */
+
     @RequestMapping("listuser")
     public BaseRespVo listuser(Integer page, Integer limit, Integer couponId,
                                Integer userId, String sort, String order) {
