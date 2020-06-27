@@ -28,14 +28,11 @@ public class AdvertisingController {
     }
 
     @RequestMapping("create")
-    public BaseRespVo create(Integer id, String name, String url, Byte position,
-                             String content, Boolean enabled, Date addTime, Date updateTime) {
-        Advertising advertising = new Advertising(id, name, null, url, position, content,
-                null, null, enabled, addTime, updateTime, null);
+    public BaseRespVo create(@RequestBody Advertising advertising) {
         Integer insert = advertisingService.insertAdvertising(advertising);
         if (insert == 1) {
             return BaseRespVo.ok(advertisingService.
-                    queryAdvertising(1, 20, "add_time", "desc"));
+                    queryAdvertising(0, 20, "add_time", "desc"));
         } else {
             return BaseRespVo.error();
         }

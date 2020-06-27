@@ -39,7 +39,7 @@ public class StorageController {
         //后缀名
         String endName = filename.substring(filename.lastIndexOf("."));
         //文件存储地址
-        String filePath = "F:\\fileUpload\\";
+        String filePath = "D:\\fileUpload\\";
         //新文件名
         String newfilename = UUID.randomUUID() + endName;
         //保存文件
