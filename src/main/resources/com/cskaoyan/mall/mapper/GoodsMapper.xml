@@ -92,6 +92,9 @@
   <sql id="Blob_Column_List">
     detail
   </sql>
+  <select id="isGoodsExit" parameterType="java.lang.Integer" resultType="int">
+    select count(*) from cskaoyanmall_goods where id = #{id,jdbcType=INTEGER} and deleted = 0
+  </select>
   <select id="selectByExampleWithBLOBs" parameterType="com.cskaoyan.mall.bean.GoodsExample" resultMap="ResultMapWithBLOBs">
     select
     <if test="distinct">

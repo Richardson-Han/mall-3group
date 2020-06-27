@@ -8,6 +8,14 @@ public class BaseRespVo<T> {
     String errmsg;
     Integer errno;
 
+    public BaseRespVo() {
+    }
+
+    public BaseRespVo(String errmsg, Integer errno) {
+        this.errmsg = errmsg;
+        this.errno = errno;
+    }
+
     public static BaseRespVo ok(){
         BaseRespVo baseRespVo = new BaseRespVo();
         baseRespVo.setErrmsg("成功");
