@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Date;
 
 /**
  * @create 2020-06-27 0:23
@@ -47,9 +46,15 @@ public class CouponController {
      * 未完成
      */
     @RequestMapping("listuser")
-    public BaseRespVo listuser(Integer page, Integer limit, Integer couponId, String sort, String order) {
-        BaseData baseData = couponService.listuserCoupon(page, limit, couponId, sort, order);
-        return BaseRespVo.ok();
+    public BaseRespVo listuser(Integer page, Integer limit, Integer couponId,
+                               Integer userId, String sort, String order) {
+        BaseData baseData;
+        if (userId == null || userId == 0) {
+            baseData = couponService.listuserCouponUser(page, limit, couponId, sort, order);
+        } else {
+            baseData = couponService.listuserUserIdCouponUser(page, limit, couponId, userId, sort, order);
+        }
+        return BaseRespVo.ok(baseData);
     }
 
     /**

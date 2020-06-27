@@ -2,6 +2,7 @@ package com.cskaoyan.mall.service.impl;
 
 import com.cskaoyan.mall.bean.*;
 import com.cskaoyan.mall.mapper.CouponMapper;
+import com.cskaoyan.mall.mapper.CouponUserMapper;
 import com.cskaoyan.mall.service.CouponService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -20,6 +21,9 @@ public class CouponServiceImpl implements CouponService {
     @Autowired
     CouponMapper couponMapper;
 
+    @Autowired
+    CouponUserMapper couponUserMapper;
+
 
     @Override
     public BaseData queryCoupon(Integer page, Integer limit, String sort, String order) {
@@ -37,15 +41,6 @@ public class CouponServiceImpl implements CouponService {
     public Coupon readCoupon(Integer id) {
         Coupon coupon = couponMapper.selectByPrimaryKey(id);
         return coupon;
-    }
-
-    @Override
-    public BaseData listuserCoupon(Integer page, Integer limit, Integer couponId, String sort, String order) {
-        CouponExample couponExample = new CouponExample();
-        couponExample.setOrderByClause(sort + " " + order);
-        PageHelper.startPage(page, limit);
-        // List<Coupon> coupons = couponMapper.selectByExample()
-        return new BaseData();
     }
 
     @Override
@@ -71,5 +66,32 @@ public class CouponServiceImpl implements CouponService {
         coupon.setUpdateTime(new Date());
         int deleteCoupon = couponMapper.updateByPrimaryKeySelective(coupon);
         return deleteCoupon;
+    }
+
+    /**
+     *
+     */
+    @Override
+    public BaseData listuserCouponUser(Integer page, Integer limit,
+                                       Integer couponId, String sort, String order) {
+        CouponExample couponExample = new CouponExample();
+        couponExample.setOrderByClause(sort + " " + order);
+        PageHelper.startPage(page, limit);
+        List<CouponUser> couponUsers = couponUserMapper.listuserCouponUser(couponId);
+        PageInfo<CouponUser> pageInfo = new PageInfo<>(couponUsers);
+        long total = pageInfo.getTotal();
+        return new BaseData(couponUsers, total);
+    }
+
+    @Override
+    public BaseData listuserUserIdCouponUser(Integer page, Integer limit, Integer couponId,
+                                             Integer userId, String sort, String order) {
+        CouponExample couponExample = new CouponExample();
+        couponExample.setOrderByClause(sort + " " + order);
+        PageHelper.startPage(page, limit);
+        List<CouponUser> couponUsers = couponUserMapper.listuserUserIdCouponUser(userId,couponId);
+        PageInfo<CouponUser> pageInfo = new PageInfo<>(couponUsers);
+        long total = pageInfo.getTotal();
+        return new BaseData(couponUsers,total);
     }
 }

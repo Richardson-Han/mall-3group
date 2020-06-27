@@ -11,11 +11,15 @@ public interface CouponService {
 
     Coupon readCoupon(Integer id);
 
-    BaseData listuserCoupon(Integer page, Integer limit, Integer couponId, String sort, String order);
 
     Integer createCoupon(Coupon coupon);
 
     Integer updateCoupon(Coupon coupon);
 
     Integer deleteCoupon(Coupon coupon);
+
+    BaseData listuserUserIdCouponUser(Integer page, Integer limit, Integer couponId, Integer userId, String sort, String order);
+
+    BaseData listuserCouponUser(Integer page, Integer limit, Integer couponId, String sort, String order);
+
 }
