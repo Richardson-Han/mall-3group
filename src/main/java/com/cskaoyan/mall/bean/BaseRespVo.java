@@ -39,4 +39,5 @@ public class BaseRespVo<T> {
         baseRespVo.setErrmsg(errmsg);
         return baseRespVo;
     }
+
 }
