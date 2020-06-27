@@ -1,24 +1,25 @@
 package com.cskaoyan.mall.controller;
 
+
 import com.cskaoyan.mall.bean.BaseData;
 import com.cskaoyan.mall.bean.BaseRespVo;
-import com.cskaoyan.mall.service.UserService;
+import com.cskaoyan.mall.service.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("admin/user")
-public class UserController {
+@RequestMapping("admin/admin")
+public class AdminController {
 
     @Autowired
-    UserService userService;
+    AdminService adminService;
 
+
+    //获取所有管理员信息
     @RequestMapping("list")
-    public BaseRespVo list(Integer page, Integer limit, String sort, String order, String username, String mobile){
-        BaseData baseData = userService.queryUsers(page, limit, sort, order, username, mobile);
+    public BaseRespVo getAlladmins(Integer page,Integer limit,String sort,String order){
+        BaseData baseData = adminService.getAdmins(page,limit,sort,order);
         return BaseRespVo.ok(baseData);
     }
-
-
 }
