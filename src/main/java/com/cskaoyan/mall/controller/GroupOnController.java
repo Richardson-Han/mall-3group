@@ -72,7 +72,7 @@ public class GroupOnController {
         groupOnRules.setDeleted(true);
         Integer result = groupService.delete(groupOnRules);
         if(result != 1){
-            return BaseRespVo.err("出错了",402);
+            return BaseRespVo.error("出错了",402);
         }else {
             return BaseRespVo.ok();
         }

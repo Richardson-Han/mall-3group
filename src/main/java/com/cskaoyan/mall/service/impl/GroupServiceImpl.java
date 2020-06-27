@@ -82,7 +82,7 @@ public class GroupServiceImpl implements GroupService {
         //校验
         int goodsExit = goodsMapper.isGoodsExit(groupOnRules.getGoodsId());
         if(updateTime.after(groupOnRules.getExpireTime()) && goodsExit == 0){
-            return BaseRespVo.err("参数值不对",402);
+            return BaseRespVo.error("参数值不对",402);
         }
 
         //查询商品信息
@@ -94,7 +94,7 @@ public class GroupServiceImpl implements GroupService {
         groupOnRules.setUpdateTime(updateTime);
         groupOnRules.setDeleted(false);
         if(groupOnRulesMapper.insert(groupOnRules) != 1){
-            return BaseRespVo.err("参数值不对",402);
+            return BaseRespVo.error("参数值不对",402);
         }
         //查询刚插入的数据的id
         Integer id = groupOnRulesMapper.selectLastInsertId();
