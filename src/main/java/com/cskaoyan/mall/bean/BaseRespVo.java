@@ -20,4 +20,24 @@ public class BaseRespVo<T> {
         return baseRespVo;
     }
 
+    public static BaseRespVo error() {
+        BaseRespVo baseRespVo = new BaseRespVo();
+        baseRespVo.setErrmsg("失败");
+        baseRespVo.setErrno(888);
+        return baseRespVo;
+    }
+
+    public static BaseRespVo error(Object data) {
+        BaseRespVo baseRespVo = error();
+        baseRespVo.setData(data);
+        return baseRespVo;
+    }
+
+    public static BaseRespVo error(String errmsg,Integer errno) {
+        BaseRespVo baseRespVo = new BaseRespVo();
+        baseRespVo.setErrno(errno);
+        baseRespVo.setErrmsg(errmsg);
+        return baseRespVo;
+    }
+
 }
