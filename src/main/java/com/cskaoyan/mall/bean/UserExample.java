@@ -1,4 +1,4 @@
-package com.cskaoyan.mall.bean;
+package com.cskaoyan.mall.bean.szyBean;
 
 import java.util.ArrayList;
 import java.util.Date;
