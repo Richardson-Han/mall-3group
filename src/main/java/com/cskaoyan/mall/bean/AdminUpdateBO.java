@@ -4,16 +4,20 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-public class AdminListBO {
-    Integer id;
+import java.util.ArrayList;
 
-    String roleIds;
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+public class AdminUpdateBO {
+
+    Integer id;
 
     String username;
 
-    String avatar;
+    String password;
 
+    ArrayList<Integer> roleIds;
+
+    String avatar;
 }

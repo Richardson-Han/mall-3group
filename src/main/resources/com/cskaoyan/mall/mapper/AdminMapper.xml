@@ -56,7 +56,7 @@
                   and ${criterion.condition} #{criterion.value}
                 </when>
                 <when test="criterion.betweenValue">
-                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
                 </when>
                 <when test="criterion.listValue">
                   and ${criterion.condition}
@@ -75,26 +75,7 @@
     id, username, password, last_login_ip, last_login_time, avatar, add_time, update_time, 
     deleted, role_ids
   </sql>
-  <resultMap id="SelectAdminListMap" type="com.cskaoyan.mall.bean.AdminListBO">
-    <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="username" jdbcType="VARCHAR" property="username" />
-    <result column="avatar" jdbcType="VARCHAR" property="avatar" />
-    <result column="role_ids" jdbcType="VARCHAR" property="roleIds" />
-  </resultMap>
-  <select id="selectAllAdminsByExample" parameterType="com.cskaoyan.mall.bean.AdminExample" resultMap="SelectAdminListMap">
-    select
-    <if test="distinct">
-      distinct
-    </if>
-    <include refid="Base_Column_List" />
-    from cskaoyanmall_admin
-    <if test="_parameter != null">
-      <include refid="Example_Where_Clause" />
-    </if>
-    <if test="orderByClause != null">
-      order by ${orderByClause}
-    </if>
-  </select>
+
   <select id="selectByExample" parameterType="com.cskaoyan.mall.bean.AdminExample" resultMap="BaseResultMap">
     select
     <if test="distinct">
@@ -108,6 +89,9 @@
     <if test="orderByClause != null">
       order by ${orderByClause}
     </if>
+  </select>
+  <select id="getLastInsertId" resultType="java.lang.Integer">
+    select LAST_INSERT_ID()
   </select>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 

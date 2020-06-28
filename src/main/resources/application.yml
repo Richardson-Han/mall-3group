@@ -6,11 +6,10 @@ spring:
     password: 3group
   mvc:
     static-path-pattern: /pic/**
-  resources:
-    static-locations: file:F:/fileUpload/
+
 
 server:
-  port: 8083
+  port: 8081
 pagehelper:
   helper-dialect: mysql
 logging:
