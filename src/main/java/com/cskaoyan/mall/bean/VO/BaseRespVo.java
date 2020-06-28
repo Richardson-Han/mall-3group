@@ -48,4 +48,11 @@ public class BaseRespVo<T> {
         return baseRespVo;
     }
 
+    public static BaseRespVo errorString(String errmsg) {
+        BaseRespVo baseRespVo = new BaseRespVo();
+        baseRespVo.setErrno(444);
+        baseRespVo.setErrmsg(errmsg);
+        return baseRespVo;
+    }
+
 }

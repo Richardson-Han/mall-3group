@@ -1,26 +1,21 @@
 package com.cskaoyan.mall.bean;
 
+import com.sun.javafx.beans.IDProperty;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
-import java.math.BigDecimal;
 import java.util.Date;
 
-@NoArgsConstructor
 @AllArgsConstructor
-public class GoodsProduct {
+@NoArgsConstructor
+public class GoodsAttribute {
     private Integer id;
 
     private Integer goodsId;
 
-    //要修改类型
-    private String[] specifications;
+    private String attribute;
 
-    private BigDecimal price;
-
-    private Integer number;
-
-    private String url;
+    private String value;
 
     private Date addTime;
 
@@ -44,36 +39,20 @@ public class GoodsProduct {
         this.goodsId = goodsId;
     }
 
-    public String[] getSpecifications() {
-        return specifications;
+    public String getAttribute() {
+        return attribute;
     }
 
-    public void setSpecifications(String[] specifications) {
-        this.specifications = specifications;
+    public void setAttribute(String attribute) {
+        this.attribute = attribute == null ? null : attribute.trim();
     }
 
-    public BigDecimal getPrice() {
-        return price;
+    public String getValue() {
+        return value;
     }
 
-    public void setPrice(BigDecimal price) {
-        this.price = price;
-    }
-
-    public Integer getNumber() {
-        return number;
-    }
-
-    public void setNumber(Integer number) {
-        this.number = number;
-    }
-
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url == null ? null : url.trim();
+    public void setValue(String value) {
+        this.value = value == null ? null : value.trim();
     }
 
     public Date getAddTime() {
