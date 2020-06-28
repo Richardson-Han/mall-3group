@@ -17,3 +17,6 @@ logging:
   level:
     com.cskaoyan.mall.mapper: debug
     com.cskaoyan.mall.service: error
+
+mybatis:
+  type-handlers-package: com.cskaoyan.mall.typehandler
