@@ -25,6 +25,7 @@ public class UserServiceImpl implements UserService {
         //userExample.createCriteria().andAddTimeBetween()
         //执行查询之前使用分页
         UserExample.Criteria criteria = userExample.createCriteria();
+        criteria.andDeletedEqualTo(false);
         if (username != null && !username.isEmpty()) {
             //criteria.andUsernameEqualTo(username);
             criteria.andUsernameLike("%" + username + "%");

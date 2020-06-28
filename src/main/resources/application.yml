@@ -3,7 +3,7 @@ spring:
     driver-class-name: com.mysql.jdbc.Driver
     url: jdbc:mysql://localhost:3306/cskaoyanmall
     username: root
-    password: 3group
+    password: 1234qwer
 
 server:
   port: 8081

@@ -28,6 +28,7 @@ public class SearchHistoryServiceImpl implements SearchHistoryService {
         PageHelper.startPage(page, limit);
         SearchHistoryExample searchHistoryExample = new SearchHistoryExample();
         SearchHistoryExample.Criteria criteria = searchHistoryExample.createCriteria();
+        criteria.andDeletedEqualTo(false);
         if (userId != null) {
             criteria.andUserIdEqualTo(userId);
         }
