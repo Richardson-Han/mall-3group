@@ -71,11 +71,11 @@
   <sql id="Base_Column_List">
     id, name, desc, enabled, add_time, update_time, deleted
   </sql>
-  <resultMap id="getRoleOptions" type="com.cskaoyan.mall.bean.RoleOptionsVO">
+  <resultMap id="getRoleOptions" type="com.cskaoyan.mall.bean.VO.RoleOptionsVO">
     <id column="id" jdbcType="INTEGER" property="value" />
     <result column="name" jdbcType="VARCHAR" property="label" />
   </resultMap>
-  <select id="selectRoleOptions" parameterType="com.cskaoyan.mall.bean.RoleOptionsVO" resultMap="getRoleOptions">
+  <select id="selectRoleOptions" parameterType="com.cskaoyan.mall.bean.VO.RoleOptionsVO" resultMap="getRoleOptions">
     select id,name from cskaoyanmall_role
   </select>
   <select id="selectByExample" parameterType="com.cskaoyan.mall.bean.RoleExample" resultMap="BaseResultMap">

@@ -2,6 +2,7 @@ package com.cskaoyan.mall.mapper;
 
 import com.cskaoyan.mall.bean.Goods;
 import com.cskaoyan.mall.bean.GoodsExample;
+import com.cskaoyan.mall.bean.GoodsStat;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -42,4 +43,6 @@ public interface GoodsMapper {
     int updateByPrimaryKeyWithBLOBs(Goods record);
 
     int updateByPrimaryKey(Goods record);
+
+    List<GoodsStat> selectGroupByAddTime();
 }

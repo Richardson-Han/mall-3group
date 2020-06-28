@@ -2,8 +2,8 @@ package com.cskaoyan.mall.service.impl;
 
 import com.cskaoyan.mall.bean.BaseData;
 import com.cskaoyan.mall.bean.AdminExample;
-import com.cskaoyan.mall.bean.AdminListBO;
-import com.cskaoyan.mall.bean.AdminListVO;
+import com.cskaoyan.mall.bean.BO.AdminListBO;
+import com.cskaoyan.mall.bean.VO.AdminListVO;
 import com.cskaoyan.mall.mapper.AdminMapper;
 import com.cskaoyan.mall.service.AdminService;
 import com.github.pagehelper.PageHelper;

@@ -75,7 +75,7 @@
     id, username, password, last_login_ip, last_login_time, avatar, add_time, update_time, 
     deleted, role_ids
   </sql>
-  <resultMap id="SelectAdminListMap" type="com.cskaoyan.mall.bean.AdminListBO">
+  <resultMap id="SelectAdminListMap" type="com.cskaoyan.mall.bean.BO.AdminListBO">
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="username" jdbcType="VARCHAR" property="username" />
     <result column="avatar" jdbcType="VARCHAR" property="avatar" />

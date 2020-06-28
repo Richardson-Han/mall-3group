@@ -1,19 +1,16 @@
-package com.cskaoyan.mall.bean;
+package com.cskaoyan.mall.bean.BO;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.ArrayList;
-
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class AdminListVO {
-
+public class AdminListBO {
     Integer id;
 
-    ArrayList<Integer> roleIds;
+    String roleIds;
 
     String username;
 

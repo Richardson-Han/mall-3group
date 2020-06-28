@@ -1,7 +1,6 @@
 package com.cskaoyan.mall.service;
 
-import com.cskaoyan.mall.bean.Role;
-import com.cskaoyan.mall.bean.RoleOptionsVO;
+import com.cskaoyan.mall.bean.VO.RoleOptionsVO;
 
 import java.util.List;
 
