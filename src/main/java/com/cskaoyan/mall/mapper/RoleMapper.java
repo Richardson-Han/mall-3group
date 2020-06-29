@@ -2,7 +2,7 @@ package com.cskaoyan.mall.mapper;
 
 import com.cskaoyan.mall.bean.Role;
 import com.cskaoyan.mall.bean.RoleExample;
-import com.cskaoyan.mall.bean.RoleOptionsVO;
+import com.cskaoyan.mall.bean.VO.RoleOptionsVO;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -32,4 +32,6 @@ public interface RoleMapper {
     int updateByPrimaryKeySelective(Role record);
 
     int updateByPrimaryKey(Role record);
+
+    Integer getLastId();
 }

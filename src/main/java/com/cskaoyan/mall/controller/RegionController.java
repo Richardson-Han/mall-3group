@@ -1,7 +1,8 @@
 package com.cskaoyan.mall.controller;
 
-import com.cskaoyan.mall.bean.BaseRespVo;
+
 import com.cskaoyan.mall.bean.Region;
+import com.cskaoyan.mall.bean.VO.BaseRespVo;
 import com.cskaoyan.mall.service.RegionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;

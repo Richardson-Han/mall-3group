@@ -1,8 +1,9 @@
 package com.cskaoyan.mall.controller;
 
-import com.cskaoyan.mall.bean.BaseRespVo;
+
 import com.cskaoyan.mall.bean.Category;
 import com.cskaoyan.mall.bean.CategoryVo;
+import com.cskaoyan.mall.bean.VO.BaseRespVo;
 import com.cskaoyan.mall.service.CategoryService;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;

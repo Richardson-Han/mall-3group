@@ -4,6 +4,7 @@ import com.cskaoyan.mall.bean.BaseData;
 import com.cskaoyan.mall.bean.Coupon;
 
 /**
+ * @author 韩
  * @create 2020-06-27 0:26
  */
 public interface CouponService {
