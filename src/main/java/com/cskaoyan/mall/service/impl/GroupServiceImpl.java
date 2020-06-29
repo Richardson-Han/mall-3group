@@ -161,7 +161,7 @@ public class GroupServiceImpl implements GroupService {
             recordVO.setGroupon(groupOn);
 
             List<IDsVO> iDsVOList = groupOnMapper.selectOrderIdAndUserIdByGrouponId(groupOn.getGrouponId());
-            recordVO.setSubGroupon(iDsVOList);
+            recordVO.setSubGroupons(iDsVOList);
 
             groupOnListRecordVOs.add(recordVO);
             }
