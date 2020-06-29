@@ -2,6 +2,8 @@ package com.cskaoyan.mall.service.impl;
 
 import com.cskaoyan.mall.bean.*;
 import com.cskaoyan.mall.bean.VO.BaseRespVo;
+import com.cskaoyan.mall.bean.VO.GroupOnListRecordVO;
+import com.cskaoyan.mall.bean.VO.IDsVO;
 import com.cskaoyan.mall.mapper.GoodsMapper;
 import com.cskaoyan.mall.mapper.GroupOnMapper;
 import com.cskaoyan.mall.mapper.GroupOnRulesMapper;
@@ -11,6 +13,7 @@ import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -122,8 +125,10 @@ public class GroupServiceImpl implements GroupService {
     }
 
     /**
-     * 查询团购活动----未完成
-     * 从cskaoyanmall_groupon表中获取数据
+     * 查询团购活动
+     * 获取cskaoyanmall_groupon表中的数据
+     * 获取cskaoyanmall_groupon_rules表中的数据
+     * 获取cskaoyanmall_goods表中的数据
      * @param page
      * @param limit
      * @param sort
@@ -135,14 +140,34 @@ public class GroupServiceImpl implements GroupService {
     public BaseData listRecord(Integer page, Integer limit, String sort, String order, Integer goodsId) {
         GroupOnExample groupOnExample = new GroupOnExample();
         groupOnExample.setOrderByClause(sort + " " + order);
+        GroupOnRulesExample groupOnRulesExample = new GroupOnRulesExample();
+        groupOnRulesExample.setOrderByClause(sort + " " + order);
+        GoodsExample goodsExample = new GoodsExample();
+        goodsExample.setOrderByClause(sort + " " + order);
         //在按商品id搜索时有goodsId
 //        if(goodsId != null){
 //            groupOnExample.createCriteria().andGoodsIdEqualTo(goodsId);
 //        }
         PageHelper.startPage(page,limit);
-        List<GroupOn> groupOn = groupOnMapper.selectByExample(groupOnExample);
-        PageInfo<GroupOn> pageInfo = new PageInfo<>(groupOn);
+        List<GroupOn> groupOns = groupOnMapper.selectByExample(groupOnExample);
+        List<GroupOnListRecordVO> groupOnListRecordVOs = new ArrayList<>();
+        for (GroupOn groupOn : groupOns) {
+
+            GroupOnListRecordVO recordVO = new GroupOnListRecordVO();
+            GroupOnRules rules = groupOnRulesMapper.selectByPrimaryKey(groupOn.getRulesId());
+            Goods goods = goodsMapper.selectByPrimaryKey(rules.getGoodsId());
+            recordVO.setRules(rules);
+            recordVO.setGoods(goods);
+            recordVO.setGroupon(groupOn);
+
+            List<IDsVO> iDsVOList = groupOnMapper.selectOrderIdAndUserIdByGrouponId(groupOn.getGrouponId());
+            recordVO.setSubGroupon(iDsVOList);
+
+            groupOnListRecordVOs.add(recordVO);
+            }
+
+        PageInfo<GroupOnListRecordVO> pageInfo = new PageInfo<>(groupOnListRecordVOs);
         long total = pageInfo.getTotal();
-        return new BaseData(groupOn,total);
+        return new BaseData(groupOnListRecordVOs,total);
     }
 }

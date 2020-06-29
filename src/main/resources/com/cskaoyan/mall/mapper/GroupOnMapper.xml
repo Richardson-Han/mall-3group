@@ -195,7 +195,10 @@
       <include refid="Example_Where_Clause" />
     </if>
   </select>
-  <update id="updateByExampleSelective" parameterType="map">
+    <select id="selectOrderIdAndUserIdByGrouponId" resultType="com.cskaoyan.mall.bean.VO.IDsVO">
+      select order_id as orderId , user_id as userId FROM cskaoyanmall_groupon where groupon_id = #{grouponId}
+    </select>
+    <update id="updateByExampleSelective" parameterType="map">
     update cskaoyanmall_groupon
     <set>
       <if test="record.id != null">
