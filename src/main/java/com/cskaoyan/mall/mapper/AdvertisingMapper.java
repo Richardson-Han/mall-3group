@@ -3,6 +3,8 @@ package com.cskaoyan.mall.mapper;
 import com.cskaoyan.mall.bean.Advertising;
 import com.cskaoyan.mall.bean.AdvertisingExample;
 import org.apache.ibatis.annotations.Param;
+import org.mybatis.spring.annotation.MapperScan;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import java.util.List;
 

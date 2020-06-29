@@ -3,7 +3,9 @@ package com.cskaoyan.mall.mapper;
 import com.cskaoyan.mall.bean.Admin;
 import com.cskaoyan.mall.bean.AdminExample;
 import com.cskaoyan.mall.bean.AdminListBO;
+import com.cskaoyan.mall.bean.SearchHistory;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
 
@@ -32,4 +34,17 @@ public interface AdminMapper {
     int updateByPrimaryKeySelective(Admin record);
 
     int updateByPrimaryKey(Admin record);
+
+    @Select("select password from cskaoyanmall_admin where username = #{username}")
+    List<String> selectPasswordByName(@Param("username") String username);
+
+    @Select("SELECT role_ids FROM cskaoyanmall_admin WHERE username = #{username}")
+    String selectRoleidByUsername(@Param("username") String username);
+
+    @Select("SELECT permission FROM cskaoyanmall_role r\n" +
+            "LEFT JOIN cskaoyanmall_permission p ON p.role_id = r.`id` WHERE r.`id` = #{roleid}")
+    List<String> selectPermissionByRoleid(@Param("roleid") String roleid);
+
+    @Select("select id from cskaoyanmall_role")
+    String[] selectAllRoleid();
 }
