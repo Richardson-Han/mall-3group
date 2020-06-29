@@ -73,13 +73,18 @@ public class GroupOnController {
     public BaseRespVo delete(@RequestBody GroupOnRules groupOnRules){
         groupOnRules.setDeleted(true);
         Integer result = groupService.delete(groupOnRules);
-        if(result != 1){
-            return BaseRespVo.error("出错了",402);
-        }else {
-            return BaseRespVo.ok();
-        }
+        return BaseRespVo.ok();
     }
 
+    /**
+     * 查看团购活动
+     * @param page
+     * @param limit
+     * @param sort
+     * @param order
+     * @param goodsId
+     * @return
+     */
     @RequestMapping("listRecord")
     public BaseRespVo listRecord(Integer page, Integer limit, String sort, String order, Integer goodsId){
         BaseData baseData = groupService.listRecord(page,limit,sort,order,goodsId);

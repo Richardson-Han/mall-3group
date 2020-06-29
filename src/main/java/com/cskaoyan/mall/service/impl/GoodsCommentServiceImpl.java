@@ -1,6 +1,8 @@
 package com.cskaoyan.mall.service.impl;
 
 import com.cskaoyan.mall.bean.*;
+import com.cskaoyan.mall.bean.BO.GoodsCommentBO;
+import com.cskaoyan.mall.bean.BO.GoodsCommentListBO;
 import com.cskaoyan.mall.mapper.GoodsCommentMapper;
 import com.cskaoyan.mall.service.GoodsCommentService;
 import com.github.pagehelper.PageHelper;

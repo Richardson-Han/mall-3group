@@ -1,4 +1,4 @@
-package com.cskaoyan.mall.bean;
+package com.cskaoyan.mall.bean.VO;
 
 import com.sun.org.apache.xpath.internal.operations.Bool;
 import lombok.AllArgsConstructor;

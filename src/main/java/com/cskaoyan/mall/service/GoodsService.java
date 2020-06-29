@@ -1,10 +1,11 @@
 package com.cskaoyan.mall.service;
 
-
-import com.cskaoyan.mall.bean.*;
+import com.cskaoyan.mall.bean.BO.GoodsListBO;
+import com.cskaoyan.mall.bean.BO.GoodsUpdateBO;
+import com.cskaoyan.mall.bean.VO.GoodsCatAndBrandVO;
+import com.cskaoyan.mall.bean.VO.GoodsDetailVO;
 import com.cskaoyan.mall.bean.VO.StatBaseVO;
-
-import java.util.List;
+import com.cskaoyan.mall.bean.*;
 
 public interface GoodsService {
     Long getGoodsTotal();
