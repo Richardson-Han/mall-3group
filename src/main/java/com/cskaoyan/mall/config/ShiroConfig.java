@@ -64,15 +64,10 @@ public class ShiroConfig {
     }
 
     public LinkedHashMap<String, String> authorizationGroup(String RoleId){
-        List<String> permissionByRoleids = adminMapper.selectPermissionByRoleid(RoleId);
-        String permissionByRoleidstr = permissionByRoleids.toString();
-        String turePermissionByRoleidstr = permissionByRoleidstr.replace("[", "");
-        turePermissionByRoleidstr = turePermissionByRoleidstr.replace("]", "");
-        turePermissionByRoleidstr = turePermissionByRoleidstr.replace(" ", "");
-        String[] turePermissions = turePermissionByRoleidstr.split(",");
+        String[] permissionByRoleids = adminMapper.selectPermissionByRoleid(RoleId);
         LinkedHashMap<String, String> stringStringLinkedHashMap = new LinkedHashMap<>();
         String perms = new String();
-        for (String turePermission : turePermissions) {
+        for (String turePermission : permissionByRoleids) {
             perms = "perms[" + turePermission + "]";
             turePermission = turePermission.replace(":","/");
             stringStringLinkedHashMap.put(turePermission, perms);

@@ -102,16 +102,10 @@ public class HanShiroTest {
     @Test
     public void hantest3() {
         String roleid = "2";
-        List<String> permissionByRoleids = adminMapper.selectPermissionByRoleid(roleid);
-        String permissionByRoleidstr = permissionByRoleids.toString();
-        String turePermissionByRoleidstr = permissionByRoleidstr.replace(":", "/");
-        turePermissionByRoleidstr = turePermissionByRoleidstr.replace("[", "");
-        turePermissionByRoleidstr = turePermissionByRoleidstr.replace("]", "");
-        turePermissionByRoleidstr = turePermissionByRoleidstr.replace(" ", "");
-        String[] turePermissions = turePermissionByRoleidstr.split(",");
+        String[] permissionByRoleids = adminMapper.selectPermissionByRoleid(roleid);
         LinkedHashMap<String, String> permissions = new LinkedHashMap<>();
         String perms = new String();
-        for (String turePermission : turePermissions) {
+        for (String turePermission : permissionByRoleids) {
             perms = "perms[" + turePermission.replace("/", ":") + "]";
             permissions.put(turePermission, perms);
         }

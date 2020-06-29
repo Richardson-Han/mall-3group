@@ -2,7 +2,6 @@ package com.cskaoyan.mall.controller;
 
 import com.cskaoyan.mall.shiro.MallToken;
 import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.crypto.hash.Md5Hash;
 import org.apache.shiro.subject.Subject;
 import com.cskaoyan.mall.bean.VO.BaseRespVo;
