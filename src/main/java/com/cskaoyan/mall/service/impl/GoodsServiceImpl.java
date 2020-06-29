@@ -1,5 +1,12 @@
 package com.cskaoyan.mall.service.impl;
 
+import com.cskaoyan.mall.bean.BO.BrandBO;
+import com.cskaoyan.mall.bean.BO.GoodsListBO;
+import com.cskaoyan.mall.bean.BO.GoodsUpdateBO;
+import com.cskaoyan.mall.bean.GoodsExample;
+import com.cskaoyan.mall.bean.GoodsStat;
+import com.cskaoyan.mall.bean.VO.*;
+import com.cskaoyan.mall.mapper.GoodsMapper;
 import com.cskaoyan.mall.bean.*;
 import com.cskaoyan.mall.mapper.*;
 import com.cskaoyan.mall.service.GoodsService;
@@ -8,13 +15,16 @@ import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
-import java.text.SimpleDateFormat;
+import java.lang.System;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
+/***
+ * @author 社会主义好
+ * @date 2020-06-26 17:23 星期五
+ *
+ */
 @Service
 public class GoodsServiceImpl implements GoodsService {
     //多个mapper一定要分开写
@@ -346,5 +356,25 @@ public class GoodsServiceImpl implements GoodsService {
             return false;
         }
         return true;
+    }
+
+    /**
+     * 统计报表之商品统计
+     * @return
+     */
+    @Override
+    public StatBaseVO getGoodsStat() {
+        StatBaseVO statGoodsVO = new StatBaseVO();
+        ArrayList<String> columns = new ArrayList<>();
+        columns.add("day");
+        columns.add("orders");
+        columns.add("products");
+        columns.add("amount");
+        statGoodsVO.setColumns(columns);
+
+        List<GoodsStat> orderStats = goodsMapper.selectGroupByAddTime();
+        statGoodsVO.setRows(orderStats);
+        return statGoodsVO;
+
     }
 }

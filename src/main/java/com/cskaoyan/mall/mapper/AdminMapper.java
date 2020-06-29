@@ -11,8 +11,6 @@ import java.util.List;
 
 public interface AdminMapper {
 
-    List<AdminListBO> selectAllAdminsByExample(AdminExample example);
-
     long countByExample(AdminExample example);
 
     int deleteByExample(AdminExample example);
@@ -34,6 +32,8 @@ public interface AdminMapper {
     int updateByPrimaryKeySelective(Admin record);
 
     int updateByPrimaryKey(Admin record);
+
+    Integer getLastInsertId();
 
     @Select("select password from cskaoyanmall_admin where username = #{username}")
     List<String> selectPasswordByName(@Param("username") String username);

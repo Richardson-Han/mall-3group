@@ -1,5 +1,9 @@
-package com.cskaoyan.mall.bean;
+package com.cskaoyan.mall.bean.BO;
 
+import com.cskaoyan.mall.bean.Goods;
+import com.cskaoyan.mall.bean.GoodsAttribute;
+import com.cskaoyan.mall.bean.GoodsProduct;
+import com.cskaoyan.mall.bean.GoodsSpec;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

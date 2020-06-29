@@ -8,6 +8,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -59,7 +60,6 @@ class MallApplicationTests {
 
         //去重
         List<String> list = permission.stream().distinct().collect(Collectors.toList());
-
         System.out.println("去重后");
         for (String s : list) {
             System.out.println(s);

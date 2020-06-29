@@ -1,11 +1,11 @@
 package com.cskaoyan.mall.controller;
 
-import com.cskaoyan.mall.bean.BaseRespVo;
 import com.cskaoyan.mall.shiro.MallToken;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.crypto.hash.Md5Hash;
 import org.apache.shiro.subject.Subject;
+import com.cskaoyan.mall.bean.VO.BaseRespVo;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -77,5 +77,4 @@ public class AuthController {
     public BaseRespVo four01(){
         return BaseRespVo.ok();
     }
-
 }

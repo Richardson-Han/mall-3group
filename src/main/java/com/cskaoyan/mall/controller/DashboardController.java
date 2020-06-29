@@ -1,6 +1,6 @@
 package com.cskaoyan.mall.controller;
 
-import com.cskaoyan.mall.bean.BaseRespVo;
+import com.cskaoyan.mall.bean.VO.BaseRespVo;
 import com.cskaoyan.mall.service.GoodsProductService;
 import com.cskaoyan.mall.service.GoodsService;
 import com.cskaoyan.mall.service.OrderService;
