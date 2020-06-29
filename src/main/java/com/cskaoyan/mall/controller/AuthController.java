@@ -64,6 +64,7 @@ public class AuthController {
      * 登录 promotion123 推广管理员权限
      * 登录 mall123 商场管理员权限
      */
+
     @RequestMapping("info")
     public BaseRespVo info() {
         Subject subject = SecurityUtils.getSubject();

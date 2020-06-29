@@ -38,8 +38,13 @@ public class ShiroConfig {
         fiterChainDefinitionMap.put("/admin/auth/401","anon");
         fiterChainDefinitionMap.put("/admin/storage/create","anon");
         fiterChainDefinitionMap.put("/admin/auth/info","anon");
-        fiterChainDefinitionMap.put("/**","perms[*]");
+        fiterChainDefinitionMap.put("/wx/auth/login","anon");
+        fiterChainDefinitionMap.put("/wx/**","perms[wxAll]");//开发时先给全部权限
+        fiterChainDefinitionMap.put("wx/home/**","anon");
+        // fiterChainDefinitionMap.put("/**","perms[*]");*不需要设置 自动全权限
 
+        //("admin/category/read","perms["perms[admin:category:read]"]")
+        fiterChainDefinitionMap.put("admin/category/read","perms[admin:category:read]");
         //取全部的roleid出来 做对应
         String[] Roleids = adminMapper.selectAllRoleid();
 
@@ -57,7 +62,7 @@ public class ShiroConfig {
                 fiterChainDefinitionMap.put(next.getKey(),next.getValue());
             }
         }
-        fiterChainDefinitionMap.put("/**","authc");
+        fiterChainDefinitionMap.put("/admin/**","authc");
 
         shiroFilterFactoryBean.setFilterChainDefinitionMap(fiterChainDefinitionMap);
         return shiroFilterFactoryBean;
