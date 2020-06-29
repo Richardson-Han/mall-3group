@@ -8,9 +8,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @SpringBootTest
@@ -41,18 +39,21 @@ class MallApplicationTests {
     public void hantest() {
         System.out.println("******************************admin123******************************");
         String string1 = adminMapper.selectRoleidByUsername("admin123");
-        System.out.println(string1);
         //对取出的数据做处理
         string1 = string1.replace("[", "");
         string1 = string1.replace("]", "");
         String[] strings = string1.split(",");
-        List<String> permission = adminMapper.selectPermissionByRoleid(strings[0]);
+
+        //输出roleid
+        for (String s :strings){
+            System.out.println("admin RoleId = " + s);
+        }
+        List<String> permission = Arrays.asList(adminMapper.selectPermissionByRoleid(strings[0]));
         for (String s : permission) {
             System.out.println(s);
         }
         for (int i = 1; i < strings.length; i++) {
-            permission.addAll(adminMapper.selectPermissionByRoleid(strings[i]));
-            System.out.println("~~***********admin123***********~~");
+            Collections.addAll(permission,adminMapper.selectPermissionByRoleid(strings[i]));
             for (String s : permission) {
                 System.out.println(s);
             }
@@ -69,20 +70,22 @@ class MallApplicationTests {
         System.out.println("******************************promotion123******************************");
 
         String string2 = adminMapper.selectRoleidByUsername("promotion123");
-        System.out.println(string2);
         //对取出的数据处理
         string2 = string2.replace("[", "");
         string2 = string2.replace("]", "");
         String[] strings2 = string2.split(",");
-        List<String> permission2 = adminMapper.selectPermissionByRoleid(strings2[0]);
+
+        //输出promotion的RoleId
+        for (String s :strings2){
+            System.out.println("promotion RoleId = " + s);
+        }
+        List<String> permission2 = Arrays.asList(adminMapper.selectPermissionByRoleid(strings2[0]));
         for (String s : permission2) {
             System.out.println(s);
         }
-        System.out.println("**~~~~~~~~~promotion123~~~~~~~~~~~~~**");
-        for (int i = 1; i < strings2.length; i++) {
-            permission.addAll(adminMapper.selectPermissionByRoleid(strings2[i]));
-            System.out.println("**~~~~~~~~~promotion123~~~~~~~~~~~~~**");
-            for (String s : permission) {
+        for (int i = 1; i < strings.length; i++) {
+            Collections.addAll(permission2,adminMapper.selectPermissionByRoleid(strings2[i]));
+            for (String s : permission2) {
                 System.out.println(s);
             }
         }
@@ -90,7 +93,25 @@ class MallApplicationTests {
         System.out.println("******************************mall123******************************");
 
         String string3 = adminMapper.selectRoleidByUsername("mall123");
-        System.out.println(string3);
+        //对取出的数据处理
+        string3 = string3.replace("[", "");
+        string3 = string3.replace("]", "");
+        String[] strings3 = string3.split(",");
+        //输出Mall的RoleId
+        for (String s :strings3){
+            System.out.println("Mall RoleId = " + s);
+        }
+        List<String> permission3 = Arrays.asList(adminMapper.selectPermissionByRoleid(strings3[0]));
+        for (String s : permission3) {
+            System.out.println(s);
+        }
+        for (int i = 1; i < strings.length; i++) {
+            Collections.addAll(permission3,adminMapper.selectPermissionByRoleid(strings3[i]));
+            for (String s : permission3) {
+                System.out.println(s);
+            }
+        }
+
     }
 
     /**
@@ -105,9 +126,9 @@ class MallApplicationTests {
         string = string.replace("]", "");
         String[] strings = string.split(",");
 
-        List<String> permissionByRoleid = adminMapper.selectPermissionByRoleid(strings[0]);
+        List<String> permissionByRoleid = Arrays.asList(adminMapper.selectPermissionByRoleid(strings[0]));
         for (int i = 1; i < strings.length; i++) {
-            permissionByRoleid.addAll(adminMapper.selectPermissionByRoleid(strings[i]));
+            Collections.addAll(permissionByRoleid,adminMapper.selectPermissionByRoleid(strings[i]));
         }
         //去重
         List<String> permissions = permissionByRoleid.stream().distinct().collect(Collectors.toList());
