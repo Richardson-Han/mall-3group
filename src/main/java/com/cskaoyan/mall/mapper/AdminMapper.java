@@ -46,6 +46,5 @@ public interface AdminMapper {
     @Select("select id from cskaoyanmall_role")
     String[] selectAllRoleid();
 
-    @Select("update cskaoyanmall_admin set password = #{password} where username = #{username}")
     Integer updateByUsername(@Param("username") String username, @Param("password") String password);
 }

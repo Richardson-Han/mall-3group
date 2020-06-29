@@ -56,6 +56,7 @@ public class AdvertisingController {
     /**
      * 做虚拟删除，仅更改deleted列数据为ture
      */
+
     @RequestMapping(value = "/delete", method = RequestMethod.POST)
     public BaseRespVo delete(@RequestBody Advertising advertising) {
         Integer deleteAdvertising = advertisingService.deleteAdvertising(advertising);

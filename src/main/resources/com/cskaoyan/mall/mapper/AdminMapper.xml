@@ -291,4 +291,7 @@
       role_ids = #{roleIds,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
+    <update id="updateByUsername">
+      update cskaoyanmall_admin set password = #{password} where username = #{username}
+    </update>
 </mapper>

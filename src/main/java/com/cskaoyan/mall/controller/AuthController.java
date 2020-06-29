@@ -48,6 +48,7 @@ public class AuthController {
     /**
      * shiro未整合
      */
+
     @RequestMapping("info")
     public BaseRespVo info(String token) {
         Map data = new HashMap<String, Object>();
