@@ -1,6 +1,8 @@
 package com.cskaoyan.mall.service.impl;
 
 import com.cskaoyan.mall.bean.*;
+import com.cskaoyan.mall.bean.BO.KeyWordBO;
+import com.cskaoyan.mall.bean.VO.KeyWordInsertVO;
 import com.cskaoyan.mall.mapper.KeyWordMapper;
 import com.cskaoyan.mall.service.KeyWordService;
 import com.github.pagehelper.PageHelper;

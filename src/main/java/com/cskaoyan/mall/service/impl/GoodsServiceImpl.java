@@ -1,9 +1,11 @@
 package com.cskaoyan.mall.service.impl;
 
+import com.cskaoyan.mall.bean.BO.BrandBO;
+import com.cskaoyan.mall.bean.BO.GoodsListBO;
+import com.cskaoyan.mall.bean.BO.GoodsUpdateBO;
 import com.cskaoyan.mall.bean.GoodsExample;
 import com.cskaoyan.mall.bean.GoodsStat;
-import com.cskaoyan.mall.bean.OrderStat;
-import com.cskaoyan.mall.bean.VO.StatBaseVO;
+import com.cskaoyan.mall.bean.VO.*;
 import com.cskaoyan.mall.mapper.GoodsMapper;
 import com.cskaoyan.mall.bean.*;
 import com.cskaoyan.mall.mapper.*;
@@ -14,14 +16,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.lang.System;
-import java.math.BigDecimal;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
-import java.util.List;
-
-import java.util.ArrayList;
 import java.util.List;
 
 /***

@@ -122,7 +122,7 @@ public class GroupServiceImpl implements GroupService {
     }
 
     /**
-     * 查询团购活动
+     * 查询团购活动----未完成
      * 从cskaoyanmall_groupon表中获取数据
      * @param page
      * @param limit

@@ -17,7 +17,7 @@
   </resultMap>
 
   <!--自定义返回的特定的字段-->
-  <resultMap id="CustomResultMap" type="com.cskaoyan.mall.bean.CatChildrenVO">
+  <resultMap id="CustomResultMap" type="com.cskaoyan.mall.bean.VO.CatChildrenVO">
     <id column="id" jdbcType="INTEGER" property="value" />
     <result column="name" jdbcType="VARCHAR" property="label" />
   </resultMap>

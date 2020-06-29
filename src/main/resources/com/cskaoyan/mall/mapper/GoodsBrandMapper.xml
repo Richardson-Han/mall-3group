@@ -14,7 +14,7 @@
   </resultMap>
 
   <!--自定义返回字段-->
-  <resultMap id="CustomResult" type="com.cskaoyan.mall.bean.BrandBO">
+  <resultMap id="CustomResult" type="com.cskaoyan.mall.bean.BO.BrandBO">
     <id column="id" jdbcType="INTEGER" property="value"/>
     <result column="name" jdbcType="VARCHAR" property="label"/>
   </resultMap>
