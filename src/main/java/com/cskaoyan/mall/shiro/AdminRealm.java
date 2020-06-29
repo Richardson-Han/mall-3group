@@ -9,6 +9,9 @@ import org.apache.shiro.subject.PrincipalCollection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -45,13 +48,14 @@ public class AdminRealm extends AuthorizingRealm {
         string = string.replace(" ", "");
         String[] strings = string.split(",");
 
-        List<String> permissionByRoleid = adminMapper.selectPermissionByRoleid(strings[0]);
+        List<String> permissionByRoleid = Arrays.asList(adminMapper.selectPermissionByRoleid(strings[0]));
         for (int i = 1; i < strings.length; i++) {
-            permissionByRoleid.addAll(adminMapper.selectPermissionByRoleid(strings[i]));
+            Collections.addAll(permissionByRoleid,adminMapper.selectPermissionByRoleid(strings[i]));
         }
         //去重
         List<String> permissions = permissionByRoleid.stream().distinct().collect(Collectors.toList());
         SimpleAuthorizationInfo authorizationInfo = new SimpleAuthorizationInfo();
+        //注册权限
         authorizationInfo.addStringPermissions(permissions);
 
         return authorizationInfo;
