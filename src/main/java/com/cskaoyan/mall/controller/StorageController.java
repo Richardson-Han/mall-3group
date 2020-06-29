@@ -1,7 +1,7 @@
 package com.cskaoyan.mall.controller;
 
 import com.cskaoyan.mall.bean.BaseData;
-import com.cskaoyan.mall.bean.BaseRespVo;
+import com.cskaoyan.mall.bean.VO.BaseRespVo;
 import com.cskaoyan.mall.bean.Storage;
 import com.cskaoyan.mall.service.StorageService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,7 +42,7 @@ public class StorageController {
         //后缀名
         String endName = filename.substring(filename.lastIndexOf("."));
         //文件存储地址
-        String filePath = ClassUtils.getDefaultClassLoader().getResource("").getPath() + "static/";
+        String filePath = "D:\\fileUpload\\";
         //新文件名
         String newfilename = UUID.randomUUID() + endName;
         //保存文件

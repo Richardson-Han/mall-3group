@@ -3,6 +3,8 @@ package com.cskaoyan.mall.service.impl;
 import com.cskaoyan.mall.bean.BaseData;
 import com.cskaoyan.mall.bean.User;
 import com.cskaoyan.mall.bean.UserExample;
+import com.cskaoyan.mall.bean.UserStat;
+import com.cskaoyan.mall.bean.VO.StatBaseVO;
 import com.cskaoyan.mall.mapper.UserMapper;
 import com.cskaoyan.mall.service.UserService;
 import com.github.pagehelper.PageHelper;
@@ -10,6 +12,7 @@ import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -47,5 +50,23 @@ public class UserServiceImpl implements UserService {
     @Override
     public Long getUserTotal() {
         return userMapper.countByExample(new UserExample());
+    }
+
+    /**
+     * 获取每天新增的用户
+     * @return
+     */
+    @Override
+    public StatBaseVO getUserStat() {
+
+        StatBaseVO statUserVO = new StatBaseVO();
+        ArrayList<String> columns = new ArrayList<>();
+        columns.add("day");
+        columns.add("users");
+        statUserVO.setColumns(columns);
+
+        List<UserStat> userStats = userMapper.selectGroupByAddTime();
+        statUserVO.setRows(userStats);
+        return statUserVO;
     }
 }

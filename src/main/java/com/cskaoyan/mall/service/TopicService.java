@@ -4,6 +4,7 @@ import com.cskaoyan.mall.bean.BaseData;
 import com.cskaoyan.mall.bean.Topic;
 
 /**
+ * @author 韩
  * @create 2020-06-27 1:09
  */
 public interface TopicService {

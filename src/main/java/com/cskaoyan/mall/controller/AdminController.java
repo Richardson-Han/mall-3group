@@ -2,6 +2,11 @@ package com.cskaoyan.mall.controller;
 
 
 import com.cskaoyan.mall.bean.*;
+import com.cskaoyan.mall.bean.BO.AdminCreateBO;
+import com.cskaoyan.mall.bean.BO.AdminUpdateBO;
+import com.cskaoyan.mall.bean.VO.AdminCreateVO;
+import com.cskaoyan.mall.bean.VO.AdminUpdateVO;
+import com.cskaoyan.mall.bean.VO.BaseRespVo;
 import com.cskaoyan.mall.service.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,7 +23,7 @@ public class AdminController {
 
     //获取管理员信息
     @RequestMapping("list")
-    public BaseRespVo getAlladmins(Integer page,Integer limit,String username,String sort,String order){
+    public BaseRespVo getAlladmins(Integer page, Integer limit, String username, String sort, String order){
         BaseData baseData = adminService.getAdmins(page,limit,username,sort,order);
         return BaseRespVo.ok(baseData);
     }

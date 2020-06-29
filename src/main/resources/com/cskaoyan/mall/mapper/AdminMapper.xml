@@ -75,7 +75,6 @@
     id, username, password, last_login_ip, last_login_time, avatar, add_time, update_time, 
     deleted, role_ids
   </sql>
-
   <select id="selectByExample" parameterType="com.cskaoyan.mall.bean.AdminExample" resultMap="BaseResultMap">
     select
     <if test="distinct">

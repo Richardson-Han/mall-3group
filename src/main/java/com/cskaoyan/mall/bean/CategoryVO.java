@@ -4,12 +4,13 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
-public class RoleCreateBO {
-
-    String name;
-
-    String desc;
+@AllArgsConstructor
+public class CategoryVO {
+    Integer value;
+    String label;
+    List<CatChildrenVO> children;
 }

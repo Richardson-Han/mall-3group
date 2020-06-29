@@ -1,16 +1,16 @@
-package com.cskaoyan.mall.bean;
+package com.cskaoyan.mall.bean.VO;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
-public class AdminUpdateBO {
-
+@AllArgsConstructor
+public class AdminUpdateVO {
     Integer id;
 
     String username;
@@ -18,6 +18,8 @@ public class AdminUpdateBO {
     String password;
 
     ArrayList<Integer> roleIds;
+
+    Date updateTime;
 
     String avatar;
 }

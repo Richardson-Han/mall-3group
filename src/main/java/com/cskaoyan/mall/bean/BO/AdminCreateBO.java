@@ -1,25 +1,21 @@
-package com.cskaoyan.mall.bean;
+package com.cskaoyan.mall.bean.BO;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
-import java.util.Date;
 
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
-public class AdminUpdateVO {
-    Integer id;
+@NoArgsConstructor
+public class AdminCreateBO {
+
+    String avatar;
 
     String username;
 
     String password;
 
     ArrayList<Integer> roleIds;
-
-    Date updateTime;
-
-    String avatar;
 }

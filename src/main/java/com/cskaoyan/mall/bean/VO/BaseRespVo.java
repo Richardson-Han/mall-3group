@@ -1,4 +1,4 @@
-package com.cskaoyan.mall.bean;
+package com.cskaoyan.mall.bean.VO;
 
 import lombok.Data;
 
@@ -7,6 +7,14 @@ public class BaseRespVo<T> {
     T data;
     String errmsg;
     Integer errno;
+
+    public BaseRespVo() {
+    }
+
+    public BaseRespVo(String errmsg, Integer errno) {
+        this.errmsg = errmsg;
+        this.errno = errno;
+    }
 
     public static BaseRespVo ok(){
         BaseRespVo baseRespVo = new BaseRespVo();
@@ -36,6 +44,13 @@ public class BaseRespVo<T> {
     public static BaseRespVo error(String errmsg,Integer errno) {
         BaseRespVo baseRespVo = new BaseRespVo();
         baseRespVo.setErrno(errno);
+        baseRespVo.setErrmsg(errmsg);
+        return baseRespVo;
+    }
+
+    public static BaseRespVo errorString(String errmsg) {
+        BaseRespVo baseRespVo = new BaseRespVo();
+        baseRespVo.setErrno(444);
         baseRespVo.setErrmsg(errmsg);
         return baseRespVo;
     }

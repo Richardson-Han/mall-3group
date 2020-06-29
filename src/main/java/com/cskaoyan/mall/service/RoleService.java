@@ -1,9 +1,11 @@
 package com.cskaoyan.mall.service;
 
+
 import com.cskaoyan.mall.bean.BaseData;
 import com.cskaoyan.mall.bean.Role;
-import com.cskaoyan.mall.bean.RoleCreateBO;
-import com.cskaoyan.mall.bean.RoleOptionsVO;
+import com.cskaoyan.mall.bean.BO.RoleCreateBO;
+import com.cskaoyan.mall.bean.VO.RoleOptionsVO;
+
 
 import java.util.List;
 

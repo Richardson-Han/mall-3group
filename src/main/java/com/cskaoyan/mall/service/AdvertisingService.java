@@ -6,6 +6,7 @@ import com.cskaoyan.mall.bean.BaseData;
 
 
 /**
+ * @author 韩
  * @create 2020-06-26 19:58
  */
 public interface AdvertisingService {

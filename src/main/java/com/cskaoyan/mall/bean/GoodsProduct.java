@@ -1,14 +1,20 @@
 package com.cskaoyan.mall.bean;
 
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+
 import java.math.BigDecimal;
 import java.util.Date;
 
+@NoArgsConstructor
+@AllArgsConstructor
 public class GoodsProduct {
     private Integer id;
 
     private Integer goodsId;
 
-    private String specifications;
+    //要修改类型
+    private String[] specifications;
 
     private BigDecimal price;
 
@@ -38,12 +44,12 @@ public class GoodsProduct {
         this.goodsId = goodsId;
     }
 
-    public String getSpecifications() {
+    public String[] getSpecifications() {
         return specifications;
     }
 
-    public void setSpecifications(String specifications) {
-        this.specifications = specifications == null ? null : specifications.trim();
+    public void setSpecifications(String[] specifications) {
+        this.specifications = specifications;
     }
 
     public BigDecimal getPrice() {

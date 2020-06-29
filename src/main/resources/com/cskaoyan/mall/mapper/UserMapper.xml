@@ -234,6 +234,9 @@
       <include refid="Example_Where_Clause" />
     </if>
   </select>
+  <select id="selectGroupByAddTime" resultType="com.cskaoyan.mall.bean.UserStat">
+    select DATE_FORMAT(add_time,"%Y-%m-%d") as `day` ,count(id) as users from cskaoyanmall_user group by DATE_FORMAT(add_time,"%Y-%m-%d")
+  </select>
   <update id="updateByExampleSelective" parameterType="map">
     update cskaoyanmall_user
     <set>

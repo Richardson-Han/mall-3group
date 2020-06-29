@@ -92,6 +92,9 @@
   <sql id="Blob_Column_List">
     detail
   </sql>
+  <select id="isGoodsExit" parameterType="java.lang.Integer" resultType="int">
+    select count(*) from cskaoyanmall_goods where id = #{id,jdbcType=INTEGER} and deleted = 0
+  </select>
   <select id="selectByExampleWithBLOBs" parameterType="com.cskaoyan.mall.bean.GoodsExample" resultMap="ResultMapWithBLOBs">
     select
     <if test="distinct">
@@ -295,7 +298,11 @@
       <include refid="Example_Where_Clause" />
     </if>
   </select>
-  <update id="updateByExampleSelective" parameterType="map">
+    <select id="selectGroupByAddTime" resultType="com.cskaoyan.mall.bean.GoodsStat">
+      select DATE_FORMAT(add_time,"%Y-%m-%d")as `day`,sum(price) as amount, sum(number) as products,
+      count(order_id) as orders from cskaoyanmall_order_goods group by DATE_FORMAT(add_time,"%Y-%m-%d")
+    </select>
+    <update id="updateByExampleSelective" parameterType="map">
     update cskaoyanmall_goods
     <set>
       <if test="record.id != null">
