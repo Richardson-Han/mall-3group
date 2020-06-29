@@ -1,6 +1,8 @@
 package com.cskaoyan.mall.service;
 
 
+import com.cskaoyan.mall.bean.VO.OrderRefundVO;
+import com.cskaoyan.mall.bean.VO.ShipVO;
 import com.cskaoyan.mall.bean.VO.StatBaseVO;
 
 import java.util.List;
@@ -13,4 +15,10 @@ public interface OrderService {
                                            List<Integer> orderStatusArray, Integer userId, Integer orderSn);
 
     StatBaseVO getOrderStat();
+
+    Map<String ,Object> queryOrderDetailById(Integer id);
+
+    void orderRefund(OrderRefundVO orderRefundVO);
+
+    void orderShip(ShipVO shipVO);
 }
