@@ -2,6 +2,11 @@ package com.cskaoyan.mall.mapper;
 
 import com.cskaoyan.mall.bean.Order;
 import com.cskaoyan.mall.bean.OrderExample;
+
+import com.sun.javafx.image.IntPixelGetter;
+
+import com.cskaoyan.mall.bean.OrderStat;
+
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -28,4 +33,10 @@ public interface OrderMapper {
     int updateByPrimaryKeySelective(Order record);
 
     int updateByPrimaryKey(Order record);
+
+
+    List<Order> queryOrderPageList(List<Integer>orderStatusArray, Integer userId, Integer orderSn, String sort1, String order1);
+
+    List<OrderStat> selectGroupByAddTime();
+
 }

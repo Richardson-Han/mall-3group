@@ -69,14 +69,17 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, name, desc, enabled, add_time, update_time, deleted
+    id, `name`, `desc`, enabled, add_time, update_time, deleted
   </sql>
-  <resultMap id="getRoleOptions" type="com.cskaoyan.mall.bean.RoleOptionsVO">
+  <resultMap id="getRoleOptions" type="com.cskaoyan.mall.bean.VO.RoleOptionsVO">
     <id column="id" jdbcType="INTEGER" property="value" />
     <result column="name" jdbcType="VARCHAR" property="label" />
   </resultMap>
-  <select id="selectRoleOptions" parameterType="com.cskaoyan.mall.bean.RoleOptionsVO" resultMap="getRoleOptions">
+  <select id="selectRoleOptions" parameterType="com.cskaoyan.mall.bean.VO.RoleOptionsVO" resultMap="getRoleOptions">
     select id,name from cskaoyanmall_role
+  </select>
+  <select id="getLastId" resultType="java.lang.Integer">
+    select LAST_INSERT_ID()
   </select>
   <select id="selectByExample" parameterType="com.cskaoyan.mall.bean.RoleExample" resultMap="BaseResultMap">
     select
@@ -123,10 +126,10 @@
         id,
       </if>
       <if test="name != null">
-        name,
+        `name`,
       </if>
       <if test="desc != null">
-        desc,
+        `desc`,
       </if>
       <if test="enabled != null">
         enabled,
@@ -239,8 +242,8 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.cskaoyan.mall.bean.Role">
     update cskaoyanmall_role
-    set name = #{name,jdbcType=VARCHAR},
-      desc = #{desc,jdbcType=VARCHAR},
+    set `name` = #{name,jdbcType=VARCHAR},
+      `desc` = #{desc,jdbcType=VARCHAR},
       enabled = #{enabled,jdbcType=BIT},
       add_time = #{addTime,jdbcType=TIMESTAMP},
       update_time = #{updateTime,jdbcType=TIMESTAMP},

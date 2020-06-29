@@ -312,7 +312,12 @@
       <include refid="Example_Where_Clause" />
     </if>
   </select>
-  <update id="updateByExampleSelective" parameterType="map">
+    <select id="selectGroupByAddTime" resultType="com.cskaoyan.mall.bean.OrderStat">
+       select DATE_FORMAT(add_time,"%Y-%m-%d") as `day`,count(id) as orders, count( distinct user_id) as customers,sum(order_price) as amount,
+       sum(order_price)/count( distinct user_id) as pcr
+    from cskaoyanmall_order group by DATE_FORMAT(add_time,"%Y-%m-%d")
+    </select>
+    <update id="updateByExampleSelective" parameterType="map">
     update cskaoyanmall_order
     <set>
       <if test="record.id != null">
@@ -540,4 +545,23 @@
       deleted = #{deleted,jdbcType=BIT}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+  <select id="queryOrderPageList" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from `cskaoyanmall_order`where deleted = 0
+    <if test="orderStatusArray != null">
+      and order_status in
+      <foreach collection="orderStatusArray" item="orderStatus" separator="," open="(" close=")">
+        #{orderStatus}
+      </foreach>
+    </if>
+    <if test="userId!=null" >
+      and user_id like concat ("%",#{userId},"%")
+    </if>
+    <if test="orderSn!=null">
+      and order_sn like concat("%",#{orderSn},"%")
+    </if>
+    order by ${sort1} ${order1}
+  </select>
 </mapper>

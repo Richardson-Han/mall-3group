@@ -1,11 +1,13 @@
 package com.cskaoyan.mall.controller;
 
 import com.cskaoyan.mall.bean.*;
+import com.cskaoyan.mall.bean.BO.KeyWordBO;
+import com.cskaoyan.mall.bean.VO.BaseRespVo;
+import com.cskaoyan.mall.bean.VO.KeyWordInsertVO;
 import com.cskaoyan.mall.service.KeyWordService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController

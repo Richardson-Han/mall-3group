@@ -13,6 +13,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
+ * @author 韩
  * @create 2020-06-27 0:27
  */
 @Service
@@ -68,9 +69,6 @@ public class CouponServiceImpl implements CouponService {
         return deleteCoupon;
     }
 
-    /**
-     *
-     */
     @Override
     public BaseData listuserCouponUser(Integer page, Integer limit,
                                        Integer couponId, String sort, String order) {

@@ -1,6 +1,6 @@
 package com.cskaoyan.mall.mapper;
 
-import com.cskaoyan.mall.bean.CatChildrenVO;
+import com.cskaoyan.mall.bean.VO.CatChildrenVO;
 import com.cskaoyan.mall.bean.GoodsCategory;
 import com.cskaoyan.mall.bean.GoodsCategoryExample;
 import org.apache.ibatis.annotations.Param;

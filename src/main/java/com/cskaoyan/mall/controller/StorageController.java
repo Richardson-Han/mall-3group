@@ -1,16 +1,19 @@
 package com.cskaoyan.mall.controller;
 
 import com.cskaoyan.mall.bean.BaseData;
-import com.cskaoyan.mall.bean.BaseRespVo;
+import com.cskaoyan.mall.bean.VO.BaseRespVo;
 import com.cskaoyan.mall.bean.Storage;
 import com.cskaoyan.mall.service.StorageService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.ClassUtils;
+import org.springframework.util.ResourceUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.Date;
+import java.util.Map;
 import java.util.UUID;
 
 @RestController
@@ -22,16 +25,16 @@ public class StorageController {
 
     //获取storage对应的list
     @RequestMapping("list")
-    public BaseRespVo selectAllStorage(Integer page,Integer limit,String sort,String order){
-        BaseData baseData = storageService.selectAllStorage(page,limit,sort,order);
+    public BaseRespVo selectAllStorage(Integer page,Integer limit,String key,String name,String sort,String order){
+        BaseData baseData = storageService.selectAllStorage(page,limit,key,name,sort,order);
         return BaseRespVo.ok(baseData);
     }
 
     //图片上传
     @PostMapping("create")
-    public BaseRespVo picUpload(@RequestParam("file")MultipartFile multipartFile) throws IOException {
+    public BaseRespVo picUpload(@RequestParam("file") MultipartFile multipartFile) throws IOException {
         if(multipartFile.isEmpty()){
-            return null;
+            return BaseRespVo.error();
         }
         Storage storage = new Storage();
         //文件名
@@ -53,13 +56,37 @@ public class StorageController {
         //设置返回值并存入数据库
         storage.setKey(newfilename);
         storage.setName(filename);
-        storage.setType(endName);
+        endName = endName.replace(".","");
+        storage.setType("image/" + endName);
         storage.setSize(fileSize);
         storage.setAddTime(new Date());
+        storage.setUpdateTime(new Date());
         storage.setUrl("http://localhost:8081/pic/" + newfilename);
 
         storage = storageService.picUpload(storage);
         return BaseRespVo.ok(storage);
+    }
+
+    //删
+    @PostMapping("delete")
+    public BaseRespVo deleteStorage(@RequestBody Storage storage){
+        Integer result = storageService.deleteStorage(storage);
+        if(result > 0 ){
+            return BaseRespVo.ok();
+        }else {
+            return BaseRespVo.error();
+        }
+    }
+
+    //改
+    @PostMapping("update")
+    public BaseRespVo updateStorage(@RequestBody Storage storage){
+        storage = storageService.updateStorage(storage);
+        if (storage != null){
+            return BaseRespVo.ok(storage);
+        }else {
+            return BaseRespVo.error();
+        }
     }
 
 }

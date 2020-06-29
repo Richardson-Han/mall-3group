@@ -1,7 +1,20 @@
 package com.cskaoyan.mall.service;
 
-import com.cskaoyan.mall.bean.BaseData;
+import com.cskaoyan.mall.bean.*;
+import com.cskaoyan.mall.bean.BO.AdminCreateBO;
+import com.cskaoyan.mall.bean.BO.AdminUpdateBO;
+import com.cskaoyan.mall.bean.VO.AdminCreateVO;
+import com.cskaoyan.mall.bean.VO.AdminUpdateVO;
+import com.cskaoyan.mall.bean.VO.InfoVO;
 
 public interface AdminService {
-    BaseData getAdmins(Integer page, Integer limit, String sort, String order);
+    BaseData getAdmins(Integer page, Integer limit,String username, String sort, String order);
+
+    AdminCreateVO createAdmin(AdminCreateBO adminCreateBO);
+
+    AdminUpdateVO updateAdmin(AdminUpdateBO adminUpdateBO);
+
+    Integer deleteAdmin(AdminUpdateBO adminUpdateBO);
+
+    InfoVO info(String username);
 }
