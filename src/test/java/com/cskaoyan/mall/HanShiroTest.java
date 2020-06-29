@@ -1,5 +1,6 @@
 package com.cskaoyan.mall;
 
+import com.cskaoyan.mall.bean.Admin;
 import com.cskaoyan.mall.mapper.AdminMapper;
 import org.apache.shiro.crypto.hash.Md5Hash;
 import org.junit.jupiter.api.Test;
@@ -14,6 +15,10 @@ import java.util.*;
  */
 @SpringBootTest
 public class HanShiroTest {
+    @Autowired
+    AdminMapper adminMapper;
+
+
     /**
      * 登陆账户生成密码代码
      */
@@ -28,7 +33,12 @@ public class HanShiroTest {
         password = map.get("password");
         String passwordDB = new Md5Hash(password, username + "3group", 8).toString();
         System.out.println("admin password = " + passwordDB);
+        //更新代码 密码自动写入数据库
+        Integer update = adminMapper.updateByUsername(username, passwordDB);
+        System.out.println("admin update = " + update);
+        System.out.println("'update = 1' is succeed");
 
+        //d42dff1e2269d84af9f4defaa89d51d1
         /**
          * 推广管理员密码
          */
@@ -37,6 +47,9 @@ public class HanShiroTest {
         password = map.get("password");
         passwordDB = new Md5Hash(password, username + "3group", 8).toString();
         System.out.println("Promotion password = " + passwordDB);
+        update = adminMapper.updateByUsername(username, passwordDB);
+        System.out.println("Promotion update = " + update);
+        System.out.println("'update = 1' is succeed");
 
         /**
          * 商城管理员密码
@@ -46,7 +59,9 @@ public class HanShiroTest {
         password = map.get("password");
         passwordDB = new Md5Hash(password, username + "3group", 8).toString();
         System.out.println("mall password = " + passwordDB);
-
+        update = adminMapper.updateByUsername(username, passwordDB);
+        System.out.println("mall update = " + update);
+        System.out.println("'update = 1' is succeed");
     }
 
     /**
@@ -80,11 +95,9 @@ public class HanShiroTest {
     }
 
 
-    @Autowired
-    AdminMapper adminMapper;
 
     /**
-     * 权限测试！！！！！
+     * 权限测试相关
      */
     @Test
     public void hantest3() {
@@ -110,15 +123,6 @@ public class HanShiroTest {
 
         String[] strings = adminMapper.selectAllRoleid();
         System.out.println(strings[0]);
-
-    }
-
-
-    /**
-     * 权限测试！！！！！
-     */
-    @Test
-    public void hantest4() {
 
     }
 }
