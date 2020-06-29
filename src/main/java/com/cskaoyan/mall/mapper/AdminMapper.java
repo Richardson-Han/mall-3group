@@ -2,8 +2,6 @@ package com.cskaoyan.mall.mapper;
 
 import com.cskaoyan.mall.bean.Admin;
 import com.cskaoyan.mall.bean.AdminExample;
-import com.cskaoyan.mall.bean.AdminListBO;
-import com.cskaoyan.mall.bean.SearchHistory;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
