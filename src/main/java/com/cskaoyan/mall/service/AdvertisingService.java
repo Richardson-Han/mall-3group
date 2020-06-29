@@ -3,7 +3,6 @@ package com.cskaoyan.mall.service;
 import com.cskaoyan.mall.bean.Advertising;
 import com.cskaoyan.mall.bean.BaseData;
 
-import java.util.Date;
 
 
 /**
@@ -13,4 +12,8 @@ public interface AdvertisingService {
     BaseData queryAdvertising(Integer page,Integer limit,String sort,String order);
 
     Integer insertAdvertising(Advertising advertising);
+
+    Integer updateAdvertising(Advertising advertising);
+
+    Integer deleteAdvertising(Advertising advertising);
 }

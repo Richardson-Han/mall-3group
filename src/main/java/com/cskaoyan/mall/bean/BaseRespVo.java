@@ -8,6 +8,14 @@ public class BaseRespVo<T> {
     String errmsg;
     Integer errno;
 
+    public BaseRespVo() {
+    }
+
+    public BaseRespVo(String errmsg, Integer errno) {
+        this.errmsg = errmsg;
+        this.errno = errno;
+    }
+
     public static BaseRespVo ok(){
         BaseRespVo baseRespVo = new BaseRespVo();
         baseRespVo.setErrmsg("成功");
@@ -24,6 +32,26 @@ public class BaseRespVo<T> {
         BaseRespVo baseRespVo = new BaseRespVo();
         baseRespVo.setErrmsg("失败");
         baseRespVo.setErrno(888);
+        return baseRespVo;
+    }
+
+    public static BaseRespVo error(Object data) {
+        BaseRespVo baseRespVo = error();
+        baseRespVo.setData(data);
+        return baseRespVo;
+    }
+
+    public static BaseRespVo error(String errmsg,Integer errno) {
+        BaseRespVo baseRespVo = new BaseRespVo();
+        baseRespVo.setErrno(errno);
+        baseRespVo.setErrmsg(errmsg);
+        return baseRespVo;
+    }
+
+    public static BaseRespVo errorString(String errmsg) {
+        BaseRespVo baseRespVo = new BaseRespVo();
+        baseRespVo.setErrno(444);
+        baseRespVo.setErrmsg(errmsg);
         return baseRespVo;
     }
 

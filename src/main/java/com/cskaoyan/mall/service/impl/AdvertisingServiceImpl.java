@@ -27,16 +27,36 @@ public class AdvertisingServiceImpl implements AdvertisingService {
         AdvertisingExample advertisingExample = new AdvertisingExample();
         advertisingExample.setOrderByClause(sort + " " + order);
         //执行查询之前使用分页
-        PageHelper.startPage(page,limit);
+        PageHelper.startPage(page, limit);
         List<Advertising> advertisings = advertisingMapper.selectByExample(advertisingExample);
         PageInfo<Advertising> pageInfo = new PageInfo<>(advertisings);
         long total = pageInfo.getTotal();
         return new BaseData(advertisings, total);
     }
 
+    /**
+     * 新增广告信息
+     */
     @Override
     public Integer insertAdvertising(Advertising advertising) {
-        int insert = advertisingMapper.insert(advertising);
-        return insert;
+        return advertisingMapper.insertSelective(advertising);
+    }
+
+    /**
+     * 修改广告数据
+     */
+    @Override
+    public Integer updateAdvertising(Advertising advertising) {
+        return advertisingMapper.updateByPrimaryKeySelective(advertising);
+    }
+
+    /**
+     * 虚拟删除 采用更新
+     */
+    @Override
+    public Integer deleteAdvertising(Advertising advertising) {
+        advertising.setDeleted(true);
+        advertising.setUpdateTime(new Date());
+        return advertisingMapper.updateByPrimaryKeySelective(advertising);
     }
 }
