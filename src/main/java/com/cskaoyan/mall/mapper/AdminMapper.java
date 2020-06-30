@@ -39,8 +39,9 @@ public interface AdminMapper {
     @Select("SELECT role_ids FROM cskaoyanmall_admin WHERE username = #{username}")
     String selectRoleidByUsername(@Param("username") String username);
 
-    @Select("SELECT permission FROM cskaoyanmall_role r\n" +
-            "LEFT JOIN cskaoyanmall_permission p ON p.role_id = r.`id` WHERE r.`id` = #{roleid}")
+    @Select("select permission from cskaoyanmall_role r left join " +
+            "cskaoyanmall_permission p on p.role_id = r.`id` where r.`id` = #{roleid} " +
+            "and p.permission is not null")
     String[] selectPermissionByRoleid(@Param("roleid") String roleid);
 
     @Select("select id from cskaoyanmall_role")
