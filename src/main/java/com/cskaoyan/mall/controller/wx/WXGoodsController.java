@@ -1,11 +1,14 @@
 package com.cskaoyan.mall.controller.wx;
 
+import com.cskaoyan.mall.bean.BaseData;
 import com.cskaoyan.mall.bean.VO.BaseRespVo;
 import com.cskaoyan.mall.service.GoodsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
 /***
@@ -29,5 +32,19 @@ public class WXGoodsController {
     public BaseRespVo list(Integer categoryId, Integer page, Integer size){
         Map data = goodsService.list(categoryId, page, size);
         return BaseRespVo.ok(data);
+    }
+
+    @RequestMapping("count")
+    public BaseRespVo count(){
+        Long goodsTotal = goodsService.getGoodsTotal();
+        Map map = new HashMap();
+        map.put("goodsCount", goodsTotal);
+        return BaseRespVo.ok(map);
+    }
+
+    @RequestMapping("detail")
+    public BaseRespVo detaile(Integer id){
+        Map map = goodsService.detail(id);
+        return BaseRespVo.ok(map);
     }
 }

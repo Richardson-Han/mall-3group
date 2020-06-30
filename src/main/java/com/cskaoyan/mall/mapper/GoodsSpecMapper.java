@@ -28,4 +28,6 @@ public interface GoodsSpecMapper {
     int updateByPrimaryKeySelective(GoodsSpec record);
 
     int updateByPrimaryKey(GoodsSpec record);
+
+    List<GoodsSpec> selectByGoodsId(@Param("goodsId") Integer goodsId);
 }

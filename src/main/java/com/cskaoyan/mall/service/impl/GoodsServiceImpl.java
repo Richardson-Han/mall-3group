@@ -12,6 +12,8 @@ import com.cskaoyan.mall.mapper.*;
 import com.cskaoyan.mall.service.GoodsService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -379,6 +381,78 @@ public class GoodsServiceImpl implements GoodsService {
         map.put("filterCategoryList", filterCategoryList);
         map.put("goodsList", goods);
 
+        return map;
+    }
+
+    @Autowired
+    CommentMapper commentMapper;
+
+    @Autowired
+    GroupOnRulesMapper groupOnRulesMapper;
+    @Autowired
+    IssueMapper issueMapper;
+
+    @Autowired
+    GoodsProductMapper goodsProductMapper;
+
+    @Autowired
+    GoodsSpecMapper goodsSpecMapper;
+
+    @Autowired
+    CollectMapper collectMapper;
+
+    @Autowired
+    UserMapper userMapper;
+
+    @Override
+    public Map detail(Integer goodsId) {
+        /*GoodsAttributeExample GoodsIdExample = new GoodsAttributeExample();
+        GoodsIdExample.createCriteria().andGoodsIdEqualTo(goodsId);
+        //attribute
+        List<GoodsAttribute> attribute = goodsAttributeMapper.selectByExample(GoodsIdExample);
+
+        //brand
+        GoodsExample brandIdExample = new GoodsExample();
+        brandIdExample.createCriteria().andBrandIdEqualTo()*/
+        //attribute
+        List<GoodsAttribute> attribute = goodsAttributeMapper.selectByGoodsId(goodsId);
+        //info
+        Goods goods = goodsMapper.selectByPrimaryKey(goodsId);
+        //brand
+        GoodsBrand brand = brandMapper.selectByPrimaryKey(goods.getBrandId());
+        //comment
+        List<Comment> data = commentMapper.selectByValueId(goodsId);
+        HashMap comment = new HashMap();
+        comment.put("count", data.size());
+        comment.put("data", data);
+        //groupon
+        List<GroupOn> groupon = groupOnRulesMapper.selectByGoodsId(goodsId);
+
+        //issue
+        List<Issue> issue = issueMapper.selectByExample(new IssueExample());
+        //productList
+        List<GoodsProduct> productList = goodsProductMapper.selectByGoodsId(goodsId);
+        //shareImage
+        String shareImage = "";
+        //specification
+        List<GoodsSpec> specificationList = goodsSpecMapper.selectByGoodsId(goodsId);
+        //userHasCollect
+        Subject subject = SecurityUtils.getSubject();
+        String username = (String) subject.getPrincipal();
+        Integer userId = userMapper.selectUserIdByUsername(username);
+        Collect collect = collectMapper.selectByUserIdAndValueId(userId, goodsId);
+        Integer userHasCollect = collect == null ? 0 : 1;
+        Map map = new HashMap();
+        map.put("attribute", attribute);
+        map.put("brand", brand);
+        map.put("comment", comment);
+        map.put("groupon", groupon);
+        map.put("info", goods);
+        map.put("issue", issue);
+        map.put("productList", productList);
+        map.put("shareImage", shareImage);
+        map.put("specificationList", specificationList);
+        map.put("userHasCollect", userHasCollect);
         return map;
     }
 

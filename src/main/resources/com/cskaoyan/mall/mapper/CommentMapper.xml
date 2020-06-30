@@ -1,11 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.cskaoyan.mall.mapper.CollectMapper">
-  <resultMap id="BaseResultMap" type="com.cskaoyan.mall.bean.Collect">
+<mapper namespace="com.cskaoyan.mall.mapper.CommentMapper">
+  <resultMap id="BaseResultMap" type="com.cskaoyan.mall.bean.Comment">
     <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="user_id" jdbcType="INTEGER" property="userId" />
     <result column="value_id" jdbcType="INTEGER" property="valueId" />
     <result column="type" jdbcType="TINYINT" property="type" />
+    <result column="content" jdbcType="VARCHAR" property="content" />
+    <result column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="has_picture" jdbcType="BIT" property="hasPicture" />
+    <result column="pic_urls" jdbcType="VARCHAR" property="picUrls" />
+    <result column="star" jdbcType="SMALLINT" property="star" />
     <result column="add_time" jdbcType="TIMESTAMP" property="addTime" />
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
     <result column="deleted" jdbcType="BIT" property="deleted" />
@@ -69,15 +73,16 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, user_id, value_id, type, add_time, update_time, deleted
+    id, value_id, type, content, user_id, has_picture, pic_urls, star, add_time, update_time, 
+    deleted
   </sql>
-  <select id="selectByExample" parameterType="com.cskaoyan.mall.bean.CollectExample" resultMap="BaseResultMap">
+  <select id="selectByExample" parameterType="com.cskaoyan.mall.bean.CommentExample" resultMap="BaseResultMap">
     select
     <if test="distinct">
       distinct
     </if>
     <include refid="Base_Column_List" />
-    from cskaoyanmall_collect
+    from cskaoyanmall_comment
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
@@ -88,41 +93,55 @@
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
-    from cskaoyanmall_collect
+    from cskaoyanmall_comment
     where id = #{id,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from cskaoyanmall_collect
+    delete from cskaoyanmall_comment
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <delete id="deleteByExample" parameterType="com.cskaoyan.mall.bean.CollectExample">
-    delete from cskaoyanmall_collect
+  <delete id="deleteByExample" parameterType="com.cskaoyan.mall.bean.CommentExample">
+    delete from cskaoyanmall_comment
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.cskaoyan.mall.bean.Collect">
-    insert into cskaoyanmall_collect (id, user_id, value_id, 
-      type, add_time, update_time, 
-      deleted)
-    values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{valueId,jdbcType=INTEGER}, 
-      #{type,jdbcType=TINYINT}, #{addTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, 
-      #{deleted,jdbcType=BIT})
+  <insert id="insert" parameterType="com.cskaoyan.mall.bean.Comment">
+    insert into cskaoyanmall_comment (id, value_id, type, 
+      content, user_id, has_picture, 
+      pic_urls, star, add_time, 
+      update_time, deleted)
+    values (#{id,jdbcType=INTEGER}, #{valueId,jdbcType=INTEGER}, #{type,jdbcType=TINYINT}, 
+      #{content,jdbcType=VARCHAR}, #{userId,jdbcType=INTEGER}, #{hasPicture,jdbcType=BIT}, 
+      #{picUrls,jdbcType=VARCHAR}, #{star,jdbcType=SMALLINT}, #{addTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{deleted,jdbcType=BIT})
   </insert>
-  <insert id="insertSelective" parameterType="com.cskaoyan.mall.bean.Collect">
-    insert into cskaoyanmall_collect
+  <insert id="insertSelective" parameterType="com.cskaoyan.mall.bean.Comment">
+    insert into cskaoyanmall_comment
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
         id,
-      </if>
-      <if test="userId != null">
-        user_id,
       </if>
       <if test="valueId != null">
         value_id,
       </if>
       <if test="type != null">
         type,
+      </if>
+      <if test="content != null">
+        content,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="hasPicture != null">
+        has_picture,
+      </if>
+      <if test="picUrls != null">
+        pic_urls,
+      </if>
+      <if test="star != null">
+        star,
       </if>
       <if test="addTime != null">
         add_time,
@@ -138,14 +157,26 @@
       <if test="id != null">
         #{id,jdbcType=INTEGER},
       </if>
-      <if test="userId != null">
-        #{userId,jdbcType=INTEGER},
-      </if>
       <if test="valueId != null">
         #{valueId,jdbcType=INTEGER},
       </if>
       <if test="type != null">
         #{type,jdbcType=TINYINT},
+      </if>
+      <if test="content != null">
+        #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="hasPicture != null">
+        #{hasPicture,jdbcType=BIT},
+      </if>
+      <if test="picUrls != null">
+        #{picUrls,jdbcType=VARCHAR},
+      </if>
+      <if test="star != null">
+        #{star,jdbcType=SMALLINT},
       </if>
       <if test="addTime != null">
         #{addTime,jdbcType=TIMESTAMP},
@@ -158,29 +189,41 @@
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.cskaoyan.mall.bean.CollectExample" resultType="java.lang.Long">
-    select count(*) from cskaoyanmall_collect
+  <select id="countByExample" parameterType="com.cskaoyan.mall.bean.CommentExample" resultType="java.lang.Long">
+    select count(*) from cskaoyanmall_comment
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </select>
-    <select id="selectByUserIdAndValueId" resultType="com.cskaoyan.mall.bean.Collect">
-      select * from cskaoyanmall_collect where user_id = #{userId} &amp; value_id = #{valueId}
-    </select>
-    <update id="updateByExampleSelective" parameterType="map">
-    update cskaoyanmall_collect
+  <select id="selectByValueId" resultType="com.cskaoyan.mall.bean.Comment">
+    select * from cskaoyanmall_comment where value_id = #{goodsId}
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update cskaoyanmall_comment
     <set>
       <if test="record.id != null">
         id = #{record.id,jdbcType=INTEGER},
-      </if>
-      <if test="record.userId != null">
-        user_id = #{record.userId,jdbcType=INTEGER},
       </if>
       <if test="record.valueId != null">
         value_id = #{record.valueId,jdbcType=INTEGER},
       </if>
       <if test="record.type != null">
         type = #{record.type,jdbcType=TINYINT},
+      </if>
+      <if test="record.content != null">
+        content = #{record.content,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userId != null">
+        user_id = #{record.userId,jdbcType=INTEGER},
+      </if>
+      <if test="record.hasPicture != null">
+        has_picture = #{record.hasPicture,jdbcType=BIT},
+      </if>
+      <if test="record.picUrls != null">
+        pic_urls = #{record.picUrls,jdbcType=VARCHAR},
+      </if>
+      <if test="record.star != null">
+        star = #{record.star,jdbcType=SMALLINT},
       </if>
       <if test="record.addTime != null">
         add_time = #{record.addTime,jdbcType=TIMESTAMP},
@@ -197,11 +240,15 @@
     </if>
   </update>
   <update id="updateByExample" parameterType="map">
-    update cskaoyanmall_collect
+    update cskaoyanmall_comment
     set id = #{record.id,jdbcType=INTEGER},
-      user_id = #{record.userId,jdbcType=INTEGER},
       value_id = #{record.valueId,jdbcType=INTEGER},
       type = #{record.type,jdbcType=TINYINT},
+      content = #{record.content,jdbcType=VARCHAR},
+      user_id = #{record.userId,jdbcType=INTEGER},
+      has_picture = #{record.hasPicture,jdbcType=BIT},
+      pic_urls = #{record.picUrls,jdbcType=VARCHAR},
+      star = #{record.star,jdbcType=SMALLINT},
       add_time = #{record.addTime,jdbcType=TIMESTAMP},
       update_time = #{record.updateTime,jdbcType=TIMESTAMP},
       deleted = #{record.deleted,jdbcType=BIT}
@@ -209,17 +256,29 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.cskaoyan.mall.bean.Collect">
-    update cskaoyanmall_collect
+  <update id="updateByPrimaryKeySelective" parameterType="com.cskaoyan.mall.bean.Comment">
+    update cskaoyanmall_comment
     <set>
-      <if test="userId != null">
-        user_id = #{userId,jdbcType=INTEGER},
-      </if>
       <if test="valueId != null">
         value_id = #{valueId,jdbcType=INTEGER},
       </if>
       <if test="type != null">
         type = #{type,jdbcType=TINYINT},
+      </if>
+      <if test="content != null">
+        content = #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="hasPicture != null">
+        has_picture = #{hasPicture,jdbcType=BIT},
+      </if>
+      <if test="picUrls != null">
+        pic_urls = #{picUrls,jdbcType=VARCHAR},
+      </if>
+      <if test="star != null">
+        star = #{star,jdbcType=SMALLINT},
       </if>
       <if test="addTime != null">
         add_time = #{addTime,jdbcType=TIMESTAMP},
@@ -233,11 +292,15 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.cskaoyan.mall.bean.Collect">
-    update cskaoyanmall_collect
-    set user_id = #{userId,jdbcType=INTEGER},
-      value_id = #{valueId,jdbcType=INTEGER},
+  <update id="updateByPrimaryKey" parameterType="com.cskaoyan.mall.bean.Comment">
+    update cskaoyanmall_comment
+    set value_id = #{valueId,jdbcType=INTEGER},
       type = #{type,jdbcType=TINYINT},
+      content = #{content,jdbcType=VARCHAR},
+      user_id = #{userId,jdbcType=INTEGER},
+      has_picture = #{hasPicture,jdbcType=BIT},
+      pic_urls = #{picUrls,jdbcType=VARCHAR},
+      star = #{star,jdbcType=SMALLINT},
       add_time = #{addTime,jdbcType=TIMESTAMP},
       update_time = #{updateTime,jdbcType=TIMESTAMP},
       deleted = #{deleted,jdbcType=BIT}

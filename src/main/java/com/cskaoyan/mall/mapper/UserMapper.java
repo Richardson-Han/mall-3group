@@ -37,4 +37,5 @@ public interface UserMapper {
     @Update("update cskaoyanmall_user set password = #{password} where username = #{username}")
     Integer updatePasswordByUsername(@Param("username") String username, @Param("password") String passwordDB);
 
+    Integer selectUserIdByUsername(@Param("username") String username);
 }
