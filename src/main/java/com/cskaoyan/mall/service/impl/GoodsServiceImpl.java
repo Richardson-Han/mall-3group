@@ -16,9 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.lang.System;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /***
  * @author 社会主义好
@@ -40,6 +38,10 @@ public class GoodsServiceImpl implements GoodsService {
     GoodsSpecMapper specMapper;
     @Autowired
     GoodsBrandMapper brandMapper;
+
+    //尚政宇
+    @Autowired
+    CategoryMapper wxCategoryMapper;
 
     /**
      *  返回商品数量
@@ -343,6 +345,41 @@ public class GoodsServiceImpl implements GoodsService {
     public void goodsDelete(Goods goods) {
         goods.setDeleted(true);
         goodsMapper.updateByPrimaryKeySelective(goods);
+    }
+
+    //尚政宇
+    @Override
+    public Map category(Integer id) {
+        //id是商品类目的id，首先要根据id查询对应的pid
+        Map map = new HashMap();
+        Category category = wxCategoryMapper.selectByPrimaryKey(id);
+        Integer pid = category.getPid();
+        CategoryExample categoryExample = new CategoryExample();
+        categoryExample.createCriteria().andPidEqualTo(pid).andDeletedEqualTo(false);
+        List<Category> categories = wxCategoryMapper.selectByExample(categoryExample);
+        Category parentCategory = wxCategoryMapper.selectByPrimaryKey(pid);
+        map.put("brotherCategory", categories);
+        map.put("currentCategory", category);
+        map.put("parentCategory", parentCategory);
+        return map;
+    }
+
+    //尚政宇
+    @Override
+    public Map list(Integer categoryId, Integer page, Integer size) {
+        Map map = new HashMap();
+        PageHelper.startPage(page, size);
+        GoodsExample goodsExample = new GoodsExample();
+        goodsExample.createCriteria().andCategoryIdEqualTo(categoryId);
+        long count = goodsMapper.countByExample(goodsExample);
+        List<Goods> goods = goodsMapper.selectByExample(goodsExample);
+
+        List<Category> filterCategoryList = wxCategoryMapper.selectFilterCategoryList();
+        map.put("count", count);
+        map.put("filterCategoryList", filterCategoryList);
+        map.put("goodsList", goods);
+
+        return map;
     }
 
     /**

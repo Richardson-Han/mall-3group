@@ -7,6 +7,8 @@ import com.cskaoyan.mall.bean.VO.GoodsDetailVO;
 import com.cskaoyan.mall.bean.VO.StatBaseVO;
 import com.cskaoyan.mall.bean.*;
 
+import java.util.Map;
+
 public interface GoodsService {
     Long getGoodsTotal();
 
@@ -25,4 +27,8 @@ public interface GoodsService {
     int createGoods(GoodsUpdateBO goodsUpdateBO);
 
     void goodsDelete(Goods goods);
+
+    Map category(Integer id);
+
+    Map list(Integer categoryId, Integer page, Integer size);
 }
