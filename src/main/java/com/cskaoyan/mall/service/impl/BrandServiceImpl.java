@@ -1,8 +1,7 @@
 package com.cskaoyan.mall.service.impl;
 
 import com.cskaoyan.mall.bean.Brand;
-import com.cskaoyan.mall.bean.BrandAddVo;
-import com.cskaoyan.mall.bean.BrandExample;
+import com.cskaoyan.mall.bean.VO.BrandAddVo;
 import com.cskaoyan.mall.mapper.BrandMapper;
 import com.cskaoyan.mall.service.BrandService;
 import com.github.pagehelper.PageHelper;

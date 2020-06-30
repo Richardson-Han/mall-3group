@@ -1,7 +1,7 @@
 package com.cskaoyan.mall.controller;
 
 import com.cskaoyan.mall.bean.Brand;
-import com.cskaoyan.mall.bean.BrandAddVo;
+import com.cskaoyan.mall.bean.VO.BrandAddVo;
 import com.cskaoyan.mall.bean.VO.BaseRespVo;
 import com.cskaoyan.mall.service.BrandService;
 import org.springframework.beans.factory.annotation.Autowired;
