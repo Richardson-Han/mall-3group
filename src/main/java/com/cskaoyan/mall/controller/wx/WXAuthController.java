@@ -4,6 +4,8 @@ import com.cskaoyan.mall.bean.User;
 import com.cskaoyan.mall.bean.VO.BaseRespVo;
 import com.cskaoyan.mall.shiro.MallToken;
 import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authz.annotation.RequiresGuest;
+import org.apache.shiro.authz.annotation.RequiresUser;
 import org.apache.shiro.crypto.hash.Md5Hash;
 import org.apache.shiro.subject.Subject;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -28,6 +30,7 @@ public class WXAuthController {
      * 请进入test中WXHanShiroTest类运行
      * HanMD5PasswordTest 方法
      */
+    @RequiresGuest
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public BaseRespVo login(@RequestBody Map map) {
         String password = (String) map.get("password");
@@ -54,6 +57,7 @@ public class WXAuthController {
     /**
      * 退出已完成
      */
+    @RequiresUser
     @RequestMapping(value = "logout", method = RequestMethod.POST)
     public BaseRespVo logout() {
         Subject subject = SecurityUtils.getSubject();

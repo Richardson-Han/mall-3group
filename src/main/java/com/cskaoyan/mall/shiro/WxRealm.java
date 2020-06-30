@@ -4,6 +4,7 @@ import com.cskaoyan.mall.mapper.UserMapper;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
+import org.apache.shiro.authc.SimpleAuthenticationInfo;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
@@ -37,8 +38,11 @@ public class WxRealm extends AuthorizingRealm {
      * 先全部允许
      */
     private AuthenticationInfo dealInfoByType(String type) {
+        if (type.equals("wx")){
+            return new SimpleAuthenticationInfo();
+        }
         //根据info不同处理不同的认证信息
-        return null;
+        return new SimpleAuthenticationInfo();
     }
 
     @Override

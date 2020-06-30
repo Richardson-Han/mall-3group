@@ -3,6 +3,7 @@ package com.cskaoyan.mall.controller.wx;
 import com.cskaoyan.mall.bean.Storage;
 import com.cskaoyan.mall.bean.VO.BaseRespVo;
 import com.cskaoyan.mall.service.StorageService;
+import org.apache.shiro.authz.annotation.RequiresGuest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,6 +33,7 @@ public class WXStorageContorller {
      * @return
      * @throws IOException
      */
+    @RequiresGuest
     @RequestMapping(value = "/upload")
     public BaseRespVo picUpload(@RequestParam("file") MultipartFile multipartFile) throws IOException {
         // if(multipartFile.isEmpty()){

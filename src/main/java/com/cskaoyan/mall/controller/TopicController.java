@@ -4,6 +4,8 @@ import com.cskaoyan.mall.bean.BaseData;
 import com.cskaoyan.mall.bean.VO.BaseRespVo;
 import com.cskaoyan.mall.bean.Topic;
 import com.cskaoyan.mall.service.TopicService;
+import org.apache.shiro.authz.annotation.RequiresAuthentication;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,6 +23,7 @@ public class TopicController {
     @Autowired
     TopicService topicService;
 
+    @RequiresAuthentication
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public BaseRespVo list(Integer page, Integer limit, String sort, String order) {
         BaseData baseData = topicService.queryTopic(page, limit, sort, order);
@@ -31,6 +34,7 @@ public class TopicController {
      * 创建
      * 因网页未提供updatetime、addtime 需自行注入（service）
      */
+    @RequiresPermissions("admin:topic:create")
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     public BaseRespVo create(@RequestBody Topic topic) {
         Integer insert = topicService.createTopic(topic);
@@ -42,6 +46,7 @@ public class TopicController {
         }
     }
 
+    @RequiresPermissions("admin:topic:update")
     @RequestMapping(value = "/update", method = RequestMethod.POST)
     public BaseRespVo update(@RequestBody Topic topic) {
         Integer insert = topicService.updateTopic(topic);
@@ -52,6 +57,7 @@ public class TopicController {
         }
     }
 
+    @RequiresPermissions("admin:topic:delete")
     @RequestMapping(value = "/delete", method = RequestMethod.POST)
     public BaseRespVo delete(@RequestBody Topic topic) {
         Integer insert = topicService.deleteTopic(topic);
