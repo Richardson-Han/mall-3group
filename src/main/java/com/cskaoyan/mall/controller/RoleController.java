@@ -2,14 +2,13 @@ package com.cskaoyan.mall.controller;
 
 import com.cskaoyan.mall.bean.*;
 import com.cskaoyan.mall.bean.BO.RoleCreateBO;
+import com.cskaoyan.mall.bean.BO.RolePermissionBO;
 import com.cskaoyan.mall.bean.VO.BaseRespVo;
 import com.cskaoyan.mall.bean.VO.RoleOptionsVO;
+import com.cskaoyan.mall.bean.VO.RolePermissionVO;
 import com.cskaoyan.mall.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -55,6 +54,27 @@ public class RoleController {
     @PostMapping("delete")
     public BaseRespVo deleteRole(@RequestBody Role role){
         Integer result = roleService.deleteRole(role);
+        if ( result > 0 ){
+            return BaseRespVo.ok();
+        }
+        return BaseRespVo.error();
+    }
+
+    /*
+    *
+    * */
+    @GetMapping("permissions")
+    public BaseRespVo getRolePermissions(Integer roleId){
+        RolePermissionVO rolePermissionVO = roleService.getRolePermissions(roleId);
+        if (rolePermissionVO != null){
+            return BaseRespVo.ok(rolePermissionVO);
+        }
+        return BaseRespVo.error();
+    }
+
+    @PostMapping("permissions")
+    public BaseRespVo setRolePermissions(@RequestBody RolePermissionBO rolePermissionBO){
+        Integer result = roleService.setRolePermissions(rolePermissionBO);
         if ( result > 0 ){
             return BaseRespVo.ok();
         }
