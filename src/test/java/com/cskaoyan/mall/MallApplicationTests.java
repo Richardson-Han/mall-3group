@@ -119,7 +119,7 @@ class MallApplicationTests {
      */
     @Test
     public void hantest2() {
-        String string = adminMapper.selectRoleidByUsername("admin123");
+        String string = adminMapper.selectRoleidByUsername("mall123");
         //取出的数据是形如 "[1]" 、 "[2]" 、 "[1,2]"
         //对取出的数据做处理
         string = string.replace("[", "");

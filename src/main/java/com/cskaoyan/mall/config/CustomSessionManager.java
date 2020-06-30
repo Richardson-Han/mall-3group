@@ -13,7 +13,7 @@ import java.io.Serializable;
  * @author 韩
  * @create 2020-06-29 1:26
  */
-public class CustomSessinManager extends DefaultWebSessionManager {
+public class CustomSessionManager extends DefaultWebSessionManager {
 
     @Override
     protected Serializable getSessionId(ServletRequest srerequest, ServletResponse response) {

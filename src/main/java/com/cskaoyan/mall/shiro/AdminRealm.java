@@ -9,7 +9,6 @@ import org.apache.shiro.subject.PrincipalCollection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -32,9 +31,7 @@ public class AdminRealm extends AuthorizingRealm {
         String username = token.getUsername();
         List<String> strings = adminMapper.selectPasswordByName(username);
         String credential = strings.size() >= 1 ? strings.get(0) : null;
-        SimpleAuthenticationInfo authenticationInfo = new
-                SimpleAuthenticationInfo(username, credential, this.getName());
-        return authenticationInfo;
+        return new SimpleAuthenticationInfo(username, credential, this.getName());
     }
 
     @Override
@@ -50,7 +47,7 @@ public class AdminRealm extends AuthorizingRealm {
 
         List<String> permissionByRoleid = Arrays.asList(adminMapper.selectPermissionByRoleid(strings[0]));
         for (int i = 1; i < strings.length; i++) {
-            Collections.addAll(permissionByRoleid,adminMapper.selectPermissionByRoleid(strings[i]));
+            Collections.addAll(permissionByRoleid, adminMapper.selectPermissionByRoleid(strings[i]));
         }
         //去重
         List<String> permissions = permissionByRoleid.stream().distinct().collect(Collectors.toList());

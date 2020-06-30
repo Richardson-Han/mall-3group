@@ -1,17 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.cskaoyan.mall.mapper.AdminMapper">
-  <resultMap id="BaseResultMap" type="com.cskaoyan.mall.bean.Admin">
+<mapper namespace="com.cskaoyan.mall.mapper.PermissionMapper">
+  <resultMap id="BaseResultMap" type="com.cskaoyan.mall.bean.Permission">
     <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="username" jdbcType="VARCHAR" property="username" />
-    <result column="password" jdbcType="VARCHAR" property="password" />
-    <result column="last_login_ip" jdbcType="VARCHAR" property="lastLoginIp" />
-    <result column="last_login_time" jdbcType="TIMESTAMP" property="lastLoginTime" />
-    <result column="avatar" jdbcType="VARCHAR" property="avatar" />
+    <result column="role_id" jdbcType="INTEGER" property="roleId" />
+    <result column="permission" jdbcType="VARCHAR" property="permission" />
     <result column="add_time" jdbcType="TIMESTAMP" property="addTime" />
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
     <result column="deleted" jdbcType="BIT" property="deleted" />
-    <result column="role_ids" jdbcType="VARCHAR" property="roleIds" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -56,7 +52,7 @@
                   and ${criterion.condition} #{criterion.value}
                 </when>
                 <when test="criterion.betweenValue">
-                and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
                 </when>
                 <when test="criterion.listValue">
                   and ${criterion.condition}
@@ -72,16 +68,15 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, username, password, last_login_ip, last_login_time, avatar, add_time, update_time, 
-    deleted, role_ids
+    id, role_id, permission, add_time, update_time, deleted
   </sql>
-  <select id="selectByExample" parameterType="com.cskaoyan.mall.bean.AdminExample" resultMap="BaseResultMap">
+  <select id="selectByExample" parameterType="com.cskaoyan.mall.bean.PermissionExample" resultMap="BaseResultMap">
     select
     <if test="distinct">
       distinct
     </if>
     <include refid="Base_Column_List" />
-    from cskaoyanmall_admin
+    from cskaoyanmall_permission
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
@@ -89,55 +84,41 @@
       order by ${orderByClause}
     </if>
   </select>
-  <select id="getLastInsertId" resultType="java.lang.Integer">
-    select LAST_INSERT_ID()
-  </select>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
-    from cskaoyanmall_admin
+    from cskaoyanmall_permission
     where id = #{id,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from cskaoyanmall_admin
+    delete from cskaoyanmall_permission
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <delete id="deleteByExample" parameterType="com.cskaoyan.mall.bean.AdminExample">
-    delete from cskaoyanmall_admin
+  <delete id="deleteByExample" parameterType="com.cskaoyan.mall.bean.PermissionExample">
+    delete from cskaoyanmall_permission
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.cskaoyan.mall.bean.Admin">
-    insert into cskaoyanmall_admin (id, username, password, 
-      last_login_ip, last_login_time, avatar, 
-      add_time, update_time, deleted, 
-      role_ids)
-    values (#{id,jdbcType=INTEGER}, #{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
-      #{lastLoginIp,jdbcType=VARCHAR}, #{lastLoginTime,jdbcType=TIMESTAMP}, #{avatar,jdbcType=VARCHAR}, 
-      #{addTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{deleted,jdbcType=BIT}, 
-      #{roleIds,jdbcType=VARCHAR})
+  <insert id="insert" parameterType="com.cskaoyan.mall.bean.Permission">
+    insert into cskaoyanmall_permission (id, role_id, permission, 
+      add_time, update_time, deleted
+      )
+    values (#{id,jdbcType=INTEGER}, #{roleId,jdbcType=INTEGER}, #{permission,jdbcType=VARCHAR}, 
+      #{addTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{deleted,jdbcType=BIT}
+      )
   </insert>
-  <insert id="insertSelective" parameterType="com.cskaoyan.mall.bean.Admin">
-    insert into cskaoyanmall_admin
+  <insert id="insertSelective" parameterType="com.cskaoyan.mall.bean.Permission">
+    insert into cskaoyanmall_permission
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
         id,
       </if>
-      <if test="username != null">
-        username,
+      <if test="roleId != null">
+        role_id,
       </if>
-      <if test="password != null">
-        password,
-      </if>
-      <if test="lastLoginIp != null">
-        last_login_ip,
-      </if>
-      <if test="lastLoginTime != null">
-        last_login_time,
-      </if>
-      <if test="avatar != null">
-        avatar,
+      <if test="permission != null">
+        permission,
       </if>
       <if test="addTime != null">
         add_time,
@@ -148,28 +129,16 @@
       <if test="deleted != null">
         deleted,
       </if>
-      <if test="roleIds != null">
-        role_ids,
-      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
         #{id,jdbcType=INTEGER},
       </if>
-      <if test="username != null">
-        #{username,jdbcType=VARCHAR},
+      <if test="roleId != null">
+        #{roleId,jdbcType=INTEGER},
       </if>
-      <if test="password != null">
-        #{password,jdbcType=VARCHAR},
-      </if>
-      <if test="lastLoginIp != null">
-        #{lastLoginIp,jdbcType=VARCHAR},
-      </if>
-      <if test="lastLoginTime != null">
-        #{lastLoginTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="avatar != null">
-        #{avatar,jdbcType=VARCHAR},
+      <if test="permission != null">
+        #{permission,jdbcType=VARCHAR},
       </if>
       <if test="addTime != null">
         #{addTime,jdbcType=TIMESTAMP},
@@ -180,37 +149,25 @@
       <if test="deleted != null">
         #{deleted,jdbcType=BIT},
       </if>
-      <if test="roleIds != null">
-        #{roleIds,jdbcType=VARCHAR},
-      </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.cskaoyan.mall.bean.AdminExample" resultType="java.lang.Long">
-    select count(*) from cskaoyanmall_admin
+  <select id="countByExample" parameterType="com.cskaoyan.mall.bean.PermissionExample" resultType="java.lang.Long">
+    select count(*) from cskaoyanmall_permission
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </select>
   <update id="updateByExampleSelective" parameterType="map">
-    update cskaoyanmall_admin
+    update cskaoyanmall_permission
     <set>
       <if test="record.id != null">
         id = #{record.id,jdbcType=INTEGER},
       </if>
-      <if test="record.username != null">
-        username = #{record.username,jdbcType=VARCHAR},
+      <if test="record.roleId != null">
+        role_id = #{record.roleId,jdbcType=INTEGER},
       </if>
-      <if test="record.password != null">
-        password = #{record.password,jdbcType=VARCHAR},
-      </if>
-      <if test="record.lastLoginIp != null">
-        last_login_ip = #{record.lastLoginIp,jdbcType=VARCHAR},
-      </if>
-      <if test="record.lastLoginTime != null">
-        last_login_time = #{record.lastLoginTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="record.avatar != null">
-        avatar = #{record.avatar,jdbcType=VARCHAR},
+      <if test="record.permission != null">
+        permission = #{record.permission,jdbcType=VARCHAR},
       </if>
       <if test="record.addTime != null">
         add_time = #{record.addTime,jdbcType=TIMESTAMP},
@@ -221,47 +178,31 @@
       <if test="record.deleted != null">
         deleted = #{record.deleted,jdbcType=BIT},
       </if>
-      <if test="record.roleIds != null">
-        role_ids = #{record.roleIds,jdbcType=VARCHAR},
-      </if>
     </set>
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
   <update id="updateByExample" parameterType="map">
-    update cskaoyanmall_admin
+    update cskaoyanmall_permission
     set id = #{record.id,jdbcType=INTEGER},
-      username = #{record.username,jdbcType=VARCHAR},
-      password = #{record.password,jdbcType=VARCHAR},
-      last_login_ip = #{record.lastLoginIp,jdbcType=VARCHAR},
-      last_login_time = #{record.lastLoginTime,jdbcType=TIMESTAMP},
-      avatar = #{record.avatar,jdbcType=VARCHAR},
+      role_id = #{record.roleId,jdbcType=INTEGER},
+      permission = #{record.permission,jdbcType=VARCHAR},
       add_time = #{record.addTime,jdbcType=TIMESTAMP},
       update_time = #{record.updateTime,jdbcType=TIMESTAMP},
-      deleted = #{record.deleted,jdbcType=BIT},
-      role_ids = #{record.roleIds,jdbcType=VARCHAR}
+      deleted = #{record.deleted,jdbcType=BIT}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.cskaoyan.mall.bean.Admin">
-    update cskaoyanmall_admin
+  <update id="updateByPrimaryKeySelective" parameterType="com.cskaoyan.mall.bean.Permission">
+    update cskaoyanmall_permission
     <set>
-      <if test="username != null">
-        username = #{username,jdbcType=VARCHAR},
+      <if test="roleId != null">
+        role_id = #{roleId,jdbcType=INTEGER},
       </if>
-      <if test="password != null">
-        password = #{password,jdbcType=VARCHAR},
-      </if>
-      <if test="lastLoginIp != null">
-        last_login_ip = #{lastLoginIp,jdbcType=VARCHAR},
-      </if>
-      <if test="lastLoginTime != null">
-        last_login_time = #{lastLoginTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="avatar != null">
-        avatar = #{avatar,jdbcType=VARCHAR},
+      <if test="permission != null">
+        permission = #{permission,jdbcType=VARCHAR},
       </if>
       <if test="addTime != null">
         add_time = #{addTime,jdbcType=TIMESTAMP},
@@ -272,26 +213,16 @@
       <if test="deleted != null">
         deleted = #{deleted,jdbcType=BIT},
       </if>
-      <if test="roleIds != null">
-        role_ids = #{roleIds,jdbcType=VARCHAR},
-      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.cskaoyan.mall.bean.Admin">
-    update cskaoyanmall_admin
-    set username = #{username,jdbcType=VARCHAR},
-      password = #{password,jdbcType=VARCHAR},
-      last_login_ip = #{lastLoginIp,jdbcType=VARCHAR},
-      last_login_time = #{lastLoginTime,jdbcType=TIMESTAMP},
-      avatar = #{avatar,jdbcType=VARCHAR},
+  <update id="updateByPrimaryKey" parameterType="com.cskaoyan.mall.bean.Permission">
+    update cskaoyanmall_permission
+    set role_id = #{roleId,jdbcType=INTEGER},
+      permission = #{permission,jdbcType=VARCHAR},
       add_time = #{addTime,jdbcType=TIMESTAMP},
       update_time = #{updateTime,jdbcType=TIMESTAMP},
-      deleted = #{deleted,jdbcType=BIT},
-      role_ids = #{roleIds,jdbcType=VARCHAR}
+      deleted = #{deleted,jdbcType=BIT}
     where id = #{id,jdbcType=INTEGER}
   </update>
-    <update id="updateByUsername">
-      update cskaoyanmall_admin set password = #{password} where username = #{username}
-    </update>
 </mapper>

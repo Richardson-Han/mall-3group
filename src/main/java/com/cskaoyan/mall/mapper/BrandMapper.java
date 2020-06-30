@@ -3,6 +3,7 @@ package com.cskaoyan.mall.mapper;
 import com.cskaoyan.mall.bean.Brand;
 import com.cskaoyan.mall.bean.BrandExample;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
 
@@ -32,4 +33,8 @@ public interface BrandMapper {
     int updateByPrimaryKeySelective(Brand record);
 
     int updateByPrimaryKey(Brand record);
+
+    @Select("select id,name,`desc`,pic_url as picUrl,floor_price as floorPrice " +
+            "from cskaoyanmall_brand order by id desc limit 0,4")
+    List<Brand> selectDirectSupply();
 }

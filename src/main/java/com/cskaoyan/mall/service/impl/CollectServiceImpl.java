@@ -28,6 +28,7 @@ public class CollectServiceImpl implements CollectService {
 
         CollectExample collectExample = new CollectExample();
         CollectExample.Criteria criteria = collectExample.createCriteria();
+        criteria.andDeletedEqualTo(false);
         if (userId != null) {
             criteria.andUserIdEqualTo(userId);
         }

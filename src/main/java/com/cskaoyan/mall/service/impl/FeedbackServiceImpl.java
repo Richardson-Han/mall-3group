@@ -28,6 +28,7 @@ public class FeedbackServiceImpl implements FeedbackService {
 
         FeedbackExample feedbackExample = new FeedbackExample();
         FeedbackExample.Criteria criteria = feedbackExample.createCriteria();
+        criteria.andDeletedEqualTo(false);
         if (username != null && !username.isEmpty()) {
             //criteria.andUsernameEqualTo(username);
             criteria.andUsernameLike(username);

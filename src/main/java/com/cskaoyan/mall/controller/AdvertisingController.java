@@ -4,6 +4,8 @@ import com.cskaoyan.mall.bean.Advertising;
 import com.cskaoyan.mall.bean.BaseData;
 import com.cskaoyan.mall.bean.VO.BaseRespVo;
 import com.cskaoyan.mall.service.AdvertisingService;
+import org.apache.shiro.authz.annotation.RequiresAuthentication;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,12 +25,14 @@ public class AdvertisingController {
     @Autowired
     AdvertisingService advertisingService;
 
+    @RequiresAuthentication
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public BaseRespVo list(Integer page, Integer limit, String sort, String order) {
         BaseData baseData = advertisingService.queryAdvertising(page, limit, sort, order);
         return BaseRespVo.ok(baseData);
     }
 
+    @RequiresPermissions("admin:ad:create")
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     public BaseRespVo create(@RequestBody Advertising advertising) {
         Integer insert = advertisingService.insertAdvertising(advertising);
@@ -40,6 +44,7 @@ public class AdvertisingController {
         }
     }
 
+    @RequiresPermissions("admin:ad:update")
     @RequestMapping(value = "/update", method = RequestMethod.POST)
     public BaseRespVo update(@RequestBody Advertising advertising) {
         advertising.setUpdateTime(new Date());
@@ -56,6 +61,7 @@ public class AdvertisingController {
     /**
      * 做虚拟删除，仅更改deleted列数据为ture
      */
+    @RequiresPermissions("admin:ad:delete")
     @RequestMapping(value = "/delete", method = RequestMethod.POST)
     public BaseRespVo delete(@RequestBody Advertising advertising) {
         Integer deleteAdvertising = advertisingService.deleteAdvertising(advertising);
