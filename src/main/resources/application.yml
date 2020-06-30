@@ -9,8 +9,6 @@ spring:
     static-path-pattern: /pic/**
   resources:
     static-locations: file:D:/fileUpload/
-
-
 server:
   port: 8081
 pagehelper:

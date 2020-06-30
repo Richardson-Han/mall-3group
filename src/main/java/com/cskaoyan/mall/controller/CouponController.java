@@ -4,6 +4,8 @@ import com.cskaoyan.mall.bean.BaseData;
 import com.cskaoyan.mall.bean.VO.BaseRespVo;
 import com.cskaoyan.mall.bean.Coupon;
 import com.cskaoyan.mall.service.CouponService;
+import org.apache.shiro.authz.annotation.RequiresAuthentication;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,12 +24,14 @@ public class CouponController {
     @Autowired
     CouponService couponService;
 
+    @RequiresAuthentication
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public BaseRespVo list(Integer page, Integer limit, String sort, String order) {
         BaseData baseData = couponService.queryCoupon(page, limit, sort, order);
         return BaseRespVo.ok(baseData);
     }
 
+    @RequiresPermissions("admin:coupon:create")
     @RequestMapping(value = "create", method = RequestMethod.POST)
     public BaseRespVo create(@RequestBody Coupon coupon) {
         Integer insert = couponService.createCoupon(coupon);
@@ -39,14 +43,14 @@ public class CouponController {
         }
     }
 
-
+    @RequiresPermissions("admin:coupon:read")
     @RequestMapping(value = "/read", method = RequestMethod.GET)
     public BaseRespVo read(Integer id) {
         Coupon coupon = couponService.readCoupon(id);
         return BaseRespVo.ok(coupon);
     }
 
-
+    @RequiresPermissions("admin:coupon:listuser")
     @RequestMapping(value = "listuser", method = RequestMethod.GET)
     public BaseRespVo listuser(Integer page, Integer limit, Integer couponId,
                                Integer userId, String sort, String order) {
@@ -63,6 +67,7 @@ public class CouponController {
      * 更新优惠卷信息
      * 注：页面已发送最新updatetime 不需要再手动设置
      */
+    @RequiresPermissions("admin:coupon:update")
     @RequestMapping(value = "/update", method = RequestMethod.POST)
     public BaseRespVo update(@RequestBody Coupon coupon) {
         Integer updateCoupon = couponService.updateCoupon(coupon);
@@ -73,6 +78,7 @@ public class CouponController {
         }
     }
 
+    @RequiresPermissions("admin:coupon:delete")
     @RequestMapping(value = "/delete", method = RequestMethod.POST)
     public BaseRespVo delete(@RequestBody Coupon coupon) {
         Integer deleteCoupon = couponService.deleteCoupon(coupon);

@@ -1,10 +1,11 @@
-package com.cskaoyan.mall.bean;
+package com.cskaoyan.mall.bean.VO;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
+
 
 /* *
 @author  Walker-胡

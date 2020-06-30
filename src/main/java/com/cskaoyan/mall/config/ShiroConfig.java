@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.apache.shiro.web.session.mgt.DefaultWebSessionManager;
+import org.springframework.web.servlet.handler.SimpleMappingExceptionResolver;
 
 import java.util.*;
 
@@ -20,7 +21,6 @@ import java.util.*;
  */
 @Configuration
 public class ShiroConfig {
-
     @Autowired
     AdminMapper adminMapper;
 
@@ -38,9 +38,8 @@ public class ShiroConfig {
         fiterChainDefinitionMap.put("/admin/auth/401","anon");
         fiterChainDefinitionMap.put("/admin/storage/create","anon");
         fiterChainDefinitionMap.put("/admin/auth/info","anon");
-        fiterChainDefinitionMap.put("/wx/auth/login","anon");
-        fiterChainDefinitionMap.put("/wx/**","perms[wxAll]");//开发时先给全部权限
-        fiterChainDefinitionMap.put("wx/home/**","anon");
+        fiterChainDefinitionMap.put("/wx/**","anon");//开发时先给全部权限
+
         // fiterChainDefinitionMap.put("/**","perms[*]");*不需要设置 自动全权限
 
         //("admin/category/read","perms["perms[admin:category:read]"]")
@@ -89,6 +88,7 @@ public class ShiroConfig {
         defaultWebSecurityManager.setAuthenticator(auhthenticator);
         return defaultWebSecurityManager;
     }
+
     /**
      * 声明式鉴权 注解需要的组件
      */
@@ -99,20 +99,22 @@ public class ShiroConfig {
         return authorizationAttributeSourceAdvisor;
     }
 
-    /* 使用映射处理异常: key为一场全类名 value为异常处理的请求 */
-    /*@Bean
+    /**
+     * 使用映射处理异常: key为一场全类名 value为异常处理的请求
+     */
+    @Bean
     public SimpleMappingExceptionResolver simpleMappingExceptionResolver(){
         SimpleMappingExceptionResolver simpleMappingExceptionResolver = new SimpleMappingExceptionResolver();
         Properties mappings = new Properties();
         mappings.put("org.apache.shiro.authz.AuthorizationException","");
         simpleMappingExceptionResolver.setExceptionMappings(mappings);
         return simpleMappingExceptionResolver;
-    }*/
+    }
 
     @Bean
     public DefaultWebSessionManager webSecurityManager(){
-        CustomSessinManager customSessinManager = new CustomSessinManager();
-        return customSessinManager;
+        CustomSessionManager customSessionManager = new CustomSessionManager();
+        return customSessionManager;
     }
 
     /**

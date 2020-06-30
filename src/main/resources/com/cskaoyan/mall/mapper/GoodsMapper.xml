@@ -302,7 +302,8 @@
       select DATE_FORMAT(add_time,"%Y-%m-%d")as `day`,sum(price) as amount, sum(number) as products,
       count(order_id) as orders from cskaoyanmall_order_goods group by DATE_FORMAT(add_time,"%Y-%m-%d")
     </select>
-    <update id="updateByExampleSelective" parameterType="map">
+
+  <update id="updateByExampleSelective" parameterType="map">
     update cskaoyanmall_goods
     <set>
       <if test="record.id != null">

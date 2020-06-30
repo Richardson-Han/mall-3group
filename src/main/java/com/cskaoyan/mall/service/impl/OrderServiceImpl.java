@@ -1,21 +1,21 @@
 package com.cskaoyan.mall.service.impl;
 
 
-import com.cskaoyan.mall.bean.Order;
-import com.cskaoyan.mall.bean.OrderExample;
-import com.cskaoyan.mall.bean.OrderStat;
+import com.cskaoyan.mall.bean.*;
+import com.cskaoyan.mall.bean.VO.OrderRefundVO;
+import com.cskaoyan.mall.bean.VO.OrderStatusVO;
+import com.cskaoyan.mall.bean.VO.ShipVO;
 import com.cskaoyan.mall.bean.VO.StatBaseVO;
+import com.cskaoyan.mall.mapper.OrderGoodsMapper;
 import com.cskaoyan.mall.mapper.OrderMapper;
+import com.cskaoyan.mall.mapper.UserMapper;
 import com.cskaoyan.mall.service.OrderService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /***
  * @author 社会主义好
@@ -26,7 +26,12 @@ import java.util.Map;
 public class OrderServiceImpl implements OrderService {
 
     @Autowired
-    OrderMapper orderMapper;
+    private OrderMapper orderMapper;
+    @Autowired
+    private UserMapper userMapper;
+    @Autowired
+    private OrderGoodsMapper orderGoodsMapper;
+
     /**
      *
      * @return 首页返回订单数量
@@ -70,5 +75,35 @@ public class OrderServiceImpl implements OrderService {
         List<OrderStat> orderStats = orderMapper.selectGroupByAddTime();
         statOrderVO.setRows(orderStats);
         return  statOrderVO;
+    }
+
+    @Override
+    public Map<String, Object> queryOrderDetailById(Integer id) {
+        Map<String ,Object> map =new HashMap<> ();
+        //查询订单表
+        Order order = orderMapper.selectByPrimaryKey (id);
+        //查询用户表
+        User user=userMapper.selectByPrimaryKey (order.getUserId ());
+        //查寻cskaoyanmall_order_goods表
+        OrderGoods orderGoods=orderGoodsMapper.selectByPrimaryKey (id);
+        map.put ("order",order);
+        map.put("user",user);
+        map.put ("orderGoods",orderGoods);
+        return map;
+    }
+
+    @Override
+    public void orderRefund(OrderRefundVO orderRefundVO) {
+        Order order = orderMapper.selectByPrimaryKey(orderRefundVO.getOrderId());
+        order.setUpdateTime(new Date ());
+        order.setOrderStatus(OrderStatusVO.user_cancelled);
+        orderMapper.updateByPrimaryKeySelective(order);
+    }
+
+    @Override
+    public void orderShip(ShipVO shipVO) {
+        Order order = orderMapper.selectByPrimaryKey (shipVO.getOrderId ());
+        order.setUpdateTime (new Date ());
+        order.setOrderStatus (OrderStatusVO.order_delivered);
     }
 }

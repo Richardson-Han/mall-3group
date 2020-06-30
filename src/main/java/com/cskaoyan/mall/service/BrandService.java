@@ -1,8 +1,7 @@
 package com.cskaoyan.mall.service;
 
 import com.cskaoyan.mall.bean.Brand;
-import com.cskaoyan.mall.bean.BrandAddVo;
-import org.springframework.stereotype.Service;
+import com.cskaoyan.mall.bean.VO.BrandAddVo;
 
 import java.util.Map;
 
