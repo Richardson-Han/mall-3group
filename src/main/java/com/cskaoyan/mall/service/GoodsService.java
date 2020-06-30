@@ -33,4 +33,6 @@ public interface GoodsService {
     Map list(Integer categoryId, Integer page, Integer size);
 
     Map detail(Integer goodsId);
+
+    Map related(Integer id);
 }

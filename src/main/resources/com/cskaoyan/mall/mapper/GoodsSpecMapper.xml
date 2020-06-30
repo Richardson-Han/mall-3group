@@ -171,8 +171,8 @@
       <include refid="Example_Where_Clause" />
     </if>
   </select>
-    <select id="selectByGoodsId" resultType="com.cskaoyan.mall.bean.GoodsSpec">
-      select * from cskaoyanmall_goods_specification where goods_id = #{goodsId}
+    <select id="selectByGoodsId" resultMap="BaseResultMap">
+      select add_time, deleted, goods_id, id, pic_url, specification, update_time, value from cskaoyanmall_goods_specification where goods_id = #{goodsId}
     </select>
     <update id="updateByExampleSelective" parameterType="map">
     update cskaoyanmall_goods_specification

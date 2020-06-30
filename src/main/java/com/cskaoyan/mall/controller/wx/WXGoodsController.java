@@ -47,4 +47,10 @@ public class WXGoodsController {
         Map map = goodsService.detail(id);
         return BaseRespVo.ok(map);
     }
+
+    @RequestMapping("related")
+    public BaseRespVo related(Integer id){
+        Map map = goodsService.related(id);
+        return BaseRespVo.ok(map);
+    }
 }

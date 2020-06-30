@@ -406,14 +406,6 @@ public class GoodsServiceImpl implements GoodsService {
 
     @Override
     public Map detail(Integer goodsId) {
-        /*GoodsAttributeExample GoodsIdExample = new GoodsAttributeExample();
-        GoodsIdExample.createCriteria().andGoodsIdEqualTo(goodsId);
-        //attribute
-        List<GoodsAttribute> attribute = goodsAttributeMapper.selectByExample(GoodsIdExample);
-
-        //brand
-        GoodsExample brandIdExample = new GoodsExample();
-        brandIdExample.createCriteria().andBrandIdEqualTo()*/
         //attribute
         List<GoodsAttribute> attribute = goodsAttributeMapper.selectByGoodsId(goodsId);
         //info
@@ -435,7 +427,11 @@ public class GoodsServiceImpl implements GoodsService {
         //shareImage
         String shareImage = "";
         //specification
-        List<GoodsSpec> specificationList = goodsSpecMapper.selectByGoodsId(goodsId);
+        List<GoodsSpec> valueList = goodsSpecMapper.selectByGoodsId(goodsId);
+        HashMap specificationList = new HashMap();
+        specificationList.put("name", "规格");
+        specificationList.put("valueList",valueList);
+
         //userHasCollect
         Subject subject = SecurityUtils.getSubject();
         String username = (String) subject.getPrincipal();
@@ -453,6 +449,18 @@ public class GoodsServiceImpl implements GoodsService {
         map.put("shareImage", shareImage);
         map.put("specificationList", specificationList);
         map.put("userHasCollect", userHasCollect);
+        return map;
+    }
+
+    @Override
+    public Map related(Integer id) {
+        //select detailId
+        Goods goods = goodsMapper.selectByPrimaryKey(id);
+        GoodsExample goodsExample = new GoodsExample();
+        goodsExample.createCriteria().andCategoryIdEqualTo(goods.getCategoryId());
+        List<Goods> goodsList = goodsMapper.selectByExample(goodsExample);
+        Map map = new HashMap();
+        map.put("goodsList", goodsList);
         return map;
     }
 
