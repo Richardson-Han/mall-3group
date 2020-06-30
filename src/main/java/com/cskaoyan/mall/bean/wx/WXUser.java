@@ -18,10 +18,10 @@ public class WXUser {
     List<Goods> newGoodsList;
     List<Coupon> couponList;
     List<Category> channel;
-    List<GroupBuy> grouponList;
+    List<WXGroupBuy> grouponList;
     List<Advertising> banner;
     List<Brand> brandList;
     List<Goods> hotGoodsList;
     List<Topic> topicList;
-    List<FloorGoods> floorGoodsList;
+    List<WXFloorGoods> WXFloorGoodsList;
 }

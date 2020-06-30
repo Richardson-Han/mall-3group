@@ -50,7 +50,6 @@ public class WXAuthController {
         data.setToken("~");
         data.setUserInfo();
         data.setTokenExpire(new Date());
-
         return BaseRespVo.ok(data);
     }
 

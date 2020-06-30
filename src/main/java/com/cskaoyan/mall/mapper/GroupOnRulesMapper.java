@@ -1,9 +1,8 @@
 package com.cskaoyan.mall.mapper;
 
-import com.cskaoyan.mall.bean.Goods;
 import com.cskaoyan.mall.bean.GroupOnRules;
 import com.cskaoyan.mall.bean.GroupOnRulesExample;
-import com.cskaoyan.mall.bean.wx.GroupBuy;
+import com.cskaoyan.mall.bean.wx.WXGroupBuy;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
@@ -39,6 +38,6 @@ public interface GroupOnRulesMapper {
     int updateByPrimaryKey(GroupOnRules record);
 
     @Select("select (g.retail_price - gr.discount) as groupon_price,g.id as `goods.id`,g.name as `goods.name`,g.brief as `goods.brief`,g.pic_url as `gooods.picUrl`,g.counter_price as `goods.counterPrice`,g.retail_price as `goods.retailPrice`,gr.discount_member as groupon_member from cskaoyanmall_groupon_rules gr left join cskaoyanmall_goods g on gr.goods_id = g.id order by g.id desc limit 0,5;")
-    List<GroupBuy> selectGroupBuy();
+    List<WXGroupBuy> selectGroupBuy();
 
 }

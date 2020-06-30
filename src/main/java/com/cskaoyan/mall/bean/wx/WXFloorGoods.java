@@ -10,7 +10,7 @@ import java.util.List;
  * @create 2020-06-30 5:26
  */
 @Data
-public class FloorGoods {
+public class WXFloorGoods {
     String name;
     List<Goods> goodsList;
     Integer id;

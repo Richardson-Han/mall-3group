@@ -1,11 +1,9 @@
 package com.cskaoyan.mall.mapper;
 
-import com.cskaoyan.mall.bean.Category;
 import com.cskaoyan.mall.bean.Goods;
 import com.cskaoyan.mall.bean.GoodsExample;
 import com.cskaoyan.mall.bean.GoodsStat;
-import com.cskaoyan.mall.bean.wx.FloorGoods;
-import lombok.extern.slf4j.Slf4j;
+import com.cskaoyan.mall.bean.wx.WXFloorGoods;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
@@ -65,7 +63,7 @@ public interface GoodsMapper {
             "where b.id<=a.id group by a.id having num<=1 order by category_id) g, " +
             "(select * from cskaoyanmall_category order by id) c " +
             "where c.`id`=g.`category_id` and c.id is not null order by g.category_id limit 0,4")
-    List<FloorGoods> selectCategoryFour();
+    List<WXFloorGoods> selectCategoryFour();
 
     @Select("select id,name,brief,pic_url as picUrl,is_new as isNew,is_hot as isHot,counter_price as counterPrice," +
             "retail_price as retailPrice from cskaoyanmall_goods where category_id = #{id} limit 0,4")

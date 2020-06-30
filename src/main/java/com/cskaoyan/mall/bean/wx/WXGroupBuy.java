@@ -8,7 +8,7 @@ import lombok.Data;
  * @create 2020-06-30 3:58
  */
 @Data
-public class GroupBuy {
+public class WXGroupBuy {
     Double groupon_price;
     Goods goods;
     Integer groupon_member;
