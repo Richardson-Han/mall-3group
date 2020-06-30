@@ -48,13 +48,9 @@ public class WXHomeContorller {
     @Autowired
     TopicMapper topicMapper;
 
-    /**
-     * 存在问题 无法访问
-     */
     @RequiresGuest
     @RequestMapping(value = "/index", method = RequestMethod.GET)
-    public BaseRespVo index(@RequestBody Map map) {
-        String token = (String) map.get("X-cskaoyan-mall-Admin-Token");
+    public BaseRespVo index() {
         List<Goods> newGoodsList = goodsMapper.selectNewgoods();
         List<Coupon> couponList = couponMapper.selectNewCoupons();
         List<Category> channel = categoryMapper.selectLimitTen();
@@ -65,7 +61,6 @@ public class WXHomeContorller {
         List<Topic> topicList = topicMapper.selectNewTopic();
         //4个品类各4个商品
         List<FloorGoods> listFloorGoodss = goodsMapper.selectCategoryFour();
-        System.out.println(listFloorGoodss);
         List<FloorGoods> floorGoodsList = new ArrayList<>();
         for (FloorGoods floorGoods : listFloorGoodss) {
             floorGoods.setGoodsList(goodsMapper.selectByCategoryid(floorGoods.getId()));

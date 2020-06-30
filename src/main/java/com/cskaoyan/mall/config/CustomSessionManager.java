@@ -22,6 +22,7 @@ public class CustomSessionManager extends DefaultWebSessionManager {
         if (sessionId != null && !"".equals(sessionId)){
             return sessionId;
         }
+
         return super.getSessionId(srerequest, response);
     }
 }
