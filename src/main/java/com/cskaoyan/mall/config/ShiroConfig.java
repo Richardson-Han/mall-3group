@@ -34,49 +34,57 @@ public class ShiroConfig {
         LinkedHashMap<String, String> fiterChainDefinitionMap = new LinkedHashMap<>();
         //发现自己本应通过的请求未通过缺失 自行增加("url","anon")
         //请用两个小账户测试
-        fiterChainDefinitionMap.put("/admin/auth/login","anon");
-        fiterChainDefinitionMap.put("/admin/auth/401","anon");
-        fiterChainDefinitionMap.put("/admin/storage/create","anon");
-        fiterChainDefinitionMap.put("/admin/auth/info","anon");
-        fiterChainDefinitionMap.put("/wx/**","anon");//开发时先给全部权限
+        fiterChainDefinitionMap.put("/admin/auth/login", "anon");
+        fiterChainDefinitionMap.put("/admin/auth/401", "anon");
+        fiterChainDefinitionMap.put("/admin/storage/create", "anon");
+        fiterChainDefinitionMap.put("/admin/auth/info", "anon");
+        fiterChainDefinitionMap.put("/wx/**", "anon");//开发时先给全部权限
 
         // fiterChainDefinitionMap.put("/**","perms[*]");*不需要设置 自动全权限
 
         //("admin/category/read","perms["perms[admin:category:read]"]")
-        fiterChainDefinitionMap.put("admin/category/read","perms[admin:category:read]");
+        fiterChainDefinitionMap.put("admin/category/read", "perms[admin:category:read]");
         //取全部的roleid出来 做对应
         String[] Roleids = adminMapper.selectAllRoleid();
 
         for (String roleid : Roleids) {
             // ==1的 已经做了 跳过
-            if (roleid.equals("1")){
+            if (roleid.equals("1")) {
                 continue;
             }
             //取url和权限值 的键值对
             LinkedHashMap<String, String> pathAndPerms = authorizationGroup(roleid);
+            if (pathAndPerms == null) {
+                System.out.println("roleid = " + roleid + ",this roleid not corresponding permissio");
+                continue;
+            }
             Iterator<Map.Entry<String, String>> iterator = pathAndPerms.entrySet().iterator();
             while (iterator.hasNext()) {
                 Map.Entry<String, String> next = iterator.next();
                 //放键值对进去
-                fiterChainDefinitionMap.put(next.getKey(),next.getValue());
+                fiterChainDefinitionMap.put(next.getKey(), next.getValue());
             }
         }
-        fiterChainDefinitionMap.put("/admin/**","authc");
+        fiterChainDefinitionMap.put("/admin/**", "authc");
 
         shiroFilterFactoryBean.setFilterChainDefinitionMap(fiterChainDefinitionMap);
         return shiroFilterFactoryBean;
     }
 
-    public LinkedHashMap<String, String> authorizationGroup(String RoleId){
+    public LinkedHashMap<String, String> authorizationGroup(String RoleId) {
         String[] permissionByRoleids = adminMapper.selectPermissionByRoleid(RoleId);
-        LinkedHashMap<String, String> stringStringLinkedHashMap = new LinkedHashMap<>();
-        String perms = new String();
-        for (String turePermission : permissionByRoleids) {
-            perms = "perms[" + turePermission + "]";
-            turePermission = turePermission.replace(":","/");
-            stringStringLinkedHashMap.put(turePermission, perms);
+        if (permissionByRoleids != null) {
+            LinkedHashMap<String, String> stringStringLinkedHashMap = new LinkedHashMap<>();
+            String perms;
+            for (String turePermission : permissionByRoleids) {
+                perms = "perms[" + turePermission + "]";
+                turePermission = turePermission.replace(":", "/");
+                stringStringLinkedHashMap.put(turePermission, perms);
+            }
+            return stringStringLinkedHashMap;
+        } else {
+            return null;
         }
-        return stringStringLinkedHashMap;
     }
 
     @Bean
@@ -93,7 +101,7 @@ public class ShiroConfig {
      * 声明式鉴权 注解需要的组件
      */
     @Bean
-    public AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor(DefaultWebSecurityManager securityManager){
+    public AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor(DefaultWebSecurityManager securityManager) {
         AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor = new AuthorizationAttributeSourceAdvisor();
         authorizationAttributeSourceAdvisor.setSecurityManager(securityManager);
         return authorizationAttributeSourceAdvisor;
@@ -103,16 +111,16 @@ public class ShiroConfig {
      * 使用映射处理异常: key为一场全类名 value为异常处理的请求
      */
     @Bean
-    public SimpleMappingExceptionResolver simpleMappingExceptionResolver(){
+    public SimpleMappingExceptionResolver simpleMappingExceptionResolver() {
         SimpleMappingExceptionResolver simpleMappingExceptionResolver = new SimpleMappingExceptionResolver();
         Properties mappings = new Properties();
-        mappings.put("org.apache.shiro.authz.AuthorizationException","");
+        mappings.put("org.apache.shiro.authz.AuthorizationException", "");
         simpleMappingExceptionResolver.setExceptionMappings(mappings);
         return simpleMappingExceptionResolver;
     }
 
     @Bean
-    public DefaultWebSessionManager webSecurityManager(){
+    public DefaultWebSessionManager webSecurityManager() {
         CustomSessionManager customSessionManager = new CustomSessionManager();
         return customSessionManager;
     }
@@ -121,7 +129,7 @@ public class ShiroConfig {
      * 注册自定义的认证器
      */
     @Bean
-    public CustomAuhthenticator auhthenticator(AdminRealm adminRealm, WxRealm wxRealm){
+    public CustomAuhthenticator auhthenticator(AdminRealm adminRealm, WxRealm wxRealm) {
         CustomAuhthenticator customAuhthenticator = new CustomAuhthenticator();
         ArrayList<Realm> realms = new ArrayList<>();
         realms.add(adminRealm);
