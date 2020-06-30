@@ -13,5 +13,4 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @EnableTransactionManagement
 @MapperScan("com.cskaoyan.mall.mapper")
 public class MybatisConfig {
-
 }

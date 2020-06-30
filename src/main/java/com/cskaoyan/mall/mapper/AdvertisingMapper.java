@@ -3,6 +3,7 @@ package com.cskaoyan.mall.mapper;
 import com.cskaoyan.mall.bean.Advertising;
 import com.cskaoyan.mall.bean.AdvertisingExample;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -30,4 +31,8 @@ public interface AdvertisingMapper {
     int updateByPrimaryKeySelective(Advertising record);
 
     int updateByPrimaryKey(Advertising record);
+
+    @Select("select id,name,link,url,`position`,content,enabled,add_Time as `addTime`," +
+            "update_time as updateTime,deleted from cskaoyanmall_ad limit 0,10")
+    List<Advertising> selectTopAdvertising();
 }

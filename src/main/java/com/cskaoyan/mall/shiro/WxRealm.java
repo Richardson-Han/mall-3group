@@ -24,6 +24,7 @@ public class WxRealm extends AuthorizingRealm {
 
     @Autowired
     UserMapper userMapper;
+
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken)
             throws AuthenticationException {

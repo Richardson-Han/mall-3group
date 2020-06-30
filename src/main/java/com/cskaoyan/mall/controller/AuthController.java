@@ -1,10 +1,13 @@
 package com.cskaoyan.mall.controller;
 
+import com.cskaoyan.mall.mapper.AdminMapper;
 import com.cskaoyan.mall.shiro.MallToken;
+import lombok.AllArgsConstructor;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.crypto.hash.Md5Hash;
 import org.apache.shiro.subject.Subject;
 import com.cskaoyan.mall.bean.VO.BaseRespVo;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;

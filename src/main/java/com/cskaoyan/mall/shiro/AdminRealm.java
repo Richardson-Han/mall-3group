@@ -47,7 +47,7 @@ public class AdminRealm extends AuthorizingRealm {
 
         List<String> permissionByRoleid = Arrays.asList(adminMapper.selectPermissionByRoleid(strings[0]));
         for (int i = 1; i < strings.length; i++) {
-            Collections.addAll(permissionByRoleid,adminMapper.selectPermissionByRoleid(strings[i]));
+            Collections.addAll(permissionByRoleid, adminMapper.selectPermissionByRoleid(strings[i]));
         }
         //去重
         List<String> permissions = permissionByRoleid.stream().distinct().collect(Collectors.toList());
