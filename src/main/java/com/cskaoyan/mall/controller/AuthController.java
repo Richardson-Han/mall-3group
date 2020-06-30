@@ -1,9 +1,18 @@
 package com.cskaoyan.mall.controller;
 
+import com.cskaoyan.mall.bean.Admin;
+import com.cskaoyan.mall.bean.AdminExample;
+import com.cskaoyan.mall.bean.Role;
+import com.cskaoyan.mall.bean.VO.InfoVO;
+import com.cskaoyan.mall.mapper.AdminMapper;
+import com.cskaoyan.mall.mapper.RoleMapper;
+import com.cskaoyan.mall.service.AdminService;
 import com.cskaoyan.mall.mapper.AdminMapper;
 import com.cskaoyan.mall.shiro.MallToken;
 import lombok.AllArgsConstructor;
+import com.cskaoyan.mall.typehandler.PicStringTypeHandler;
 import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.crypto.hash.Md5Hash;
 import org.apache.shiro.subject.Subject;
 import com.cskaoyan.mall.bean.VO.BaseRespVo;
@@ -22,6 +31,9 @@ import java.util.Map;
 @RestController
 @RequestMapping("admin/auth")
 public class AuthController {
+
+    @Autowired
+    AdminService adminService;
 
     /**
      * 整合shiro
@@ -49,21 +61,18 @@ public class AuthController {
     }
 
     /**
-     * shiro未整合
+     * shiro已整合：登录不同权限的账号，会显示不同的页面
+     * 登录 admin123 超级管理员权限
+     * 登录 promotion123 推广管理员权限
+     * 登录 mall123 商场管理员权限
      */
 
     @RequestMapping("info")
-    public BaseRespVo info(String token) {
-        Map data = new HashMap<String, Object>();
-        data.put("avatar", "https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif");
-        data.put("name", "admin123");
-        List perms = new ArrayList();
-        perms.add("*");
-        List roles = new ArrayList();
-        roles.add("超级管理员");
-        data.put("perms", perms);
-        data.put("roles", roles);
-        return BaseRespVo.ok(data);
+    public BaseRespVo info() {
+        Subject subject = SecurityUtils.getSubject();
+        String username = (String) subject.getPrincipal();
+        InfoVO infoVO = adminService.info(username);
+        return BaseRespVo.ok(infoVO);
     }
 
     /**
@@ -79,5 +88,19 @@ public class AuthController {
     @RequestMapping(value = "401")
     public BaseRespVo four01(){
         return BaseRespVo.ok();
+    }
+
+    private ArrayList<Integer> parseArrayList(String s) {
+        s = s.replace("[", "").replace("]", "");
+        ArrayList<Integer> integers = new ArrayList<>();
+        for (int i = 0; i < s.length(); i++) {
+            if (s.charAt(i) == ',') {
+                integers.add(Integer.parseInt(s.substring(0, i)));
+                s = s.substring(i+1);
+                i = 0;//重新从0开始循环
+            }
+        }
+        integers.add(Integer.parseInt(s));
+        return integers;
     }
 }

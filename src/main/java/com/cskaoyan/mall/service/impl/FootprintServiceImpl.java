@@ -30,6 +30,7 @@ public class FootprintServiceImpl implements FootprintService {
 
         FootprintExample footprintExample = new FootprintExample();
         FootprintExample.Criteria criteria = footprintExample.createCriteria();
+        criteria.andDeletedEqualTo(false);
         if (userId != null) {
             criteria.andUserIdEqualTo(userId);
         }

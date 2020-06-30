@@ -9,7 +9,10 @@ import com.cskaoyan.mall.bean.AdminExample;
 import com.cskaoyan.mall.bean.VO.AdminCreateVO;
 import com.cskaoyan.mall.bean.VO.AdminListVO;
 import com.cskaoyan.mall.bean.VO.AdminUpdateVO;
+import com.cskaoyan.mall.bean.VO.InfoVO;
 import com.cskaoyan.mall.mapper.AdminMapper;
+import com.cskaoyan.mall.mapper.PermissionMapper;
+import com.cskaoyan.mall.mapper.RoleMapper;
 import com.cskaoyan.mall.service.AdminService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -25,6 +28,12 @@ public class AdminServiceImpl implements AdminService {
 
     @Autowired
     AdminMapper adminMapper;
+
+    @Autowired
+    PermissionMapper permissionMapper;
+
+    @Autowired
+    RoleMapper roleMapper;
 
     //获取管理员列表
     @Override
@@ -103,6 +112,44 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public Integer deleteAdmin(AdminUpdateBO adminUpdateBO) {
         return adminMapper.deleteByPrimaryKey(adminUpdateBO.getId());
+    }
+
+    @Override
+    public InfoVO info(String username) {
+        String avatar = adminMapper.selectAvatarByUsername(username);
+        String roleId = adminMapper.selectRoleidByUsername(username).
+                replace("[", "").replace("]", "");
+        List<String> permissions = permissionMapper.selectPermissionByRoleId(Integer.parseInt(roleId));
+        List<String> perms = new ArrayList<>();
+        for (String permission : permissions) {
+            perms.add(parse(permission));
+        }
+        List<String> roles = new ArrayList();
+        Role role = roleMapper.selectByPrimaryKey(Integer.parseInt(roleId));
+        roles.add(role.getName());
+        return new InfoVO(avatar, username, perms, roles);
+    }
+
+    /**
+     *  权限解析，比如数据库中给的数据是 admin:brand:list，则转换为
+     *  GET /admin/brand/list
+     * @param permission
+     */
+    private String parse(String permission) {
+        permission = "/" + permission.replace(":", "/");
+        switch (permission.substring(permission.lastIndexOf("/") + 1)){
+            case "read":
+            case "list":
+            case "listRecord":
+                permission = "GET " + permission;
+                break;
+            case "*":
+                permission = "*";
+                break;
+            default:
+                permission = "POST " + permission;
+        }
+        return  permission;
     }
 
     //将admin中的role_ids字符串数据转化为数组类型

@@ -35,6 +35,7 @@ public class AddressServiceImpl implements AddressService {
         AddressExample addressExample = new AddressExample();
         addressExample.setOrderByClause(sort + " " + order);
         AddressExample.Criteria criteria = addressExample.createCriteria();
+        criteria.andDeletedEqualTo(false);
         if (name != null && !name.isEmpty()) {
             //criteria.andNameEqualTo(name);
             criteria.andNameLike("%" + name + "%");
