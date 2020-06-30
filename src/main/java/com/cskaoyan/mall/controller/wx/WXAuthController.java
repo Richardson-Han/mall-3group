@@ -45,7 +45,7 @@ public class WXAuthController {
         //     Serializable id = subject.getSession().getId();
         //     return BaseRespVo.ok(id);
         // }
-        //先登陆
+        //先登陆 后期补
         Dataa data = new Dataa();
         data.setToken("~");
         data.setUserInfo();

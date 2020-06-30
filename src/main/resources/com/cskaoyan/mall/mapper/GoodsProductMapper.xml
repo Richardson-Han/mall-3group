@@ -180,7 +180,10 @@
       <include refid="Example_Where_Clause" />
     </if>
   </select>
-  <update id="updateByExampleSelective" parameterType="map">
+    <select id="selectByGoodsId" resultType="com.cskaoyan.mall.bean.GoodsProduct">
+      select * from cskaoyanmall_goods_product where goods_id = #{goodsId}
+    </select>
+    <update id="updateByExampleSelective" parameterType="map">
     update cskaoyanmall_goods_product
     <set>
       <if test="record.id != null">

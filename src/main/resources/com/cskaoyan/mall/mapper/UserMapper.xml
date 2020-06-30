@@ -237,7 +237,10 @@
   <select id="selectGroupByAddTime" resultType="com.cskaoyan.mall.bean.UserStat">
     select DATE_FORMAT(add_time,"%Y-%m-%d") as `day` ,count(id) as users from cskaoyanmall_user group by DATE_FORMAT(add_time,"%Y-%m-%d")
   </select>
-  <update id="updateByExampleSelective" parameterType="map">
+    <select id="selectUserIdByUsername" resultType="java.lang.Integer">
+      select id from cskaoyanmall_user where username = #{username}
+    </select>
+    <update id="updateByExampleSelective" parameterType="map">
     update cskaoyanmall_user
     <set>
       <if test="record.id != null">

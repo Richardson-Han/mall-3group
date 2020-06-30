@@ -12,13 +12,13 @@ import com.cskaoyan.mall.mapper.*;
 import com.cskaoyan.mall.service.GoodsService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.lang.System;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /***
  * @author 社会主义好
@@ -40,6 +40,10 @@ public class GoodsServiceImpl implements GoodsService {
     GoodsSpecMapper specMapper;
     @Autowired
     GoodsBrandMapper brandMapper;
+
+    //尚政宇
+    @Autowired
+    CategoryMapper wxCategoryMapper;
 
     /**
      *  返回商品数量
@@ -343,6 +347,121 @@ public class GoodsServiceImpl implements GoodsService {
     public void goodsDelete(Goods goods) {
         goods.setDeleted(true);
         goodsMapper.updateByPrimaryKeySelective(goods);
+    }
+
+    //尚政宇
+    @Override
+    public Map category(Integer id) {
+        //id是商品类目的id，首先要根据id查询对应的pid
+        Map map = new HashMap();
+        Category category = wxCategoryMapper.selectByPrimaryKey(id);
+        Integer pid = category.getPid();
+        CategoryExample categoryExample = new CategoryExample();
+        categoryExample.createCriteria().andPidEqualTo(pid).andDeletedEqualTo(false);
+        List<Category> categories = wxCategoryMapper.selectByExample(categoryExample);
+        Category parentCategory = wxCategoryMapper.selectByPrimaryKey(pid);
+        map.put("brotherCategory", categories);
+        map.put("currentCategory", category);
+        map.put("parentCategory", parentCategory);
+        return map;
+    }
+
+    //尚政宇
+    @Override
+    public Map list(Integer categoryId, Integer page, Integer size) {
+        Map map = new HashMap();
+        PageHelper.startPage(page, size);
+        GoodsExample goodsExample = new GoodsExample();
+        goodsExample.createCriteria().andCategoryIdEqualTo(categoryId);
+        long count = goodsMapper.countByExample(goodsExample);
+        List<Goods> goods = goodsMapper.selectByExample(goodsExample);
+
+        List<Category> filterCategoryList = wxCategoryMapper.selectFilterCategoryList();
+        map.put("count", count);
+        map.put("filterCategoryList", filterCategoryList);
+        map.put("goodsList", goods);
+
+        return map;
+    }
+
+    @Autowired
+    CommentMapper commentMapper;
+
+    @Autowired
+    GroupOnRulesMapper groupOnRulesMapper;
+    @Autowired
+    IssueMapper issueMapper;
+
+    @Autowired
+    GoodsProductMapper goodsProductMapper;
+
+    @Autowired
+    GoodsSpecMapper goodsSpecMapper;
+
+    @Autowired
+    CollectMapper collectMapper;
+
+    @Autowired
+    UserMapper userMapper;
+
+    @Override
+    public Map detail(Integer goodsId) {
+        //attribute
+        List<GoodsAttribute> attribute = goodsAttributeMapper.selectByGoodsId(goodsId);
+        //info
+        Goods goods = goodsMapper.selectByPrimaryKey(goodsId);
+        //brand
+        GoodsBrand brand = brandMapper.selectByPrimaryKey(goods.getBrandId());
+        //comment
+        List<Comment> data = commentMapper.selectByValueId(goodsId);
+        HashMap comment = new HashMap();
+        comment.put("count", data.size());
+        comment.put("data", data);
+        //groupon
+        List<GroupOn> groupon = groupOnRulesMapper.selectByGoodsId(goodsId);
+
+        //issue
+        List<Issue> issue = issueMapper.selectByExample(new IssueExample());
+        //productList
+        List<GoodsProduct> productList = goodsProductMapper.selectByGoodsId(goodsId);
+        //shareImage
+        String shareImage = "";
+        //specification
+        List<GoodsSpec> valueList = goodsSpecMapper.selectByGoodsId(goodsId);
+        HashMap specificationList = new HashMap();
+        specificationList.put("name", "规格");
+        specificationList.put("valueList",valueList);
+
+        //userHasCollect
+        Subject subject = SecurityUtils.getSubject();
+        String username = (String) subject.getPrincipal();
+        Integer userId = userMapper.selectUserIdByUsername(username);
+        Collect collect = collectMapper.selectByUserIdAndValueId(userId, goodsId);
+        Integer userHasCollect = collect == null ? 0 : 1;
+        Map map = new HashMap();
+        map.put("attribute", attribute);
+        map.put("brand", brand);
+        map.put("comment", comment);
+        map.put("groupon", groupon);
+        map.put("info", goods);
+        map.put("issue", issue);
+        map.put("productList", productList);
+        map.put("shareImage", shareImage);
+        map.put("specificationList", specificationList);
+        map.put("userHasCollect", userHasCollect);
+        return map;
+    }
+
+    @Override
+    public Map related(Integer id) {
+        //select detailId
+        Goods goods = goodsMapper.selectByPrimaryKey(id);
+        GoodsExample goodsExample = new GoodsExample();
+        goodsExample.createCriteria().andCategoryIdEqualTo(goods.getCategoryId());
+        List<Goods> goodsList = goodsMapper.selectByExample(goodsExample);
+        Map map = new HashMap();
+        map.put("goodsList", goodsList);
+        return map;
     }
 
     /**
