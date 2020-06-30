@@ -7,19 +7,22 @@ import org.apache.shiro.authz.annotation.RequiresGuest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.Date;
+import java.util.Map;
 import java.util.UUID;
 
 /**
  * @author 韩
  * @create 2020-06-30 2:33
  */
-@Controller
+@RestController
 @RequestMapping("/wx/storage")
 public class WXStorageContorller {
 
@@ -29,13 +32,13 @@ public class WXStorageContorller {
 
     /**
      * 还未开始
-     * @param multipartFile
-     * @return
-     * @throws IOException
      */
     @RequiresGuest
-    @RequestMapping(value = "/upload")
-    public BaseRespVo picUpload(@RequestParam("file") MultipartFile multipartFile) throws IOException {
+    @RequestMapping(value = "/upload",method = RequestMethod.POST)
+    public BaseRespVo picUpload(@RequestParam("file") Map map) throws IOException {
+        String url = (String) map.get("Referer");
+        String UserAgent = (String) map.get("User-Agent");
+
         // if(multipartFile.isEmpty()){
         //     return BaseRespVo.error();
         // }

@@ -8,12 +8,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * @author 韩
  * @create 2020-06-30 2:33
  */
-@Controller
+@RestController
 @RequestMapping("/wx/coupon")
 public class WXCouponContorller {
 
