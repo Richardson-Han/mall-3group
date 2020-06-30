@@ -103,4 +103,14 @@ public class HANWXSQLTest {
         System.out.println("Uncomment = " + integer);
     }
 
+    @Test
+    public void HanTest4(){
+        List<Coupon> coupons = couponMapper.selectAllCoupon(0, 10);
+        for (Coupon coupon : coupons) {
+            System.out.println(coupon.getId()+",name"+coupon.getName());
+        }
+        Integer integer = couponMapper.selectCountNumber();
+        System.out.println(integer);
+    }
+
 }

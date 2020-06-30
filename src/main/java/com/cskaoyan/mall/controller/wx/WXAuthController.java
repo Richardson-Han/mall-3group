@@ -36,18 +36,19 @@ public class WXAuthController {
         String password = (String) map.get("password");
         String username = (String) map.get("username");
         String passwordDB = new Md5Hash(password, username + "3groupWX", 3).toString();
-        // Subject subject = SecurityUtils.getSubject();
+        Subject subject = SecurityUtils.getSubject();
         // try {
         //     subject.login(new MallToken(username, passwordDB, "wx"));
         // } catch (Exception e) {
-        //     // return BaseRespVo.error("用户名或密码错误", 401);
+        //     System.out.println("挂了");
+        //     return BaseRespVo.error("用户名或密码错误", 401);
         // }finally {
         //     Serializable id = subject.getSession().getId();
         //     return BaseRespVo.ok(id);
         // }
         //先登陆 后期补
         Dataa data = new Dataa();
-        data.setToken("~");
+        data.setToken(username);
         data.setUserInfo();
         data.setTokenExpire(new Date());
         return BaseRespVo.ok(data);
@@ -63,7 +64,8 @@ public class WXAuthController {
         subject.logout();
         return BaseRespVo.ok();
     }
-    class Dataa{
+
+    class Dataa {
         UserInfo userInfo;
         Date tokenExpire;
         String token;
@@ -92,7 +94,7 @@ public class WXAuthController {
             this.token = "j65dcjj0if0tf223567uwgu9a7t7b1z8";
         }
 
-        class UserInfo{
+        class UserInfo {
             String nickname;
             String avatarUrl;
 

@@ -23,19 +23,19 @@ public class WXGoodsController {
     GoodsService goodsService;
 
     @RequestMapping("category")
-    public BaseRespVo category(Integer id){
+    public BaseRespVo category(Integer id) {
         Map data = goodsService.category(id);
         return BaseRespVo.ok(data);
     }
 
     @RequestMapping("list")
-    public BaseRespVo list(Integer categoryId, Integer page, Integer size){
+    public BaseRespVo list(Integer categoryId, Integer page, Integer size) {
         Map data = goodsService.list(categoryId, page, size);
         return BaseRespVo.ok(data);
     }
 
     @RequestMapping("count")
-    public BaseRespVo count(){
+    public BaseRespVo count() {
         Long goodsTotal = goodsService.getGoodsTotal();
         Map map = new HashMap();
         map.put("goodsCount", goodsTotal);
@@ -43,13 +43,13 @@ public class WXGoodsController {
     }
 
     @RequestMapping("detail")
-    public BaseRespVo detaile(Integer id){
+    public BaseRespVo detaile(Integer id) {
         Map map = goodsService.detail(id);
         return BaseRespVo.ok(map);
     }
 
     @RequestMapping("related")
-    public BaseRespVo related(Integer id){
+    public BaseRespVo related(Integer id) {
         Map map = goodsService.related(id);
         return BaseRespVo.ok(map);
     }

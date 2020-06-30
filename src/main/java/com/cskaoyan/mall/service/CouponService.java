@@ -2,6 +2,7 @@ package com.cskaoyan.mall.service;
 
 import com.cskaoyan.mall.bean.BaseData;
 import com.cskaoyan.mall.bean.Coupon;
+import com.cskaoyan.mall.bean.wx.CouponBase;
 
 /**
  * @author 韩
@@ -23,4 +24,5 @@ public interface CouponService {
 
     BaseData listuserCouponUser(Integer page, Integer limit, Integer couponId, String sort, String order);
 
+    CouponBase WXlistCoupon(Integer page, Integer size);
 }

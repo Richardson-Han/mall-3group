@@ -1,6 +1,7 @@
 package com.cskaoyan.mall.service.impl;
 
 import com.cskaoyan.mall.bean.*;
+import com.cskaoyan.mall.bean.wx.CouponBase;
 import com.cskaoyan.mall.mapper.CouponMapper;
 import com.cskaoyan.mall.mapper.CouponUserMapper;
 import com.cskaoyan.mall.service.CouponService;
@@ -9,6 +10,7 @@ import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.lang.System;
 import java.util.Date;
 import java.util.List;
 
@@ -79,6 +81,17 @@ public class CouponServiceImpl implements CouponService {
         PageInfo<CouponUser> pageInfo = new PageInfo<>(couponUsers);
         long total = pageInfo.getTotal();
         return new BaseData(couponUsers, total);
+    }
+
+
+    @Override
+    public CouponBase WXlistCoupon(Integer page, Integer size) {
+        Integer count= couponMapper.selectCountNumber();
+        List<Coupon> coupons = couponMapper.selectAllCoupon(page, size);
+        CouponBase data = new CouponBase();
+        data.setData(coupons);
+        data.setCount(count);
+        return data;
     }
 
     @Override

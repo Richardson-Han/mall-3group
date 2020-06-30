@@ -34,7 +34,7 @@ public class WXStorageContorller {
      * 还未开始
      */
     @RequiresGuest
-    @RequestMapping(value = "/upload",method = RequestMethod.POST)
+    @RequestMapping(value = "/upload", method = RequestMethod.POST)
     public BaseRespVo picUpload(@RequestParam("file") Map map) throws IOException {
         String url = (String) map.get("Referer");
         String UserAgent = (String) map.get("User-Agent");

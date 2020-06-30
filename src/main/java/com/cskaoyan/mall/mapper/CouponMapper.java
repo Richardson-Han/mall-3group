@@ -33,4 +33,10 @@ public interface CouponMapper {
     @Select("select id,`name`,`desc`,tag,discount,`min`,days from cskaoyanmall_coupon order by id desc limit 0,3")
     List<Coupon> selectNewCoupons();
 
+    @Select("select id,`name`,`desc`,tag,discount ,`min`,days " +
+            "from cskaoyanmall_coupon where deleted = 0 order by id desc limit #{page}, #{size}")
+    List<Coupon> selectAllCoupon(@Param("page") Integer page, @Param("size") Integer size);
+
+    @Select("select COUNT(*) from cskaoyanmall_coupon where deleted = 0")
+    Integer selectCountNumber();
 }
