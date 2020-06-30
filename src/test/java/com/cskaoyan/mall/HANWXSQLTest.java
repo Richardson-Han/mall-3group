@@ -113,4 +113,13 @@ public class HANWXSQLTest {
         System.out.println(integer);
     }
 
+    @Test
+    public void HanTest5()
+    {
+        Integer integer = couponMapper.wxselectTotalByCouponId(11);
+        System.out.println(integer);
+
+        integer = couponMapper.selectIdByCode("PFGSD45T");
+        System.out.println(integer);
+    }
 }

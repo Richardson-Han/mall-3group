@@ -5,6 +5,7 @@ import com.cskaoyan.mall.bean.VO.wx.WXUserOrderVO;
 import com.cskaoyan.mall.bean.wx.WXOrderState;
 import com.cskaoyan.mall.mapper.OrderMapper;
 import com.cskaoyan.mall.mapper.UserMapper;
+import com.cskaoyan.mall.service.UserService;
 import org.apache.shiro.authz.annotation.RequiresGuest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,7 +24,7 @@ import javax.servlet.http.HttpSession;
 public class WXUserContorller {
 
     @Autowired
-    UserMapper userMapper;
+    UserService userService;
     @Autowired
     OrderMapper orderMapper;
 
@@ -40,7 +41,7 @@ public class WXUserContorller {
         if ("j65dcjj0if0tf223567uwgu9a7t7b1z8".equals(token)) {
             String username = "test1";
             //username得到user_id
-            Integer userId = userMapper.selectIdByUsername(username);
+            Integer userId = userService.wxselectIdByUsername(username);
             //user_id 得到order表对应值
             WXOrderState wxOrder = new WXOrderState();
             wxOrder.setUnrecv(orderMapper.selectUnrecvByUserId(userId));

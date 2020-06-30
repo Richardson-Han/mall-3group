@@ -10,4 +10,8 @@ public interface UserService {
     Long getUserTotal();
 
     StatBaseVO getUserStat();
+
+    Integer wxselectIdByUsername(String username);
+
+    Integer wxinsertGainCoupon(Integer userId, Integer couponId, Integer total);
 }

@@ -4,6 +4,8 @@ import com.cskaoyan.mall.bean.BaseData;
 import com.cskaoyan.mall.bean.Coupon;
 import com.cskaoyan.mall.bean.wx.CouponBase;
 
+import java.util.List;
+
 /**
  * @author 韩
  * @create 2020-06-27 0:26
@@ -25,4 +27,16 @@ public interface CouponService {
     BaseData listuserCouponUser(Integer page, Integer limit, Integer couponId, String sort, String order);
 
     CouponBase WXlistCoupon(Integer page, Integer size);
+
+    Integer wxExchangecouponId(String code);
+
+    Integer wxExchangeLimit(Integer couponId);
+
+    Integer wxExchangecountByUserId(Integer userId,Integer couponId);
+
+    Integer wxselectTolalNumberByCouponId(Integer couponId);
+
+    CouponBase wxselectCouponByStatusPage(Integer status, Integer page, Integer size, Integer userId);
+
+    List<Coupon> wxselectCouponByCartId(Integer cartId, Integer grouponRulesId, Integer userId);
 }
