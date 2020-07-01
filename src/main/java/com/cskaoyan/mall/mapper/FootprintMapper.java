@@ -28,4 +28,6 @@ public interface FootprintMapper {
     int updateByPrimaryKeySelective(Footprint record);
 
     int updateByPrimaryKey(Footprint record);
+
+    List<Footprint> queryFootprintList();
 }

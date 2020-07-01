@@ -3,6 +3,8 @@ package com.cskaoyan.mall.service.impl;
 import com.cskaoyan.mall.bean.*;
 import com.cskaoyan.mall.bean.BO.GoodsCommentBO;
 import com.cskaoyan.mall.bean.BO.GoodsCommentListBO;
+import com.cskaoyan.mall.bean.BO.wx.WXGoodCommentBo;
+import com.cskaoyan.mall.bean.VO.wx.WXTopicVO;
 import com.cskaoyan.mall.mapper.GoodsCommentMapper;
 import com.cskaoyan.mall.service.GoodsCommentService;
 import com.github.pagehelper.PageHelper;
@@ -79,5 +81,12 @@ public class GoodsCommentServiceImpl implements GoodsCommentService {
             return 1;
         }
         return 0;
+    }
+
+    @Override
+    public List<Object> getWXCommentList(WXGoodCommentBo wxGoodCommentBo) {
+        List<Object> lsit=new ArrayList<> ();
+      
+        return null;
     }
 }

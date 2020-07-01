@@ -1,5 +1,6 @@
 package com.cskaoyan.mall.service;
 
+import com.cskaoyan.mall.bean.BaseData;
 import com.cskaoyan.mall.bean.Region;
 import org.springframework.stereotype.Service;
 
@@ -12,4 +13,6 @@ import java.util.List;
 
 public interface RegionService {
     List<Region> queryRegionList();
+
+    List<Region> queryWXRegionList(Integer pid);
 }

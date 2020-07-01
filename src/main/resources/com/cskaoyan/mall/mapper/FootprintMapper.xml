@@ -225,4 +225,10 @@
       deleted = #{deleted,jdbcType=BIT}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+  <select id="queryFootprintList" resultType="com.cskaoyan.mall.bean.Footprint">
+  select
+  <include refid="Base_Column_List"/> from `cskaoyanmall_footprint`
+
+  </select>
 </mapper>
