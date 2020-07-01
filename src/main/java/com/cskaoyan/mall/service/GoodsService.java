@@ -6,7 +6,9 @@ import com.cskaoyan.mall.bean.VO.GoodsCatAndBrandVO;
 import com.cskaoyan.mall.bean.VO.GoodsDetailVO;
 import com.cskaoyan.mall.bean.VO.StatBaseVO;
 import com.cskaoyan.mall.bean.*;
+import com.cskaoyan.mall.bean.wx.WXFloorGoods;
 
+import java.util.List;
 import java.util.Map;
 
 public interface GoodsService {
@@ -35,4 +37,12 @@ public interface GoodsService {
     Map detail(Integer goodsId);
 
     Map related(Integer id);
+
+    List<Goods> wxselectNewgoods();
+
+    List<Goods> wxselectHotGoods();
+
+    List<WXFloorGoods> wxselectCategoryFour();
+
+    List<Goods> wxselectByCategoryid(Integer id);
 }

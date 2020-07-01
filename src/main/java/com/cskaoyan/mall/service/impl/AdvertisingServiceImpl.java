@@ -60,4 +60,9 @@ public class AdvertisingServiceImpl implements AdvertisingService {
         advertising.setUpdateTime(new Date());
         return advertisingMapper.updateByPrimaryKeySelective(advertising);
     }
+
+    @Override
+    public List<Advertising> wxselectTopAdvertising() {
+        return advertisingMapper.selectTopAdvertising();
+    }
 }

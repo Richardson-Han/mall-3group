@@ -60,4 +60,9 @@ public class BrandServiceImpl implements BrandService {
         System.out.println (i);
         return i==1;
     }
+
+    @Override
+    public List<Brand> wxselectDirectSupply() {
+        return brandMapper.selectDirectSupply();
+    }
 }

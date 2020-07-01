@@ -3,6 +3,7 @@ package com.cskaoyan.mall.service;
 import com.cskaoyan.mall.bean.Brand;
 import com.cskaoyan.mall.bean.VO.BrandAddVo;
 
+import java.util.List;
 import java.util.Map;
 
 /* *
@@ -16,4 +17,6 @@ public interface BrandService {
     Brand add(BrandAddVo brandAddVo);
     boolean delete(Brand brand);
     boolean updateByBrand(Brand brand);
+
+    List<Brand> wxselectDirectSupply();
 }

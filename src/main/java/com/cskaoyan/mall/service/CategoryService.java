@@ -22,4 +22,6 @@ public interface CategoryService {
     int updateCategory(Category category);
 
     boolean deleteCategory(Category category);
+
+    List<Category> wxselectLimitTen();
 }

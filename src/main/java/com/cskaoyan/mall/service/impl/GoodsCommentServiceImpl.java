@@ -9,6 +9,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -79,5 +80,16 @@ public class GoodsCommentServiceImpl implements GoodsCommentService {
             return 1;
         }
         return 0;
+    }
+
+    @Override
+    public void insertComment(GoodsComment goodsComment) {
+        commentMapper.insertSelective(goodsComment);
+    }
+
+    @Override
+    public Integer selectTheLastInsertId() {
+        Integer id = commentMapper.selectTheLastInsertId();
+        return id;
     }
 }

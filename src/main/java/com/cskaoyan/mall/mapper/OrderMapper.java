@@ -53,4 +53,7 @@ public interface OrderMapper {
 
     @Select("select COUNT(*) as unship from cskaoyanmall_order where order_status=201 and user_id = #{id}")
     Integer selectUnshipByUserId(Integer id);
+    List<Order> selectByOrderStatus(@Param("status") Integer status);
+
+    List<Order> selectAllOrders();
 }

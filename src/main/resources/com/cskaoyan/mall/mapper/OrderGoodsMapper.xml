@@ -10,7 +10,7 @@
     <result column="product_id" jdbcType="INTEGER" property="productId" />
     <result column="number" jdbcType="SMALLINT" property="number" />
     <result column="price" jdbcType="DECIMAL" property="price" />
-    <result column="specifications" jdbcType="VARCHAR" property="specifications" />
+    <result column="specifications" jdbcType="VARCHAR" property="specifications"  typeHandler="com.cskaoyan.mall.typehandler.PicStringTypeHandler"/>
     <result column="pic_url" jdbcType="VARCHAR" property="picUrl" />
     <result column="comment" jdbcType="INTEGER" property="comment" />
     <result column="add_time" jdbcType="TIMESTAMP" property="addTime" />
@@ -217,6 +217,12 @@
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
+  </select>
+    <select id="queryGoodsIdByOrderId" resultType="java.lang.Integer">
+      select goods_id from cskaoyanmall_order_goods where order_id = #{orderGoodsId}
+    </select>
+  <select id="selectByOrderId" resultType="com.cskaoyan.mall.bean.wx.WXOrderGoods">
+    select id , goods_name as goodsName , number, pic_url as picUrl from cskaoyanmall_order_goods where order_id = #{id}
   </select>
   <update id="updateByExampleSelective" parameterType="map">
     update cskaoyanmall_order_goods

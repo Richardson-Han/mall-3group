@@ -2,6 +2,7 @@ package com.cskaoyan.mall.mapper;
 
 import com.cskaoyan.mall.bean.OrderGoods;
 import com.cskaoyan.mall.bean.OrderGoodsExample;
+import com.cskaoyan.mall.bean.wx.WXOrderGoods;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -28,4 +29,8 @@ public interface OrderGoodsMapper {
     int updateByPrimaryKeySelective(OrderGoods record);
 
     int updateByPrimaryKey(OrderGoods record);
+
+    Integer queryGoodsIdByOrderId(@Param("orderGoodsId") Integer orderGoodsId);
+
+    List<WXOrderGoods> selectByOrderId(@Param("id") Integer id);
 }

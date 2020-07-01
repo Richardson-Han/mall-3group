@@ -3,6 +3,7 @@ package com.cskaoyan.mall.service;
 import com.cskaoyan.mall.bean.Advertising;
 import com.cskaoyan.mall.bean.BaseData;
 
+import java.util.List;
 
 
 /**
@@ -17,4 +18,6 @@ public interface AdvertisingService {
     Integer updateAdvertising(Advertising advertising);
 
     Integer deleteAdvertising(Advertising advertising);
+
+    List<Advertising> wxselectTopAdvertising();
 }
