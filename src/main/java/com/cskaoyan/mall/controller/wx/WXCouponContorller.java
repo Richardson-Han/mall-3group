@@ -81,7 +81,6 @@ public class WXCouponContorller {
             return BaseRespVo.error("请先登陆");
         }
         Integer userId = userService.wxselectIdByUsername(username);
-        //还有三条SQL语句没写 仅能在cartId=0，grouponRulesId=0状态下使用
         List<Coupon> couponBase = couponService.wxselectCouponByCartId(cartId,grouponRulesId,userId);
         return BaseRespVo.ok(couponBase);
     }
