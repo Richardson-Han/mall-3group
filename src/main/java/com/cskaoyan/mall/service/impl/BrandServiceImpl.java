@@ -2,6 +2,8 @@ package com.cskaoyan.mall.service.impl;
 
 import com.cskaoyan.mall.bean.Brand;
 import com.cskaoyan.mall.bean.VO.BrandAddVo;
+import com.cskaoyan.mall.bean.VO.wx.BrandGetListVO;
+import com.cskaoyan.mall.bean.wx.WXBrandListData;
 import com.cskaoyan.mall.mapper.BrandMapper;
 import com.cskaoyan.mall.service.BrandService;
 import com.github.pagehelper.PageHelper;
@@ -59,5 +61,20 @@ public class BrandServiceImpl implements BrandService {
         int i=brandMapper.updateByPrimaryKeySelective (brand);
         System.out.println (i);
         return i==1;
+    }
+
+    @Override
+    public WXBrandListData getBrandList(Integer page, Integer size) {
+        PageHelper.startPage(page, size);
+        List<BrandGetListVO> brands = brandMapper.selectBrandListVO();
+        PageInfo<BrandGetListVO> pageInfo = new PageInfo<>(brands);
+        long total = pageInfo.getTotal();
+        return new WXBrandListData(brands,total);
+    }
+
+    @Override
+    public Brand getBrandDetail(Integer id) {
+        Brand brand = brandMapper.selectByPrimaryKey(id);
+        return brand;
     }
 }

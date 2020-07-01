@@ -2,6 +2,7 @@ package com.cskaoyan.mall.mapper;
 
 import com.cskaoyan.mall.bean.Brand;
 import com.cskaoyan.mall.bean.BrandExample;
+import com.cskaoyan.mall.bean.VO.wx.BrandGetListVO;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
@@ -37,4 +38,7 @@ public interface BrandMapper {
     @Select("select id,name,`desc`,pic_url as picUrl,floor_price as floorPrice " +
             "from cskaoyanmall_brand order by id desc limit 0,4")
     List<Brand> selectDirectSupply();
+
+    @Select("select id,`name`,`desc`,pic_url as picUrl,floor_price as floorPrice from cskaoyanmall_brand")
+    List<BrandGetListVO> selectBrandListVO();
 }
