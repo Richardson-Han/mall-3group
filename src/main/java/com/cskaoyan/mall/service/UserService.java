@@ -2,6 +2,7 @@ package com.cskaoyan.mall.service;
 
 import com.cskaoyan.mall.bean.BaseData;
 import com.cskaoyan.mall.bean.VO.StatBaseVO;
+import com.cskaoyan.mall.bean.VO.wx.WXUserInfoVO;
 
 public interface UserService {
 
@@ -14,4 +15,6 @@ public interface UserService {
     Integer wxselectIdByUsername(String username);
 
     Integer wxinsertGainCoupon(Integer userId, Integer couponId, Integer total);
+
+    WXUserInfoVO getUserInfo(String username);
 }
