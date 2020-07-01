@@ -12,4 +12,8 @@ public interface GoodsCommentService {
     void deleteComment(GoodsComment goodsComment);
 
     int replyComment(GoodsCommentBO commentBO);
+
+    void insertComment(GoodsComment goodsComment);
+
+    Integer selectTheLastInsertId();
 }

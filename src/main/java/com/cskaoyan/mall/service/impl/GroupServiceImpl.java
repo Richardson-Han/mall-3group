@@ -177,4 +177,11 @@ public class GroupServiceImpl implements GroupService {
     public List<WXGroupBuy> wxselectGroupBuy() {
         return groupOnRulesMapper.selectGroupBuy();
     }
+
+    @Override
+    public Boolean isGroupIn(Integer id) {
+        int num = groupOnMapper.selectByOrderId(id);
+        return num > 0;
+
+    }
 }
