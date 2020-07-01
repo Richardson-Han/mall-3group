@@ -132,4 +132,9 @@ public class CategoryServiceImpl implements CategoryService {
         int i = categoryMapper.updateByPrimaryKey (category);
         return i==1;
     }
+
+    @Override
+    public List<Category> wxselectLimitTen() {
+        return categoryMapper.selectLimitTen();
+    }
 }

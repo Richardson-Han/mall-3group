@@ -3,6 +3,8 @@ package com.cskaoyan.mall.service;
 import com.cskaoyan.mall.bean.BaseData;
 import com.cskaoyan.mall.bean.Topic;
 
+import java.util.List;
+
 /**
  * @author 韩
  * @create 2020-06-27 1:09
@@ -16,4 +18,6 @@ public interface TopicService {
     Integer updateTopic(Topic topic);
 
     Integer deleteTopic(Topic topic);
+
+    List<Topic> wxselectNewTopic();
 }

@@ -155,6 +155,11 @@ public class CouponServiceImpl implements CouponService {
         }
     }
 
+    @Override
+    public List<Coupon> wxselectNewCoupons() {
+        return couponMapper.selectNewCoupons();
+    }
+
 
     @Override
     public BaseData listuserUserIdCouponUser(Integer page, Integer limit, Integer couponId,

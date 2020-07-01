@@ -112,6 +112,26 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    public Integer wxselectUnrecvByUserId(Integer userId) {
+        return orderMapper.selectUnrecvByUserId(userId);
+    }
+
+    @Override
+    public Integer wxselectUncommentByUserId(Integer userId) {
+        return orderMapper.selectUncommentByUserId(userId);
+    }
+
+    @Override
+    public Integer wxselectUnpaidByUserId(Integer userId) {
+        return orderMapper.selectUnpaidByUserId(userId);
+    }
+
+    @Override
+    public Integer wxselectUnshipByUserId(Integer userId) {
+        return orderMapper.selectUnshipByUserId(userId);
+    }
+
+    @Override
     public Integer queryGoodsIdByOrderId(Integer orderGoodsId) {
         Integer id = orderGoodsMapper.queryGoodsIdByOrderId(orderGoodsId);
         return id;

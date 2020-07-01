@@ -42,6 +42,14 @@ public interface OrderService {
 
     void deleteOrder(Integer orderId);
 
+
+    Integer wxselectUnrecvByUserId(Integer userId);
+
+    Integer wxselectUncommentByUserId(Integer userId);
+
+    Integer wxselectUnpaidByUserId(Integer userId);
+
+    Integer wxselectUnshipByUserId(Integer userId);
     void refund(Integer orderId);
 
     void confirmOrder(Integer orderId);
