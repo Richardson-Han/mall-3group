@@ -39,4 +39,6 @@ public interface CouponService {
     CouponBase wxselectCouponByStatusPage(Integer status, Integer page, Integer size, Integer userId);
 
     List<Coupon> wxselectCouponByCartId(Integer cartId, Integer grouponRulesId, Integer userId);
+
+    List<Coupon> wxselectNewCoupons();
 }

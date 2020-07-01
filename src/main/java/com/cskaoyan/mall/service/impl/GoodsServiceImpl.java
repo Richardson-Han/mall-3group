@@ -6,6 +6,7 @@ import com.cskaoyan.mall.bean.BO.GoodsUpdateBO;
 import com.cskaoyan.mall.bean.GoodsExample;
 import com.cskaoyan.mall.bean.GoodsStat;
 import com.cskaoyan.mall.bean.VO.*;
+import com.cskaoyan.mall.bean.wx.WXFloorGoods;
 import com.cskaoyan.mall.mapper.GoodsMapper;
 import com.cskaoyan.mall.bean.*;
 import com.cskaoyan.mall.mapper.*;
@@ -366,21 +367,45 @@ public class GoodsServiceImpl implements GoodsService {
         return map;
     }
 
+    @Autowired
+    SearchHistoryMapper searchHistoryMapper;
+
     //尚政宇
     @Override
-    public Map list(Integer categoryId, Integer page, Integer size) {
-        Map map = new HashMap();
+    public Map list(Integer categoryId, Integer page, Integer size, String keyword, String sort, String order) {
         PageHelper.startPage(page, size);
-        GoodsExample goodsExample = new GoodsExample();
-        goodsExample.createCriteria().andCategoryIdEqualTo(categoryId);
-        long count = goodsMapper.countByExample(goodsExample);
-        List<Goods> goods = goodsMapper.selectByExample(goodsExample);
-
-        List<Category> filterCategoryList = wxCategoryMapper.selectFilterCategoryList();
+        //goodsList
+        List<Goods> goodsList = goodsMapper.selectGoodsList(categoryId, keyword, sort, order);
+        //count-->goodsList的大小
+        int count = goodsList.size();
+        //filterCategoryList
+        List<GoodsCategory> filterCategoryList = categoryMapper.selectFilterCategoryList(categoryId, keyword, sort, order);
+        Map map = new HashMap();
         map.put("count", count);
         map.put("filterCategoryList", filterCategoryList);
-        map.put("goodsList", goods);
-
+        map.put("goodsList", goodsList);
+        //将搜索记录插入到数据库中，如果该关键字已在数据库中存在，则更新时间
+        String username = (String) SecurityUtils.getSubject().getPrincipal();
+        if (username == null) {
+            return map;
+        }
+        List<SearchHistory> searchHistories = searchHistoryMapper.selectKeywordByUsername(username);
+        Date date = new Date();
+        outer:
+        if (searchHistories != null) {
+            for (SearchHistory searchHistory : searchHistories) {
+                if (searchHistory.getKeyword().equals(keyword)) {
+                    searchHistoryMapper.updateTime(date, userMapper.selectUserIdByUsername(username), keyword);
+                    break outer;
+                }
+            }
+            searchHistoryMapper.insert(
+                    new SearchHistory(null, userMapper.selectUserIdByUsername(username), keyword, "wx", date, date, false));
+        }
+        else{
+            searchHistoryMapper.insert(
+                    new SearchHistory(null, userMapper.selectUserIdByUsername(username), keyword, "wx", date, date, false));
+        }
         return map;
     }
 
@@ -427,7 +452,7 @@ public class GoodsServiceImpl implements GoodsService {
         //shareImage
         String shareImage = "";
         //specification
-        List<GoodsSpec> valueList = goodsSpecMapper.selectByGoodsId(goodsId);
+        ArrayList<GoodsSpec> valueList = (ArrayList<GoodsSpec>) goodsSpecMapper.selectByGoodsId(goodsId);
         HashMap specificationList = new HashMap();
         specificationList.put("name", "规格");
         specificationList.put("valueList",valueList);
@@ -462,6 +487,26 @@ public class GoodsServiceImpl implements GoodsService {
         Map map = new HashMap();
         map.put("goodsList", goodsList);
         return map;
+    }
+
+    @Override
+    public List<Goods> wxselectNewgoods() {
+        return goodsMapper.selectNewgoods();
+    }
+
+    @Override
+    public List<Goods> wxselectHotGoods() {
+        return goodsMapper.selectHotGoods();
+    }
+
+    @Override
+    public List<WXFloorGoods> wxselectCategoryFour() {
+        return goodsMapper.selectCategoryFour();
+    }
+
+    @Override
+    public List<Goods> wxselectByCategoryid(Integer id) {
+        return goodsMapper.selectByCategoryid(id);
     }
 
     /**

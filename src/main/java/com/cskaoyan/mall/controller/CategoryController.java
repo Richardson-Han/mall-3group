@@ -5,14 +5,12 @@ import com.cskaoyan.mall.bean.Category;
 import com.cskaoyan.mall.bean.CategoryVo;
 import com.cskaoyan.mall.bean.VO.BaseRespVo;
 import com.cskaoyan.mall.service.CategoryService;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.nio.channels.Pipe;
 import java.util.List;
 
 

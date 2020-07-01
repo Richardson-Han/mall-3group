@@ -77,4 +77,9 @@ public class BrandServiceImpl implements BrandService {
         Brand brand = brandMapper.selectByPrimaryKey(id);
         return brand;
     }
+
+
+    public List<Brand> wxselectDirectSupply(){
+        return brandMapper.selectDirectSupply();
+    }
 }
