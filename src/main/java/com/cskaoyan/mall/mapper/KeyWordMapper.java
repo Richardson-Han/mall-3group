@@ -28,4 +28,6 @@ public interface KeyWordMapper {
     int updateByPrimaryKeySelective(KeyWord record);
 
     int updateByPrimaryKey(KeyWord record);
+
+    KeyWord selectByIsDefaultIdSortOrder();
 }

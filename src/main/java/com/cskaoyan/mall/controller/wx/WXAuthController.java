@@ -1,10 +1,8 @@
 package com.cskaoyan.mall.controller.wx;
 
-import com.cskaoyan.mall.bean.User;
 import com.cskaoyan.mall.bean.VO.BaseRespVo;
 import com.cskaoyan.mall.bean.VO.wx.WXUserInfoVO;
 import com.cskaoyan.mall.bean.VO.wx.WXUserLoginVO;
-import com.cskaoyan.mall.mapper.UserMapper;
 import com.cskaoyan.mall.service.UserService;
 import com.cskaoyan.mall.shiro.MallToken;
 import org.apache.shiro.SecurityUtils;
@@ -18,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.io.Serializable;
 import java.util.Date;
 import java.util.Map;
 

@@ -216,7 +216,20 @@
       <include refid="Example_Where_Clause" />
     </if>
   </select>
-  <update id="updateByExampleSelective" parameterType="map">
+    <select id="selectFilterCategoryList" resultMap="BaseResultMap">
+      select * from cskaoyanmall_category  c left join cskaoyanmall_goods g
+      on c.id = g.category_id
+      <where>
+        <if test="keyword != null">
+          g.name like "%${keyword}%"
+        </if>
+      </where>
+      group by c.name
+      <if test="sort != null &amp; order != null">
+        order by g.${sort} ${order}
+      </if>
+    </select>
+    <update id="updateByExampleSelective" parameterType="map">
     update cskaoyanmall_category
     <set>
       <if test="record.id != null">

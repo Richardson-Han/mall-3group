@@ -5,9 +5,7 @@ import com.cskaoyan.mall.bean.VO.BaseRespVo;
 import com.cskaoyan.mall.bean.wx.WXFloorGoods;
 import com.cskaoyan.mall.bean.wx.WXGroupBuy;
 import com.cskaoyan.mall.bean.wx.WXUser;
-import com.cskaoyan.mall.mapper.*;
 import com.cskaoyan.mall.service.*;
-import org.apache.shiro.authz.annotation.RequiresGuest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -47,13 +45,21 @@ public class WXHomeContorller {
 
     @RequestMapping(value = "/index", method = RequestMethod.GET)
     public BaseRespVo index() {
+        //周一周四新品
         List<Goods> newGoodsList = goodsService.wxselectNewgoods();
+        //优惠卷
         List<Coupon> couponList = couponService.wxselectNewCoupons();
+        //顶部品类 导航
         List<Category> channel = categoryService.wxselectLimitTen();
+        //团购专区
         List<WXGroupBuy> grouponList = groupService.wxselectGroupBuy();
+        //顶部 自切换 广告
         List<Advertising> banner = advertisingService.wxselectTopAdvertising();
+        //品牌制造商直供
         List<Brand> brandList = brandService.wxselectDirectSupply();
+        //人气推荐
         List<Goods> hotGoodsList = goodsService.wxselectHotGoods();
+        //专题精选
         List<Topic> topicList = topicService.wxselectNewTopic();
         //4个品类各4个商品
         List<WXFloorGoods> listWXFloorGoodsses = goodsService.wxselectCategoryFour();

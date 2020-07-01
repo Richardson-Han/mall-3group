@@ -4,15 +4,19 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
+/**
+ * @author 杨
+ * @create 2020-07-01 23:48
+ */
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class OrderGoods {
-    private String goodsName;
+public class WXBrandListData<T> {
 
-    private Integer id;
+    List<T> brandList;
 
-    private Integer number;
-
-    private String picUrl;
+    long totalPages;
 }

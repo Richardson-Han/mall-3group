@@ -1,12 +1,14 @@
 package com.cskaoyan.mall.controller.wx;
 
 import com.cskaoyan.mall.bean.GoodsComment;
-import com.cskaoyan.mall.bean.GroupOnRules;
 import com.cskaoyan.mall.bean.Order;
+import com.cskaoyan.mall.bean.OrderGoods;
 import com.cskaoyan.mall.bean.VO.BaseRespVo;
 import com.cskaoyan.mall.bean.wx.BO.OrderCommentBO;
 import com.cskaoyan.mall.bean.wx.HandleOption;
-import com.cskaoyan.mall.bean.wx.OrderGoods;
+import com.cskaoyan.mall.bean.wx.VO.WXOrderDetailDataVO;
+import com.cskaoyan.mall.bean.wx.VO.WXOrderInfoVO;
+import com.cskaoyan.mall.bean.wx.WXOrderGoods;
 import com.cskaoyan.mall.bean.wx.VO.OrderListBaseVO;
 import com.cskaoyan.mall.bean.wx.VO.OrderListDataVO;
 import com.cskaoyan.mall.service.GoodsCommentService;
@@ -17,6 +19,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -74,7 +77,7 @@ public class WXOrderController {
     public BaseRespVo list(Integer showType, Integer page, Integer size){
         PageHelper.startPage(page,size);
         List<Order> orders = orderService.queryOrderByOrderStatus(showType);
-        List<OrderGoods> goodsList;
+        List<WXOrderGoods> goodsList;
         List<OrderListDataVO> orderListDataVOs = new ArrayList<>();
         for (Order order : orders) {
             OrderListDataVO orderListDataVO = new OrderListDataVO();
@@ -98,7 +101,41 @@ public class WXOrderController {
 
     @RequestMapping("detail")
     public BaseRespVo detail(Integer orderId){
-        return null;
+        List<OrderGoods> orderGoodsList = orderService.selectOrderGoodsByOrderId(orderId);
+        WXOrderInfoVO  orderInfo = orderService.getWxOrderInfo(orderId);
+        WXOrderDetailDataVO wxOrderDetailDataVO = new WXOrderDetailDataVO(orderGoodsList,orderInfo);
+        return BaseRespVo.ok(wxOrderDetailDataVO);
     }
+
+    @RequestMapping("cancel")
+    public BaseRespVo cancel(Integer orderId){
+        orderService.cancelOrder(orderId);
+        return BaseRespVo.ok();
+    }
+
+    @RequestMapping("refund")
+    public BaseRespVo refund(@RequestBody Map map){
+        orderService.refund((Integer) map.get("orderId"));
+        return BaseRespVo.ok();
+    }
+
+    @RequestMapping("delete")
+    public BaseRespVo delete(Integer orderId){
+        orderService.deleteOrder(orderId);
+        return BaseRespVo.ok();
+    }
+
+    @RequestMapping("confirm")
+    public BaseRespVo confirm(@RequestBody Map map){
+        orderService.confirmOrder((Integer) map.get("orderId"));
+        return BaseRespVo.ok();
+    }
+
+    @RequestMapping("goods")
+    public BaseRespVo goods (Integer orderId, Integer goodsId){
+        OrderGoods orderGoods = orderService.getOrderGoods(orderId,goodsId);
+        return BaseRespVo.ok(orderGoods);
+    }
+
 
 }

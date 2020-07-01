@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.Map;
 
@@ -81,7 +80,6 @@ public class WXCouponContorller {
             return BaseRespVo.error("请先登陆");
         }
         Integer userId = userService.wxselectIdByUsername(username);
-        //还有三条SQL语句没写 仅能在cartId=0，grouponRulesId=0状态下使用
         List<Coupon> couponBase = couponService.wxselectCouponByCartId(cartId,grouponRulesId,userId);
         return BaseRespVo.ok(couponBase);
     }
