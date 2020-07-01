@@ -395,7 +395,7 @@ public class GoodsServiceImpl implements GoodsService {
         if (searchHistories != null) {
             for (SearchHistory searchHistory : searchHistories) {
                 if (searchHistory.getKeyword().equals(keyword)) {
-                    searchHistoryMapper.updateTime(date, searchHistory.getUserId(), keyword);
+                    searchHistoryMapper.updateTime(date, userMapper.selectUserIdByUsername(username), keyword);
                     break outer;
                 }
             }
