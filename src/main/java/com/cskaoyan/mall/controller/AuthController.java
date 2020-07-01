@@ -1,18 +1,10 @@
 package com.cskaoyan.mall.controller;
 
-import com.cskaoyan.mall.bean.Admin;
-import com.cskaoyan.mall.bean.AdminExample;
-import com.cskaoyan.mall.bean.Role;
+
 import com.cskaoyan.mall.bean.VO.InfoVO;
-import com.cskaoyan.mall.mapper.AdminMapper;
-import com.cskaoyan.mall.mapper.RoleMapper;
 import com.cskaoyan.mall.service.AdminService;
-import com.cskaoyan.mall.mapper.AdminMapper;
 import com.cskaoyan.mall.shiro.MallToken;
-import lombok.AllArgsConstructor;
-import com.cskaoyan.mall.typehandler.PicStringTypeHandler;
 import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.crypto.hash.Md5Hash;
 import org.apache.shiro.subject.Subject;
 import com.cskaoyan.mall.bean.VO.BaseRespVo;
@@ -24,8 +16,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @RestController

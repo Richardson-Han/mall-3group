@@ -5,8 +5,6 @@ import com.cskaoyan.mall.bean.VO.BaseRespVo;
 import com.cskaoyan.mall.bean.Storage;
 import com.cskaoyan.mall.service.StorageService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.util.ClassUtils;
-import org.springframework.util.ResourceUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 

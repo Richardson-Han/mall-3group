@@ -4,10 +4,7 @@ import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import java.io.Serializable;
-import java.util.Enumeration;
-
 /**
  * @author 韩
  * @create 2020-07-01 12:55
