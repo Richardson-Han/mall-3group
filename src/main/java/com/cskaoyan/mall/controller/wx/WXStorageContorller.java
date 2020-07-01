@@ -40,10 +40,9 @@ public class WXStorageContorller {
 
     /**
      * 文件上传
-     * 报错500 为解决
      */
     @RequestMapping(value = "/upload", method = RequestMethod.POST)
-    public HttpServletResponse picUpload(@RequestParam("file") MultipartFile multipartFile, HttpServletRequest request,
+    public void picUpload(@RequestParam("file") MultipartFile multipartFile, HttpServletRequest request,
                                         HttpServletResponse response) throws IOException {
         HttpServletResponse servResponse = response;
         //设置响应属性
@@ -51,7 +50,6 @@ public class WXStorageContorller {
         //文件没取到 返回404
         if(multipartFile.isEmpty()){
             servResponse.setStatus(404);
-            return servResponse;
         }
         Storage storage = new Storage();
         //文件名
@@ -86,9 +84,6 @@ public class WXStorageContorller {
         servResponse.setStatus(200);
         servResponse.encodeURL(storage.getUrl());
         String method = request.getMethod();
-        System.out.println(method);
-        String referer = request.getHeader("Referer");
-        System.out.println(referer);
-        return servResponse;
+        servResponse.setHeader("Vary","歪~");
     }
 }
