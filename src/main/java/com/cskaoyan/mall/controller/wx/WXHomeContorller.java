@@ -47,13 +47,21 @@ public class WXHomeContorller {
 
     @RequestMapping(value = "/index", method = RequestMethod.GET)
     public BaseRespVo index() {
+        //周一周四新品
         List<Goods> newGoodsList = goodsService.wxselectNewgoods();
+        //优惠卷
         List<Coupon> couponList = couponService.wxselectNewCoupons();
+        //顶部品类 导航
         List<Category> channel = categoryService.wxselectLimitTen();
+        //团购专区
         List<WXGroupBuy> grouponList = groupService.wxselectGroupBuy();
+        //顶部 自切换 广告
         List<Advertising> banner = advertisingService.wxselectTopAdvertising();
+        //品牌制造商直供
         List<Brand> brandList = brandService.wxselectDirectSupply();
+        //人气推荐
         List<Goods> hotGoodsList = goodsService.wxselectHotGoods();
+        //专题精选
         List<Topic> topicList = topicService.wxselectNewTopic();
         //4个品类各4个商品
         List<WXFloorGoods> listWXFloorGoodsses = goodsService.wxselectCategoryFour();
