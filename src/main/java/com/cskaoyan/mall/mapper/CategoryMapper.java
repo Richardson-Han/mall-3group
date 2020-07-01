@@ -32,4 +32,8 @@ public interface CategoryMapper {
 
     @Select("SELECT id,NAME,icon_url AS iconUrl from cskaoyanmall_category order by id limit 0,10")
     List<Category> selectLimitTen();
+
+    @Select("select * from cskaoyanmall_category a left join cskaoyanmall_category b\n" +
+            "on a.pid=b.id")
+    List<Category> selectFilterCategoryList();
 }

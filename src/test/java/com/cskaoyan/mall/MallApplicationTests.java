@@ -1,6 +1,8 @@
 package com.cskaoyan.mall;
 
+import com.cskaoyan.mall.bean.GoodsSpec;
 import com.cskaoyan.mall.mapper.AdminMapper;
+import com.cskaoyan.mall.mapper.GoodsSpecMapper;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

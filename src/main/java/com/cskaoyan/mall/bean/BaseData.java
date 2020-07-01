@@ -1,5 +1,6 @@
 package com.cskaoyan.mall.bean;
 
+import com.cskaoyan.mall.bean.wx.CouponBase;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

@@ -28,4 +28,6 @@ public interface CollectMapper {
     int updateByPrimaryKeySelective(Collect record);
 
     int updateByPrimaryKey(Collect record);
+
+    Collect selectByUserIdAndValueId(@Param("userId") Integer userId, @Param("valueId") Integer valueId);
 }

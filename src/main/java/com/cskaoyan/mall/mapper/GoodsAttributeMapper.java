@@ -29,4 +29,5 @@ public interface GoodsAttributeMapper {
 
     int updateByPrimaryKey(GoodsAttribute record);
 
+    List<GoodsAttribute> selectByGoodsId(@Param("goodsId") Integer goodsId);
 }

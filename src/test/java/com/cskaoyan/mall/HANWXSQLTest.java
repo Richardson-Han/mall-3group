@@ -1,8 +1,8 @@
 package com.cskaoyan.mall;
 
 import com.cskaoyan.mall.bean.*;
-import com.cskaoyan.mall.bean.wx.FloorGoods;
-import com.cskaoyan.mall.bean.wx.GroupBuy;
+import com.cskaoyan.mall.bean.wx.WXFloorGoods;
+import com.cskaoyan.mall.bean.wx.WXGroupBuy;
 import com.cskaoyan.mall.bean.wx.WXUser;
 import com.cskaoyan.mall.mapper.*;
 import org.junit.jupiter.api.Test;
@@ -40,46 +40,86 @@ public class HANWXSQLTest {
     @Autowired
     TopicMapper topicMapper;
 
+    @Autowired
+    OrderMapper orderMapper;
+
     @Test
     public void hantest1() {
-        List<FloorGoods> listFloorGoodss = goodsMapper.selectCategoryFour();
-        System.out.println(listFloorGoodss);
-        List<FloorGoods> floorGoodsList = new ArrayList<>();
-        for (FloorGoods floorGoods : listFloorGoodss) {
-            floorGoods.setGoodsList(goodsMapper.selectByCategoryid(floorGoods.getId()));
-            floorGoodsList.add(floorGoods);
+        List<WXFloorGoods> listWXFloorGoodsses = goodsMapper.selectCategoryFour();
+        System.out.println(listWXFloorGoodsses);
+        List<WXFloorGoods> WXFloorGoodsList = new ArrayList<>();
+        for (WXFloorGoods WXFloorGoods : listWXFloorGoodsses) {
+            WXFloorGoods.setGoodsList(goodsMapper.selectByCategoryid(WXFloorGoods.getId()));
+            WXFloorGoodsList.add(WXFloorGoods);
         }
-        for (FloorGoods floorGoods : floorGoodsList) {
+        for (WXFloorGoods WXFloorGoods : WXFloorGoodsList) {
             System.out.println("~~~~~~~~~~~~~~~~~~");
-            System.out.print("id = " + floorGoods.getId());
-            System.out.print(",name = " + floorGoods.getName());
-            for (Goods goods : floorGoods.getGoodsList()) {
+            System.out.print("id = " + WXFloorGoods.getId());
+            System.out.print(",name = " + WXFloorGoods.getName());
+            for (Goods goods : WXFloorGoods.getGoodsList()) {
                 System.out.println(",goods = " + goods);
             }
         }
     }
+
     @Test
-    public void HanTest2(){
+    public void HanTest2() {
         List<Goods> newGoodsList = goodsMapper.selectNewgoods();
         List<Coupon> couponList = couponMapper.selectNewCoupons();
         List<Category> channel = categoryMapper.selectLimitTen();
-        List<GroupBuy> grouponList = groupOnRulesMapper.selectGroupBuy();
+        List<WXGroupBuy> grouponList = groupOnRulesMapper.selectGroupBuy();
 
         List<Advertising> banner = advertisingMapper.selectTopAdvertising();
         List<Brand> brandList = brandMapper.selectDirectSupply();
         List<Goods> hotGoodsList = goodsMapper.selectHotGoods();
         List<Topic> topicList = topicMapper.selectNewTopic();
         //4个品类各4个商品
-        List<FloorGoods> listFloorGoodss = goodsMapper.selectCategoryFour();
-        System.out.println(listFloorGoodss);
-        List<FloorGoods> floorGoodsList = new ArrayList<>();
-        for (FloorGoods floorGoods : listFloorGoodss) {
-            floorGoods.setGoodsList(goodsMapper.selectByCategoryid(floorGoods.getId()));
-            floorGoodsList.add(floorGoods);
+        List<WXFloorGoods> listWXFloorGoodsses = goodsMapper.selectCategoryFour();
+        System.out.println(listWXFloorGoodsses);
+        List<WXFloorGoods> WXFloorGoodsList = new ArrayList<>();
+        for (WXFloorGoods WXFloorGoods : listWXFloorGoodsses) {
+            WXFloorGoods.setGoodsList(goodsMapper.selectByCategoryid(WXFloorGoods.getId()));
+            WXFloorGoodsList.add(WXFloorGoods);
         }
-        WXUser data = new WXUser(newGoodsList,couponList,channel,grouponList,
-                banner,brandList,hotGoodsList,topicList,floorGoodsList);
+        WXUser data = new WXUser(newGoodsList, couponList, channel, grouponList,
+                banner, brandList, hotGoodsList, topicList, WXFloorGoodsList);
         System.out.println("data");
     }
 
+    /**
+     * 验证语句有无错误
+     */
+    @Test
+    public void HanTest3() {
+        Integer integer = orderMapper.selectUnrecvByUserId(4);
+        System.out.println("Unrecv = " + integer);
+        integer = orderMapper.selectUnpaidByUserId(2);
+        System.out.println("Unpaid = " + integer);
+        integer = orderMapper.selectUnshipByUserId(1);
+        System.out.println("Unship = " + integer);
+
+        integer = orderMapper.selectUncommentByUserId(3);
+        integer = integer == null ? 0 : integer;
+        System.out.println("Uncomment = " + integer);
+    }
+
+    @Test
+    public void HanTest4(){
+        List<Coupon> coupons = couponMapper.selectAllCoupon(0, 10);
+        for (Coupon coupon : coupons) {
+            System.out.println(coupon.getId()+",name"+coupon.getName());
+        }
+        Integer integer = couponMapper.selectCountNumber();
+        System.out.println(integer);
+    }
+
+    @Test
+    public void HanTest5()
+    {
+        Integer integer = couponMapper.wxselectTotalByCouponId(11);
+        System.out.println(integer);
+
+        integer = couponMapper.selectIdByCode("PFGSD45T");
+        System.out.println(integer);
+    }
 }
