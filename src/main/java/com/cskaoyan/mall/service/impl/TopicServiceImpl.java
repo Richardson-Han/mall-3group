@@ -62,4 +62,9 @@ public class TopicServiceImpl implements TopicService {
         int update = topicMapper.updateByPrimaryKeySelective(topic);
         return update;
     }
+
+    @Override
+    public List<Topic> wxselectNewTopic() {
+        return topicMapper.selectNewTopic();
+    }
 }

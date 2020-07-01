@@ -106,4 +106,24 @@ public class OrderServiceImpl implements OrderService {
         order.setUpdateTime (new Date ());
         order.setOrderStatus (OrderStatusVO.order_delivered);
     }
+
+    @Override
+    public Integer wxselectUnrecvByUserId(Integer userId) {
+        return orderMapper.selectUnrecvByUserId(userId);
+    }
+
+    @Override
+    public Integer wxselectUncommentByUserId(Integer userId) {
+        return orderMapper.selectUncommentByUserId(userId);
+    }
+
+    @Override
+    public Integer wxselectUnpaidByUserId(Integer userId) {
+        return orderMapper.selectUnpaidByUserId(userId);
+    }
+
+    @Override
+    public Integer wxselectUnshipByUserId(Integer userId) {
+        return orderMapper.selectUnshipByUserId(userId);
+    }
 }

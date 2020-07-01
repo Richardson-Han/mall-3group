@@ -42,6 +42,8 @@ public class ShiroConfig {
         fiterChainDefinitionMap.put("/wx/goods/*", "anon");
         fiterChainDefinitionMap.put("/wx/catalog/current", "anon");
         fiterChainDefinitionMap.put("/wx/auth/login", "anon");
+        fiterChainDefinitionMap.put("/wx/home/index","anon");
+        fiterChainDefinitionMap.put("/wx/storage/*","anon");
         fiterChainDefinitionMap.put("/wx/**", "authc");
         //开发时先给全部权限
 

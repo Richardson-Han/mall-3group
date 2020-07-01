@@ -5,6 +5,7 @@ import com.cskaoyan.mall.bean.VO.BaseRespVo;
 
 import com.cskaoyan.mall.bean.VO.GroupOnListRecordVO;
 import com.cskaoyan.mall.bean.VO.IDsVO;
+import com.cskaoyan.mall.bean.wx.WXGroupBuy;
 import com.cskaoyan.mall.mapper.GoodsMapper;
 import com.cskaoyan.mall.mapper.GroupOnMapper;
 import com.cskaoyan.mall.mapper.GroupOnRulesMapper;
@@ -170,5 +171,10 @@ public class GroupServiceImpl implements GroupService {
         PageInfo<GroupOnListRecordVO> pageInfo = new PageInfo<>(groupOnListRecordVOs);
         long total = pageInfo.getTotal();
         return new BaseData(groupOnListRecordVOs,total);
+    }
+
+    @Override
+    public List<WXGroupBuy> wxselectGroupBuy() {
+        return groupOnRulesMapper.selectGroupBuy();
     }
 }

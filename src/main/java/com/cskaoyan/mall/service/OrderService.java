@@ -21,4 +21,12 @@ public interface OrderService {
     void orderRefund(OrderRefundVO orderRefundVO);
 
     void orderShip(ShipVO shipVO);
+
+    Integer wxselectUnrecvByUserId(Integer userId);
+
+    Integer wxselectUncommentByUserId(Integer userId);
+
+    Integer wxselectUnpaidByUserId(Integer userId);
+
+    Integer wxselectUnshipByUserId(Integer userId);
 }
