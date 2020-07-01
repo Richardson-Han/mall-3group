@@ -302,6 +302,23 @@
       select DATE_FORMAT(add_time,"%Y-%m-%d")as `day`,sum(price) as amount, sum(number) as products,
       count(order_id) as orders from cskaoyanmall_order_goods group by DATE_FORMAT(add_time,"%Y-%m-%d")
     </select>
+  <select id="selectGoodsList" resultMap="BaseResultMap">
+    select brief, counter_price, id, is_hot, is_new, name, pic_url, retail_price
+    from cskaoyanmall_goods
+    <where>
+      <if test="keyword != null">
+        name like "%${keyword}%"
+      </if>
+
+      <if test="categoryId != 0">
+        and category_id = #{categoryId}
+      </if>
+    </where>
+    <if test="order != null &amp; order != null">
+      order by ${sort} ${order}
+    </if>
+
+  </select>
 
   <update id="updateByExampleSelective" parameterType="map">
     update cskaoyanmall_goods

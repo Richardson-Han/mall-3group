@@ -1,8 +1,9 @@
 package com.cskaoyan.mall;
 
-import com.cskaoyan.mall.bean.GoodsSpec;
-import com.cskaoyan.mall.mapper.AdminMapper;
-import com.cskaoyan.mall.mapper.GoodsSpecMapper;
+import com.cskaoyan.mall.bean.Category;
+import com.cskaoyan.mall.bean.Goods;
+import com.cskaoyan.mall.bean.GoodsCategory;
+import com.cskaoyan.mall.mapper.*;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -139,5 +140,22 @@ class MallApplicationTests {
         }
         SimpleAuthorizationInfo authorizationInfo = new SimpleAuthorizationInfo();
         authorizationInfo.addStringPermissions(permissions);
+    }
+
+    @Autowired
+    GoodsMapper goodsMapper;
+
+    @Autowired
+    GoodsCategoryMapper goodsCategoryMapper;
+
+    /**
+     * 在mabatis中做模糊查询，需要注意，like后应该用${},而不能用#{}
+     */
+    @Test
+    void selectGoodsListTest() {
+        List<Goods> goodsList = goodsMapper.selectGoodsList(
+                0, "花", "retail_price", "desc"
+        );
+        List<GoodsCategory> filterCategoryList = goodsCategoryMapper.selectFilterCategoryList(1008001, "花", "name", "desc");
     }
 }
