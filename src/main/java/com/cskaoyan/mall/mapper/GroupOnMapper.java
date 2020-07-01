@@ -31,4 +31,6 @@ public interface GroupOnMapper {
     int updateByPrimaryKey(GroupOn record);
 
     List<IDsVO> selectOrderIdAndUserIdByGrouponId(@Param("grouponId") Integer grouponId);
+
+    int selectByOrderId(@Param("id") Integer id);
 }

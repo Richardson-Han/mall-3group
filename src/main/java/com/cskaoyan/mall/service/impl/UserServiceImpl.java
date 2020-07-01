@@ -2,6 +2,7 @@ package com.cskaoyan.mall.service.impl;
 
 import com.cskaoyan.mall.bean.*;
 import com.cskaoyan.mall.bean.VO.StatBaseVO;
+import com.cskaoyan.mall.bean.VO.wx.WXUserInfoVO;
 import com.cskaoyan.mall.mapper.CouponMapper;
 import com.cskaoyan.mall.mapper.UserMapper;
 import com.cskaoyan.mall.service.UserService;
@@ -95,5 +96,10 @@ public class UserServiceImpl implements UserService {
         }
 
         return insert;
+    }
+
+    @Override
+    public WXUserInfoVO getUserInfo(String username) {
+        return userMapper.selectUserInfoByUsername(username);
     }
 }

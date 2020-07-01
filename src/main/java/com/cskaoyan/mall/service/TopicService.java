@@ -1,10 +1,12 @@
 package com.cskaoyan.mall.service;
-
 import com.cskaoyan.mall.bean.BaseData;
 import com.cskaoyan.mall.bean.Topic;
 
 import java.util.List;
+
 import java.util.Map;
+
+
 
 /**
  * @author 韩
@@ -20,8 +22,12 @@ public interface TopicService {
 
     Integer deleteTopic(Topic topic);
 
+
     //用于小程序查询专题细节
     Map<String, Object> selectDetail(Integer id);
 
     List<Topic> selectRelated(Integer id);
+
+    List<Topic> wxselectNewTopic();
+
 }

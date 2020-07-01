@@ -66,6 +66,7 @@ public class TopicServiceImpl implements TopicService {
     }
 
     @Override
+
     public Map<String, Object> selectDetail(Integer id) {
         return null;
     }
@@ -90,5 +91,10 @@ public class TopicServiceImpl implements TopicService {
         return list;
     }
 
+
+
+    public List<Topic> wxselectNewTopic() {
+        return topicMapper.selectNewTopic();
+    }
 
 }

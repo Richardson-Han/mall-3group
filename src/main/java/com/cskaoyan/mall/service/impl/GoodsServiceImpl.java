@@ -6,6 +6,7 @@ import com.cskaoyan.mall.bean.BO.GoodsUpdateBO;
 import com.cskaoyan.mall.bean.GoodsExample;
 import com.cskaoyan.mall.bean.GoodsStat;
 import com.cskaoyan.mall.bean.VO.*;
+import com.cskaoyan.mall.bean.wx.WXFloorGoods;
 import com.cskaoyan.mall.mapper.GoodsMapper;
 import com.cskaoyan.mall.bean.*;
 import com.cskaoyan.mall.mapper.*;
@@ -462,6 +463,26 @@ public class GoodsServiceImpl implements GoodsService {
         Map map = new HashMap();
         map.put("goodsList", goodsList);
         return map;
+    }
+
+    @Override
+    public List<Goods> wxselectNewgoods() {
+        return goodsMapper.selectNewgoods();
+    }
+
+    @Override
+    public List<Goods> wxselectHotGoods() {
+        return goodsMapper.selectHotGoods();
+    }
+
+    @Override
+    public List<WXFloorGoods> wxselectCategoryFour() {
+        return goodsMapper.selectCategoryFour();
+    }
+
+    @Override
+    public List<Goods> wxselectByCategoryid(Integer id) {
+        return goodsMapper.selectByCategoryid(id);
     }
 
     /**

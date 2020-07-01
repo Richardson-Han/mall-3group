@@ -6,7 +6,9 @@ import com.cskaoyan.mall.bean.GoodsComment;
 import com.cskaoyan.mall.bean.BO.GoodsCommentBO;
 import com.cskaoyan.mall.bean.BO.GoodsCommentListBO;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.Map;
 
 public interface GoodsCommentService {
 
@@ -16,6 +18,13 @@ public interface GoodsCommentService {
 
     int replyComment(GoodsCommentBO commentBO);
 
-    List<Object> getWXCommentList(WXGoodCommentBo wxGoodCommentBo);
+//显示所有评论
+Map<String,Object>  getWXCommentList(WXGoodCommentBo wxGoodCommentBo, HttpServletRequest request);
 
+
+    void insertComment(GoodsComment goodsComment);
+
+    Integer selectTheLastInsertId();
+
+    Map<String, Object> getWXCount(WXGoodCommentBo wxGoodCommentBo);
 }

@@ -28,4 +28,6 @@ public interface GoodsCommentMapper {
     int updateByPrimaryKeySelective(GoodsComment record);
 
     int updateByPrimaryKey(GoodsComment record);
+
+    Integer selectTheLastInsertId();
 }

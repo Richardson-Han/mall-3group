@@ -1,10 +1,7 @@
 package com.cskaoyan.mall.shiro;
 
 import com.cskaoyan.mall.mapper.UserMapper;
-import org.apache.shiro.authc.AuthenticationException;
-import org.apache.shiro.authc.AuthenticationInfo;
-import org.apache.shiro.authc.AuthenticationToken;
-import org.apache.shiro.authc.SimpleAuthenticationInfo;
+import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
@@ -29,9 +26,11 @@ public class WxRealm extends AuthorizingRealm {
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken)
             throws AuthenticationException {
-        MallToken token = (MallToken) authenticationToken;
-        String type = token.getType();
-        return dealInfoByType(type);
+        UsernamePasswordToken token = (UsernamePasswordToken) authenticationToken;
+        String username = token.getUsername();
+        List<String> strings = userMapper.selectPasswordByName(username);
+        String credential = strings.size() >= 1 ? strings.get(0) : null;
+        return new SimpleAuthenticationInfo(username, credential, this.getName());
     }
 
     /**

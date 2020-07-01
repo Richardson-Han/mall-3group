@@ -3,6 +3,7 @@ package com.cskaoyan.mall.mapper;
 import com.cskaoyan.mall.bean.User;
 import com.cskaoyan.mall.bean.UserExample;
 import com.cskaoyan.mall.bean.UserStat;
+import com.cskaoyan.mall.bean.VO.wx.WXUserInfoVO;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
@@ -52,4 +53,10 @@ public interface UserMapper {
 
     @Update("update cskaoyanmall_coupon set deleted = 1 where coupon_id = #{couponId}")
     void wxdeleteByCouponId(@Param("couponId") Integer couponId);
+
+    @Select("select nickname,avatar as avatarUrl from cskaoyanmall_user where username = #{username}")
+    WXUserInfoVO selectUserInfoByUsername(String username);
+
+    @Select("select password as strings from cskaoyanmall_user where username = #{username}")
+    List<String> selectPasswordByName(String username);
 }

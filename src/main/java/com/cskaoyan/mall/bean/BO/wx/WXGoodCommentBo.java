@@ -17,4 +17,5 @@ public class WXGoodCommentBo {
    private      Integer size;
    private      Integer page;
    private      Byte showType;
+   private      Integer valuedId;
 }

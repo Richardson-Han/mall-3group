@@ -7,7 +7,9 @@ import com.cskaoyan.mall.service.GoodsCommentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.Map;
 
 /* *
 @author  Walker-胡
@@ -26,9 +28,17 @@ public class WXCommentController {
                                      @RequestParam("page")      Integer page,
                                      @RequestParam("showType")  Integer showType
 
+                                     显示所有评论
+
     * */
-    public BaseRespVo getCommentList(@RequestBody WXGoodCommentBo wxGoodCommentBo){
-       List<Object> list=goodsCommentService.getWXCommentList(wxGoodCommentBo);
-        return BaseRespVo.ok ();
+    public BaseRespVo getCommentList(@RequestBody WXGoodCommentBo wxGoodCommentBo, HttpServletRequest request){
+        Map<String,Object> map=goodsCommentService.getWXCommentList(wxGoodCommentBo, request);
+        return BaseRespVo.ok (map);
+    }
+
+    @GetMapping("/count")
+    public BaseRespVo getWXCount(@RequestBody WXGoodCommentBo wxGoodCommentBo){
+        Map<String,Object> map= goodsCommentService.getWXCount(wxGoodCommentBo);
+           return BaseRespVo.ok (map);
     }
 }

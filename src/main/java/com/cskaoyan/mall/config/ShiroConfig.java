@@ -38,7 +38,14 @@ public class ShiroConfig {
         fiterChainDefinitionMap.put("/admin/auth/401", "anon");
         fiterChainDefinitionMap.put("/admin/storage/create", "anon");
         fiterChainDefinitionMap.put("/admin/auth/info", "anon");
-        fiterChainDefinitionMap.put("/wx/**", "anon");//开发时先给全部权限
+        //微信权限设置，要是哪个网页不需要权限就能访问就在这添加fiterChainDefinitionMap.put("***", "anon");
+        fiterChainDefinitionMap.put("/wx/goods/*", "anon");
+        fiterChainDefinitionMap.put("/wx/catalog/current", "anon");
+        fiterChainDefinitionMap.put("/wx/auth/login", "anon");
+        fiterChainDefinitionMap.put("/wx/home/index","anon");
+        fiterChainDefinitionMap.put("/wx/storage/*","anon");
+        fiterChainDefinitionMap.put("/wx/**", "authc");
+        //开发时先给全部权限
 
         // fiterChainDefinitionMap.put("/**","perms[*]");*不需要设置 自动全权限
 

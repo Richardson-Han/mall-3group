@@ -28,4 +28,8 @@ public interface OrderGoodsMapper {
     int updateByPrimaryKeySelective(OrderGoods record);
 
     int updateByPrimaryKey(OrderGoods record);
+
+    Integer queryGoodsIdByOrderId(@Param("orderGoodsId") Integer orderGoodsId);
+
+    List<com.cskaoyan.mall.bean.wx.OrderGoods> selectByOrderId(@Param("id") Integer id);
 }
