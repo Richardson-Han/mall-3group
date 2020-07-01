@@ -14,4 +14,6 @@ public interface GroupService {
     Integer delete(GroupOnRules groupOnRules);
 
     BaseData listRecord(Integer page, Integer limit, String sort, String order, Integer goodsId);
+
+    Boolean isGroupIn(Integer id);
 }

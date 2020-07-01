@@ -106,4 +106,50 @@ public class OrderServiceImpl implements OrderService {
         order.setUpdateTime (new Date ());
         order.setOrderStatus (OrderStatusVO.order_delivered);
     }
+
+    @Override
+    public Integer queryGoodsIdByOrderId(Integer orderGoodsId) {
+        Integer id = orderGoodsMapper.queryGoodsIdByOrderId(orderGoodsId);
+        return id;
+    }
+
+    @Override
+    public void updateCommentId(Integer orderGoodsId, Integer commentId) {
+        OrderGoods orderGoods = new OrderGoods();
+        orderGoods.setId(orderGoodsId);
+        orderGoods.setComment(commentId);
+        orderGoodsMapper.updateByPrimaryKeySelective(orderGoods);
+    }
+
+    @Override
+    public List<Order> queryOrderByOrderStatus(Integer showType) {
+        //判断订单状态
+        if(showType == 0){
+            List<Order> orders = orderMapper.selectAllOrders();
+            return orders;
+        }
+        int status = 0;
+        switch (showType){
+            case 1 :
+                status = 101;
+                break;
+            case 2 :
+                status = 201;
+                break;
+            case 3 :
+                status = 301;
+                break;
+            case 4 :
+                status = 401;
+                break;
+        }
+        List<Order> orders =  orderMapper.selectByOrderStatus(status);
+        return orders;
+    }
+
+    @Override
+    public List<com.cskaoyan.mall.bean.wx.OrderGoods> queryOrderGoodsByOrderId(Integer id) {
+        List<com.cskaoyan.mall.bean.wx.OrderGoods> orderGoodsList = orderGoodsMapper.selectByOrderId(id);
+        return orderGoodsList;
+    }
 }

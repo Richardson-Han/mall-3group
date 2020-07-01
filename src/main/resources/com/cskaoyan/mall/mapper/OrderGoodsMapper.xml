@@ -218,6 +218,12 @@
       <include refid="Example_Where_Clause" />
     </if>
   </select>
+    <select id="queryGoodsIdByOrderId" resultType="java.lang.Integer">
+      select goods_id from cskaoyanmall_order_goods where order_id = #{orderGoodsId}
+    </select>
+  <select id="selectByOrderId" resultType="com.cskaoyan.mall.bean.wx.OrderGoods">
+    select id , goods_name as goodsName , number, pic_url as picUrl from cskaoyanmall_order_goods where order_id = #{id}
+  </select>
   <update id="updateByExampleSelective" parameterType="map">
     update cskaoyanmall_order_goods
     <set>

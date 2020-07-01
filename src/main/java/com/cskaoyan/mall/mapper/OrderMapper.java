@@ -39,4 +39,7 @@ public interface OrderMapper {
 
     List<OrderStat> selectGroupByAddTime();
 
+    List<Order> selectByOrderStatus(@Param("status") Integer status);
+
+    List<Order> selectAllOrders();
 }

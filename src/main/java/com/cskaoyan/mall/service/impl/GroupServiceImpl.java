@@ -171,4 +171,11 @@ public class GroupServiceImpl implements GroupService {
         long total = pageInfo.getTotal();
         return new BaseData(groupOnListRecordVOs,total);
     }
+
+    @Override
+    public Boolean isGroupIn(Integer id) {
+        int num = groupOnMapper.selectByOrderId(id);
+        return num > 0;
+
+    }
 }
