@@ -30,7 +30,7 @@ public interface GoodsService {
 
     Map category(Integer id);
 
-    Map list(Integer categoryId, Integer page, Integer size);
+    Map list(Integer categoryId, Integer page, Integer size, String keyword, String sort, String order);
 
     Map detail(Integer goodsId);
 

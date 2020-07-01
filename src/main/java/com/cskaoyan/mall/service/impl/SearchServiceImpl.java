@@ -3,12 +3,14 @@ package com.cskaoyan.mall.service.impl;
 import com.cskaoyan.mall.bean.KeyWord;
 import com.cskaoyan.mall.bean.KeyWordExample;
 import com.cskaoyan.mall.bean.SearchHistory;
+import com.cskaoyan.mall.bean.SearchHistoryExample;
 import com.cskaoyan.mall.mapper.KeyWordMapper;
 import com.cskaoyan.mall.mapper.SearchHistoryMapper;
 import com.cskaoyan.mall.service.SearchService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -46,5 +48,22 @@ public class SearchServiceImpl implements SearchService {
         map.put("historyKeywordList", historyKeywordList);
         map.put("hotKeywordList", hotKeywordList);
         return map;
+    }
+
+    @Override
+    public void clearhistory(String username) {
+        searchHistoryMapper.deleteByUsername(username);
+    }
+
+    @Override
+    public List<String> helper(String keyword) {
+        KeyWordExample example = new KeyWordExample();
+        example.createCriteria().andKeywordLike("%" + keyword + "%");
+        List<KeyWord> keyWordList = keyWordMapper.selectByExample(example);
+        List<String> data = new ArrayList<>();
+        for (KeyWord keyWord : keyWordList) {
+            data.add(keyWord.getKeyword());
+        }
+        return data;
     }
 }

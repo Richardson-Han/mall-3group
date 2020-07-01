@@ -4,6 +4,7 @@ import com.cskaoyan.mall.bean.VO.BaseRespVo;
 import com.cskaoyan.mall.service.SearchService;
 import lombok.AllArgsConstructor;
 import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.session.mgt.DefaultSessionKey;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.subject.Subject;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Map;
 
 /***
@@ -32,5 +34,19 @@ public class WXSearchController {
         String username = (String) subject.getPrincipal();
         Map<String, Object> map = searchService.index(username);
         return BaseRespVo.ok(map);
+    }
+
+    @RequestMapping("clearhistory")
+    public BaseRespVo clearhistory(){
+        Subject subject = SecurityUtils.getSubject();
+        String username = (String) subject.getPrincipal();
+        searchService.clearhistory(username);
+        return BaseRespVo.ok();
+    }
+
+    @RequestMapping("helper")
+    public BaseRespVo helper(String keyword){
+        List<String> data = searchService.helper(keyword);
+        return BaseRespVo.ok(data);
     }
 }
