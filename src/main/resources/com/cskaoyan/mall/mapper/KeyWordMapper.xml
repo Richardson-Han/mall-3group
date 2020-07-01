@@ -180,7 +180,11 @@
       <include refid="Example_Where_Clause" />
     </if>
   </select>
-  <update id="updateByExampleSelective" parameterType="map">
+    <select id="selectByIsDefaultIdSortOrder" resultMap="BaseResultMap">
+      select * from cskaoyanmall_keyword where is_default = 1
+      order by sort_order, id limit 1
+    </select>
+    <update id="updateByExampleSelective" parameterType="map">
     update cskaoyanmall_keyword
     <set>
       <if test="record.id != null">
