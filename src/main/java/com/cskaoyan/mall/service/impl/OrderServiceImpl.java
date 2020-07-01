@@ -6,10 +6,14 @@ import com.cskaoyan.mall.bean.VO.OrderRefundVO;
 import com.cskaoyan.mall.bean.VO.OrderStatusVO;
 import com.cskaoyan.mall.bean.VO.ShipVO;
 import com.cskaoyan.mall.bean.VO.StatBaseVO;
+import com.cskaoyan.mall.bean.wx.HandleOption;
+import com.cskaoyan.mall.bean.wx.VO.WXOrderInfoVO;
+import com.cskaoyan.mall.bean.wx.WXOrderGoods;
 import com.cskaoyan.mall.mapper.OrderGoodsMapper;
 import com.cskaoyan.mall.mapper.OrderMapper;
 import com.cskaoyan.mall.mapper.UserMapper;
 import com.cskaoyan.mall.service.OrderService;
+import com.cskaoyan.mall.utils.WxHandleOptionUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -148,8 +152,81 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<com.cskaoyan.mall.bean.wx.OrderGoods> queryOrderGoodsByOrderId(Integer id) {
-        List<com.cskaoyan.mall.bean.wx.OrderGoods> orderGoodsList = orderGoodsMapper.selectByOrderId(id);
-        return orderGoodsList;
+    public List<WXOrderGoods> queryOrderGoodsByOrderId(Integer id) {
+        List<WXOrderGoods> WXOrderGoodsList = orderGoodsMapper.selectByOrderId(id);
+        return WXOrderGoodsList;
+    }
+
+    @Override
+    public List<OrderGoods> selectOrderGoodsByOrderId(Integer orderId) {
+        OrderGoodsExample orderGoodsExample = new OrderGoodsExample();
+        orderGoodsExample.createCriteria().andOrderIdEqualTo(orderId);
+        List<OrderGoods> orderGoods = orderGoodsMapper.selectByExample(orderGoodsExample);
+        return orderGoods;
+    }
+
+    @Override
+    public WXOrderInfoVO getWxOrderInfo(Integer orderId) {
+        Order order = orderMapper.selectByPrimaryKey(orderId);
+        WXOrderInfoVO wxOrderInfoVO = new WXOrderInfoVO();
+        wxOrderInfoVO.setActualPrice(order.getActualPrice());
+        wxOrderInfoVO.setAddTime(order.getAddTime());
+        wxOrderInfoVO.setAddress(order.getAddress());
+        wxOrderInfoVO.setConsignee(order.getConsignee());
+        wxOrderInfoVO.setCouponPrice(order.getCouponPrice());
+        wxOrderInfoVO.setFreightPrice(order.getFreightPrice());
+        wxOrderInfoVO.setGoodsPrice(order.getGoodsPrice());
+        HandleOption handleOption = WxHandleOptionUtil.getHandleOption(order.getOrderStatus());
+        wxOrderInfoVO.setHandleOption(handleOption);
+        wxOrderInfoVO.setId(order.getId());
+        wxOrderInfoVO.setMobile(order.getMobile());
+        wxOrderInfoVO.setOrderSn(order.getOrderSn());
+        wxOrderInfoVO.setOrderStatusText(order.getOrderStatus());
+        return wxOrderInfoVO;
+    }
+
+    @Override
+    public void cancelOrder(Integer orderId) {
+        Order order = new Order();
+        order.setId(orderId);
+        order.setOrderStatus((short) 102);
+        order.setUpdateTime(new Date());
+        orderMapper.updateByPrimaryKeySelective(order);
+    }
+
+    @Override
+    public void deleteOrder(Integer orderId) {
+        Order order = new Order();
+        order.setId(orderId);
+        order.setUpdateTime(new Date());
+        order.setDeleted(true);
+        orderMapper.updateByPrimaryKeySelective(order);
+    }
+
+    @Override
+    public void refund(Integer orderId) {
+        Order order = new Order();
+        order.setId(orderId);
+        order.setUpdateTime(new Date ());
+        order.setOrderStatus(OrderStatusVO.request_refund);
+        orderMapper.updateByPrimaryKeySelective(order);
+    }
+
+    @Override
+    public void confirmOrder(Integer orderId) {
+        Order order = new Order();
+        order.setId(orderId);
+        order.setUpdateTime(new Date ());
+        order.setOrderStatus(OrderStatusVO.user_receipt);
+        orderMapper.updateByPrimaryKeySelective(order);
+    }
+
+    @Override
+    public OrderGoods getOrderGoods(Integer orderId, Integer goodsId) {
+        OrderGoodsExample example = new OrderGoodsExample();
+        example.createCriteria().andOrderIdEqualTo(orderId).andGoodsIdEqualTo(goodsId);
+        List<OrderGoods> orderGoodsList = orderGoodsMapper.selectByExample(example);
+        //只有一条数据
+        return orderGoodsList.get(0);
     }
 }

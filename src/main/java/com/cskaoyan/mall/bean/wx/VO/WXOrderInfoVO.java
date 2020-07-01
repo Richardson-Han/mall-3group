@@ -1,81 +1,29 @@
 package com.cskaoyan.mall.bean.wx.VO;
 
 import com.cskaoyan.mall.bean.wx.HandleOption;
-import com.cskaoyan.mall.bean.wx.WXOrderGoods;
 import com.cskaoyan.mall.bean.wx.enumeration.OrderStatus;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
-import java.util.List;
-
-public class OrderListDataVO {
+import java.util.Date;
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+public class WXOrderInfoVO {
     private BigDecimal actualPrice;
-
-    private List<WXOrderGoods> goodsList;
-
+    private Date addTime;
+    private String address;
+    private String consignee;
+    private BigDecimal couponPrice;
+    private BigDecimal freightPrice;
+    private BigDecimal goodsPrice;
     private HandleOption handleOption;
-
     private Integer id;
-
-    private Boolean isGroupin;
-
+    private String mobile;
     private String orderSn;
-
     private String orderStatusText;
-
-    public OrderListDataVO() {
-    }
-
-    public BigDecimal getActualPrice() {
-        return actualPrice;
-    }
-
-    public void setActualPrice(BigDecimal actualPrice) {
-        this.actualPrice = actualPrice;
-    }
-
-    public List<WXOrderGoods> getGoodsList() {
-        return goodsList;
-    }
-
-    public void setGoodsList(List<WXOrderGoods> goodsList) {
-        this.goodsList = goodsList;
-    }
-
-    public HandleOption getHandleOption() {
-        return handleOption;
-    }
-
-    public void setHandleOption(HandleOption handleOption) {
-        this.handleOption = handleOption;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public Boolean getGroupin() {
-        return isGroupin;
-    }
-
-    public void setIsGroupin(Boolean groupin) {
-        isGroupin = groupin;
-    }
-
-    public String getOrderSn() {
-        return orderSn;
-    }
-
-    public void setOrderSn(String orderSn) {
-        this.orderSn = orderSn;
-    }
-
-    public String getOrderStatusText() {
-        return orderStatusText;
-    }
 
     public void setOrderStatusText(Short orderStatus) {
         String text = null;
