@@ -2,35 +2,34 @@ package com.cskaoyan.mall.bean;
 
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.math.BigDecimal;
 import java.util.Date;
 
 @AllArgsConstructor
 @NoArgsConstructor
-public class OrderGoods {
+public class Cart {
     private Integer id;
 
-    private Integer orderId;
+    private Integer userId;
 
     private Integer goodsId;
 
-    private String goodsName;
-
     private String goodsSn;
+
+    private String goodsName;
 
     private Integer productId;
 
-    private Short number;
-
     private BigDecimal price;
+
+    private Short number;
 
     private String[] specifications;
 
-    private String picUrl;
+    private Boolean checked;
 
-    private Integer comment;
+    private String picUrl;
 
     private Date addTime;
 
@@ -46,12 +45,12 @@ public class OrderGoods {
         this.id = id;
     }
 
-    public Integer getOrderId() {
-        return orderId;
+    public Integer getUserId() {
+        return userId;
     }
 
-    public void setOrderId(Integer orderId) {
-        this.orderId = orderId;
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 
     public Integer getGoodsId() {
@@ -62,20 +61,20 @@ public class OrderGoods {
         this.goodsId = goodsId;
     }
 
-    public String getGoodsName() {
-        return goodsName;
-    }
-
-    public void setGoodsName(String goodsName) {
-        this.goodsName = goodsName == null ? null : goodsName.trim();
-    }
-
     public String getGoodsSn() {
         return goodsSn;
     }
 
     public void setGoodsSn(String goodsSn) {
         this.goodsSn = goodsSn == null ? null : goodsSn.trim();
+    }
+
+    public String getGoodsName() {
+        return goodsName;
+    }
+
+    public void setGoodsName(String goodsName) {
+        this.goodsName = goodsName == null ? null : goodsName.trim();
     }
 
     public Integer getProductId() {
@@ -86,14 +85,6 @@ public class OrderGoods {
         this.productId = productId;
     }
 
-    public Short getNumber() {
-        return number;
-    }
-
-    public void setNumber(Short number) {
-        this.number = number;
-    }
-
     public BigDecimal getPrice() {
         return price;
     }
@@ -102,12 +93,28 @@ public class OrderGoods {
         this.price = price;
     }
 
+    public Short getNumber() {
+        return number;
+    }
+
+    public void setNumber(Short number) {
+        this.number = number;
+    }
+
     public String[] getSpecifications() {
         return specifications;
     }
 
     public void setSpecifications(String[] specifications) {
-        this.specifications = specifications;
+        this.specifications = specifications ;
+    }
+
+    public Boolean getChecked() {
+        return checked;
+    }
+
+    public void setChecked(Boolean checked) {
+        this.checked = checked;
     }
 
     public String getPicUrl() {
@@ -116,14 +123,6 @@ public class OrderGoods {
 
     public void setPicUrl(String picUrl) {
         this.picUrl = picUrl == null ? null : picUrl.trim();
-    }
-
-    public Integer getComment() {
-        return comment;
-    }
-
-    public void setComment(Integer comment) {
-        this.comment = comment;
     }
 
     public Date getAddTime() {

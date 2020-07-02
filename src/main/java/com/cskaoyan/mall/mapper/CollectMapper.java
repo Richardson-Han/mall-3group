@@ -3,6 +3,7 @@ package com.cskaoyan.mall.mapper;
 import com.cskaoyan.mall.bean.Collect;
 import com.cskaoyan.mall.bean.CollectExample;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
 
@@ -30,4 +31,7 @@ public interface CollectMapper {
     int updateByPrimaryKey(Collect record);
 
     Collect selectByUserIdAndValueId(@Param("userId") Integer userId, @Param("valueId") Integer valueId);
+
+    @Select("select * from cskaoyanmall_collect where value_id = #{valueId}")
+    Collect selectByValueId(@Param("valueId") Integer valueId);
 }
