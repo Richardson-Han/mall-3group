@@ -4,8 +4,6 @@ import com.cskaoyan.mall.bean.Advertising;
 import com.cskaoyan.mall.bean.AdvertisingExample;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
-import org.mybatis.spring.annotation.MapperScan;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import java.util.List;
 
@@ -35,4 +33,11 @@ public interface AdvertisingMapper {
     @Select("select id,name,link,url,`position`,content,enabled,add_Time as `addTime`," +
             "update_time as updateTime,deleted from cskaoyanmall_ad limit 0,10")
     List<Advertising> selectTopAdvertising();
+
+    @Select("select LAST_INSERT_ID()")
+    Integer selectLastAdvertisingId();
+
+    @Select("select id,name,url,position,content,enabled,add_time as addTime,update_time as updateTime " +
+            "from cskaoyanmall_ad where id = #{id}")
+    Advertising selectLastAdvertising(@Param("id") Integer id);
 }
