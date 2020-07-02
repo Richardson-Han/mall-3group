@@ -22,17 +22,17 @@ public class WXBrandController {
     BrandService brandService;
 
     @RequestMapping("list")
-    public BaseRespVo getBrandList(Integer page,Integer size){
-        WXBrandListData baseData = brandService.getBrandList(page,size);
+    public BaseRespVo getBrandList(Integer page, Integer size) {
+        WXBrandListData baseData = brandService.getBrandList(page, size);
         return BaseRespVo.ok(baseData);
     }
 
     @RequestMapping("detail")
-    public BaseRespVo getBrandDetail(Integer id){
+    public BaseRespVo getBrandDetail(Integer id) {
         Brand brand = brandService.getBrandDetail(id);
-        if ( brand != null ){
+        if (brand != null) {
             return BaseRespVo.ok(brand);
-        }else {
+        } else {
             return BaseRespVo.error();
         }
     }

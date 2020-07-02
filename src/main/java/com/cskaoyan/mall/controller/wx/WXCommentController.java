@@ -20,6 +20,7 @@ import java.util.Map;
 public class WXCommentController {
     @Autowired
     GoodsCommentService goodsCommentService;
+
     @RequestMapping("/list")
     /*
         @RequestParam("valueId")Integer valueId,
@@ -31,16 +32,16 @@ public class WXCommentController {
                                      显示所有评论
 
     * */
-    public BaseRespVo getCommentList(Integer valueId ,Byte type ,Byte showType,Integer page,Integer size ){
-        WXGoodCommentBo wxGoodCommentBo = new WXGoodCommentBo(type,size,page,showType,valueId);
-        Map<String,Object> map=goodsCommentService.getWXCommentList(wxGoodCommentBo);
-        return BaseRespVo.ok (map);
+    public BaseRespVo getCommentList(Integer valueId, Byte type, Byte showType, Integer page, Integer size) {
+        WXGoodCommentBo wxGoodCommentBo = new WXGoodCommentBo(type, size, page, showType, valueId);
+        Map<String, Object> map = goodsCommentService.getWXCommentList(wxGoodCommentBo);
+        return BaseRespVo.ok(map);
     }
 
     @RequestMapping("/count")
-    public BaseRespVo getWXCount(Integer valueId ,Byte type ,Byte showType,Integer page,Integer size){
-        WXGoodCommentBo wxGoodCommentBo = new WXGoodCommentBo(type,size,page,showType,valueId);
-        Map<String,Object> map= goodsCommentService.getWXCount(wxGoodCommentBo);
-           return BaseRespVo.ok (map);
+    public BaseRespVo getWXCount(Integer valueId, Byte type, Byte showType, Integer page, Integer size) {
+        WXGoodCommentBo wxGoodCommentBo = new WXGoodCommentBo(type, size, page, showType, valueId);
+        Map<String, Object> map = goodsCommentService.getWXCount(wxGoodCommentBo);
+        return BaseRespVo.ok(map);
     }
 }
