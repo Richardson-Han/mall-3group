@@ -269,7 +269,7 @@ public class CartServiceImpl implements CartService {
         Integer userId = userMapper.selectIdByUsername(username);
 
         //获得加入购物车的商品数量
-        Short number = (Short) map.get("number");
+        Integer number = (Integer) map.get("number");
         //获得productId
         Integer productId = (Integer) map.get("productId");
         //根绝productId去获得goods_product表中对应的信息
@@ -279,7 +279,7 @@ public class CartServiceImpl implements CartService {
         //再来获得goods信息
         Goods goods = goodsMapper.selectByPrimaryKey(goodsId);
         //新建一个商品订单
-        OrderGoods orderGoods = new OrderGoods(null, null, goodsId, goods.getName(), goodsId.toString(), productId, number, goodsProduct.getPrice(),
+        OrderGoods orderGoods = new OrderGoods(null, null, goodsId, goods.getName(), goodsId.toString(), productId, (short)number.intValue(), goodsProduct.getPrice(),
                 goodsProduct.getSpecifications(), goodsProduct.getUrl(), null, new Date(), new Date(), false);
 
         orderGoodsMapper.insertSelective(orderGoods);
