@@ -33,12 +33,12 @@ public class WXStorageContorller {
      */
     @RequestMapping(value = "/upload", method = RequestMethod.POST)
     public void picUpload(@RequestParam("file") MultipartFile multipartFile, HttpServletRequest request,
-                                        HttpServletResponse response) throws IOException {
+                          HttpServletResponse response) throws IOException {
         HttpServletResponse servResponse = response;
         //设置响应属性
         servResponse.setContentType("application/json;charset=UTF-8");
         //文件没取到 返回404
-        if(multipartFile.isEmpty()){
+        if (multipartFile.isEmpty()) {
             servResponse.setStatus(404);
         }
         Storage storage = new Storage();
@@ -52,16 +52,16 @@ public class WXStorageContorller {
         String newfilename = UUID.randomUUID() + endName;
         //保存文件
         File downloadFile = new File(filePath + newfilename);
-        if (!downloadFile.getParentFile().exists()){
+        if (!downloadFile.getParentFile().exists()) {
             downloadFile.getParentFile().mkdirs();
         }
         multipartFile.transferTo(downloadFile);
         //获取文件的大小
-        Integer fileSize = (int)downloadFile.length();
+        Integer fileSize = (int) downloadFile.length();
         //设置返回值并存入数据库
         storage.setKey(newfilename);
         storage.setName(filename);
-        endName = endName.replace(".","");
+        endName = endName.replace(".", "");
         storage.setType("image/" + endName);
         storage.setSize(fileSize);
         Date date = new Date();
@@ -74,6 +74,6 @@ public class WXStorageContorller {
         servResponse.setStatus(200);
         servResponse.encodeURL(storage.getUrl());
         String method = request.getMethod();
-        servResponse.setHeader("Vary","歪~");
+        servResponse.setHeader("Vary", "歪~");
     }
 }

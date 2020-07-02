@@ -1,5 +1,6 @@
 package com.cskaoyan.mall.service.impl;
 
+import com.cskaoyan.mall.bean.BaseData;
 import com.cskaoyan.mall.bean.Region;
 import com.cskaoyan.mall.bean.RegionExample;
 import com.cskaoyan.mall.mapper.RegionMapper;
@@ -66,5 +67,13 @@ public class RegionServiceImpl implements RegionService {
 
         }
         return oneRegions;
+    }
+//微信小程序查询对应市区的三级区号
+    @Override
+    public List<Region> queryWXRegionList(Integer pid) {
+        RegionExample regionExample = new RegionExample ();
+        RegionExample.Criteria criteria = regionExample.createCriteria ().andPidEqualTo (pid);
+        List<Region> list = regionMapper.selectByExample (regionExample);
+        return list;
     }
 }

@@ -29,7 +29,7 @@ public class WXSearchController {
     SearchService searchService;
 
     @RequestMapping("index")
-    public BaseRespVo index(){
+    public BaseRespVo index() {
         Subject subject = SecurityUtils.getSubject();
         String username = (String) subject.getPrincipal();
         Map<String, Object> map = searchService.index(username);
@@ -37,7 +37,7 @@ public class WXSearchController {
     }
 
     @RequestMapping("clearhistory")
-    public BaseRespVo clearhistory(){
+    public BaseRespVo clearhistory() {
         Subject subject = SecurityUtils.getSubject();
         String username = (String) subject.getPrincipal();
         searchService.clearhistory(username);
@@ -45,7 +45,7 @@ public class WXSearchController {
     }
 
     @RequestMapping("helper")
-    public BaseRespVo helper(String keyword){
+    public BaseRespVo helper(String keyword) {
         List<String> data = searchService.helper(keyword);
         return BaseRespVo.ok(data);
     }

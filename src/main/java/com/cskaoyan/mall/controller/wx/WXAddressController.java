@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author 杨
@@ -31,7 +32,7 @@ public class WXAddressController {
     AddressService addressService;
 
     @RequestMapping("list")
-    public BaseRespVo wxAddressListGet(){
+    public BaseRespVo wxAddressListGet() {
         Subject subject = SecurityUtils.getSubject();
         String username = (String) subject.getPrincipals().getPrimaryPrincipal();
         List<WXAddressListVO> addressList = addressService.getAddressListByUsername(username);
@@ -39,34 +40,35 @@ public class WXAddressController {
     }
 
     @RequestMapping("detail")
-    public BaseRespVo wxAddressListGet(Integer id){
+    public BaseRespVo wxAddressListGet(Integer id) {
         WXAddressDetailVO addressDetail = addressService.selectAddressDetailById(id);
-        if (addressDetail != null){
+        if (addressDetail != null) {
             return BaseRespVo.ok(addressDetail);
-        }else {
+        } else {
             return BaseRespVo.error();
         }
     }
 
     @PostMapping("save")
-    public BaseRespVo wxAddressSave(@RequestBody Address addressBO){
+    public BaseRespVo wxAddressSave(@RequestBody Address addressBO) {
         Subject subject = SecurityUtils.getSubject();
         String username = (String) subject.getPrincipals().getPrimaryPrincipal();
 
-        Integer id = addressService.saveAddress(addressBO,username);
-        if ( id > 0 ){
-            return BaseRespVo.ok( id );
-        }else {
+        Integer id = addressService.saveAddress(addressBO, username);
+        if (id > 0) {
+            return BaseRespVo.ok(id);
+        } else {
             return BaseRespVo.error();
         }
     }
 
     @PostMapping("delete")
-    public BaseRespVo wxAddressDelete(@RequestBody Integer id){
+    public BaseRespVo wxAddressDelete(@RequestBody Map map) {
+        Integer id = (int)map.get("id");
         Integer result = addressService.deleteAddressById(id);
-        if( result > 0 ){
+        if (result > 0) {
             return BaseRespVo.ok();
-        }else {
+        } else {
             return BaseRespVo.error();
         }
     }

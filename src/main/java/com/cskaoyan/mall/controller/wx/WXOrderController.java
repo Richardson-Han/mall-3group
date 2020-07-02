@@ -42,10 +42,9 @@ public class WXOrderController {
     GroupService groupService;
 
 
-
     @RequestMapping("comment")
     @Transactional
-    public BaseRespVo comment(OrderCommentBO commentBO){
+    public BaseRespVo comment(OrderCommentBO commentBO) {
         //先在comment表添加评论
         GoodsComment goodsComment = new GoodsComment();
         goodsComment.setContent(commentBO.getContent());
@@ -68,14 +67,14 @@ public class WXOrderController {
         //获得comment的id
         Integer commentId = commentService.selectTheLastInsertId();
         //更新
-        orderService.updateCommentId(commentBO.getOrderGoodsId(),commentId);
+        orderService.updateCommentId(commentBO.getOrderGoodsId(), commentId);
         return BaseRespVo.ok();
     }
 
 
     @RequestMapping("list")
-    public BaseRespVo list(Integer showType, Integer page, Integer size){
-        PageHelper.startPage(page,size);
+    public BaseRespVo list(Integer showType, Integer page, Integer size) {
+        PageHelper.startPage(page, size);
         List<Order> orders = orderService.queryOrderByOrderStatus(showType);
         List<WXOrderGoods> goodsList;
         List<OrderListDataVO> orderListDataVOs = new ArrayList<>();
@@ -100,40 +99,40 @@ public class WXOrderController {
     }
 
     @RequestMapping("detail")
-    public BaseRespVo detail(Integer orderId){
+    public BaseRespVo detail(Integer orderId) {
         List<OrderGoods> orderGoodsList = orderService.selectOrderGoodsByOrderId(orderId);
-        WXOrderInfoVO  orderInfo = orderService.getWxOrderInfo(orderId);
-        WXOrderDetailDataVO wxOrderDetailDataVO = new WXOrderDetailDataVO(orderGoodsList,orderInfo);
+        WXOrderInfoVO orderInfo = orderService.getWxOrderInfo(orderId);
+        WXOrderDetailDataVO wxOrderDetailDataVO = new WXOrderDetailDataVO(orderGoodsList, orderInfo);
         return BaseRespVo.ok(wxOrderDetailDataVO);
     }
 
     @RequestMapping("cancel")
-    public BaseRespVo cancel(Integer orderId){
+    public BaseRespVo cancel(Integer orderId) {
         orderService.cancelOrder(orderId);
         return BaseRespVo.ok();
     }
 
     @RequestMapping("refund")
-    public BaseRespVo refund(@RequestBody Map map){
+    public BaseRespVo refund(@RequestBody Map map) {
         orderService.refund((Integer) map.get("orderId"));
         return BaseRespVo.ok();
     }
 
     @RequestMapping("delete")
-    public BaseRespVo delete(Integer orderId){
+    public BaseRespVo delete(Integer orderId) {
         orderService.deleteOrder(orderId);
         return BaseRespVo.ok();
     }
 
     @RequestMapping("confirm")
-    public BaseRespVo confirm(@RequestBody Map map){
+    public BaseRespVo confirm(@RequestBody Map map) {
         orderService.confirmOrder((Integer) map.get("orderId"));
         return BaseRespVo.ok();
     }
 
     @RequestMapping("goods")
-    public BaseRespVo goods (Integer orderId, Integer goodsId){
-        OrderGoods orderGoods = orderService.getOrderGoods(orderId,goodsId);
+    public BaseRespVo goods(Integer orderId, Integer goodsId) {
+        OrderGoods orderGoods = orderService.getOrderGoods(orderId, goodsId);
         return BaseRespVo.ok(orderGoods);
     }
 

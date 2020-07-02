@@ -1,5 +1,6 @@
 package com.cskaoyan.mall.bean;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
@@ -43,7 +44,7 @@ public class Goods {
     private BigDecimal counterPrice;
 
     private BigDecimal retailPrice;
-
+//    @JsonFormat(pattern = "yyyy-MM-dd",timezone = "GMT +8")
     private Date addTime;
 
     private Date updateTime;

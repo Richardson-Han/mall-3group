@@ -1,6 +1,5 @@
 package com.cskaoyan.mall;
 
-import com.cskaoyan.mall.utils.WXTokenUtils;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
