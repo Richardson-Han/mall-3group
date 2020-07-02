@@ -106,7 +106,7 @@ public class Cart {
     }
 
     public void setSpecifications(String[] specifications) {
-        this.specifications = specifications ;
+        this.specifications = specifications;
     }
 
     public Boolean getChecked() {

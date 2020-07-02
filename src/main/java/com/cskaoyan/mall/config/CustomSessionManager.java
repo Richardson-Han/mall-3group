@@ -1,7 +1,6 @@
 package com.cskaoyan.mall.config;
 
 
-
 import org.apache.shiro.web.session.mgt.DefaultWebSessionManager;
 
 import javax.servlet.ServletRequest;
@@ -19,7 +18,7 @@ public class CustomSessionManager extends DefaultWebSessionManager {
     protected Serializable getSessionId(ServletRequest srerequest, ServletResponse response) {
         HttpServletRequest request = (HttpServletRequest) srerequest;
         String sessionId = request.getHeader("X-cskaoyan-mall-Admin-Token");
-        if (sessionId != null && !"".equals(sessionId)){
+        if (sessionId != null && !"".equals(sessionId)) {
             return sessionId;
         }
 

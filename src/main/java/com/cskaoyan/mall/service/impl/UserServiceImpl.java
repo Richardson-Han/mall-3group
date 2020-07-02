@@ -102,4 +102,9 @@ public class UserServiceImpl implements UserService {
     public WXUserInfoVO getUserInfo(String username) {
         return userMapper.selectUserInfoByUsername(username);
     }
+
+    @Override
+    public List<String> selectPasswordByName(String username) {
+        return userMapper.selectPasswordByName(username);
+    }
 }
