@@ -34,5 +34,5 @@ public interface GoodsCategoryMapper {
 
     int updateByPrimaryKey(GoodsCategory record);
 
-    List<GoodsCategory> selectFilterCategoryList(@Param("categoryId") Integer categoryId, @Param("keyword") String keyword, @Param("sort") String sort, @Param("order") String order);
+    List<GoodsCategory> selectFilterCategoryList(@Param("categoryId") Integer categoryId, @Param("keyword") String keyword, @Param("sort") String sort, @Param("order") String order, @Param("brandId") Integer brandId);
 }

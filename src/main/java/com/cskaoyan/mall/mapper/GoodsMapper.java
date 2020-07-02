@@ -69,5 +69,5 @@ public interface GoodsMapper {
             "retail_price as retailPrice from cskaoyanmall_goods where category_id = #{id} limit 0,4")
     List<Goods> selectByCategoryid(@Param("id") Integer id);
 
-    List<Goods> selectGoodsList(@Param("categoryId") Integer categoryId, @Param("keyword") String keyword, @Param("sort") String sort, @Param("order") String order);
+    List<Goods> selectGoodsList(@Param("categoryId") Integer categoryId, @Param("keyword") String keyword, @Param("sort") String sort, @Param("order") String order, @Param("brandId") Integer brandId);
 }

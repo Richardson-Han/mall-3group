@@ -372,21 +372,30 @@ public class GoodsServiceImpl implements GoodsService {
 
     //尚政宇
     @Override
-    public Map list(Integer categoryId, Integer page, Integer size, String keyword, String sort, String order) {
+    public Map list(Integer categoryId, Integer page, Integer size, String keyword, String sort, String order, Integer brandId) {
         PageHelper.startPage(page, size);
         //goodsList
-        List<Goods> goodsList = goodsMapper.selectGoodsList(categoryId, keyword, sort, order);
-        //count-->goodsList的大小
-        int count = goodsList.size();
-        //filterCategoryList
-        List<GoodsCategory> filterCategoryList = categoryMapper.selectFilterCategoryList(categoryId, keyword, sort, order);
+        List<Goods> goodsList = goodsMapper.selectGoodsList(categoryId, keyword, sort, order, brandId);
         Map map = new HashMap();
-        map.put("count", count);
-        map.put("filterCategoryList", filterCategoryList);
+        //count-->goodsList的大小
+        if (brandId == null) {
+            int count = goodsList.size();
+            map.put("count", count);
+        }
+        if (categoryId != null) {
+            //filterCategoryList
+            List<GoodsCategory> filterCategoryList = categoryMapper.selectFilterCategoryList(categoryId, keyword, sort, order, brandId);
+            map.put("filterCategoryList", filterCategoryList);
+        }
+        if (brandId != null) {
+            //brand
+            GoodsBrand brand = brandMapper.selectByPrimaryKey(brandId);
+            map.put("brand", brand);
+        }
         map.put("goodsList", goodsList);
         //将搜索记录插入到数据库中，如果该关键字已在数据库中存在，则更新时间
         String username = (String) SecurityUtils.getSubject().getPrincipal();
-        if (username == null) {
+        if (username == null || keyword == null) {
             return map;
         }
         List<SearchHistory> searchHistories = searchHistoryMapper.selectKeywordByUsername(username);
