@@ -7,6 +7,8 @@ import com.cskaoyan.mall.bean.wx.CouponBase;
 import com.cskaoyan.mall.service.CouponService;
 import com.cskaoyan.mall.service.UserService;
 import com.cskaoyan.mall.utils.WXTokenUtils;
+import org.apache.shiro.authz.annotation.RequiresAuthentication;
+import org.apache.shiro.authz.annotation.RequiresGuest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -50,6 +52,7 @@ public class WXCouponContorller {
     /**
      * 我的优惠卷
      */
+    @RequiresAuthentication
     @RequestMapping("mylist")
     public BaseRespVo mylist(Integer status, Integer page, Integer size, HttpServletRequest request) {
         //后续要封装从request →username
