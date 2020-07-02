@@ -1,5 +1,6 @@
 package com.cskaoyan.mall.config;
 
+import com.cskaoyan.mall.service.AdminService;
 import com.cskaoyan.mall.shiro.AdminRealm;
 import com.cskaoyan.mall.mapper.AdminMapper;
 import com.cskaoyan.mall.shiro.WxRealm;
@@ -21,8 +22,9 @@ import java.util.*;
  */
 @Configuration
 public class ShiroConfig {
+
     @Autowired
-    AdminMapper adminMapper;
+    AdminService adminService;
 
     @Bean
     public ShiroFilterFactoryBean shiroFilterFactoryBean(DefaultWebSecurityManager securityManager) {
@@ -41,12 +43,15 @@ public class ShiroConfig {
         //微信权限设置，要是哪个网页不需要权限就能访问就在这添加fiterChainDefinitionMap.put("***", "anon");
 
 
+        //开发时先给全部权限
+
+
         // fiterChainDefinitionMap.put("/**","perms[*]");*不需要设置 自动全权限
 
         //("admin/category/read","perms["perms[admin:category:read]"]")
         fiterChainDefinitionMap.put("admin/category/read", "perms[admin:category:read]");
         //取全部的roleid出来 做对应
-        String[] Roleids = adminMapper.selectAllRoleid();
+        String[] Roleids = adminService.selectAllRoleid();
 
         for (String roleid : Roleids) {
             // ==1的 已经做了 跳过
@@ -73,7 +78,7 @@ public class ShiroConfig {
     }
 
     public LinkedHashMap<String, String> authorizationGroup(String RoleId) {
-        String[] permissionByRoleids = adminMapper.selectPermissionByRoleid(RoleId);
+        String[] permissionByRoleids = adminService.selectPermissionByRoleid(RoleId);
         if (permissionByRoleids != null) {
             LinkedHashMap<String, String> stringStringLinkedHashMap = new LinkedHashMap<>();
             String perms;

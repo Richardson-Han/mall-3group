@@ -1,6 +1,8 @@
 package com.cskaoyan.mall.controller.wx;
 
 import com.cskaoyan.mall.bean.Storage;
+import com.cskaoyan.mall.bean.VO.BaseRespVo;
+import com.cskaoyan.mall.bean.wx.VO.PicDataVO;
 import com.cskaoyan.mall.service.StorageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,14 +34,11 @@ public class WXStorageContorller {
      * 文件上传
      */
     @RequestMapping(value = "/upload", method = RequestMethod.POST)
-    public void picUpload(@RequestParam("file") MultipartFile multipartFile, HttpServletRequest request,
-                          HttpServletResponse response) throws IOException {
-        HttpServletResponse servResponse = response;
+    public BaseRespVo picUpload(@RequestParam("file") MultipartFile multipartFile) throws IOException {
         //设置响应属性
-        servResponse.setContentType("application/json;charset=UTF-8");
         //文件没取到 返回404
         if (multipartFile.isEmpty()) {
-            servResponse.setStatus(404);
+            return BaseRespVo.error("错误",404);
         }
         Storage storage = new Storage();
         //文件名
@@ -70,10 +69,8 @@ public class WXStorageContorller {
         storage.setUrl("http://localhost:8081/pic/" + newfilename);
 
         storage = storageService.picUpload(storage);
-        //设置响应值
-        servResponse.setStatus(200);
-        servResponse.encodeURL(storage.getUrl());
-        String method = request.getMethod();
-        servResponse.setHeader("Vary", "歪~");
+
+        return BaseRespVo.ok(new PicDataVO(storage.getUrl()));
     }
+
 }

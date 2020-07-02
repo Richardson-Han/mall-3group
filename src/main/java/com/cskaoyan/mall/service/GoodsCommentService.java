@@ -1,7 +1,9 @@
 package com.cskaoyan.mall.service;
 
+import com.cskaoyan.mall.bean.BO.wx.PostCommentBO;
 import com.cskaoyan.mall.bean.BO.wx.WXGoodCommentBo;
 import com.cskaoyan.mall.bean.BaseData;
+import com.cskaoyan.mall.bean.Comment;
 import com.cskaoyan.mall.bean.GoodsComment;
 import com.cskaoyan.mall.bean.BO.GoodsCommentBO;
 import com.cskaoyan.mall.bean.BO.GoodsCommentListBO;
@@ -27,4 +29,6 @@ Map<String,Object>  getWXCommentList(WXGoodCommentBo wxGoodCommentBo);
     Integer selectTheLastInsertId();
 
     Map<String, Object> getWXCount(WXGoodCommentBo wxGoodCommentBo);
+
+    GoodsComment getWXPost(PostCommentBO postCommentBO);
 }

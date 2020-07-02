@@ -1,6 +1,7 @@
 package com.cskaoyan.mall.shiro;
 
 import com.cskaoyan.mall.mapper.UserMapper;
+import com.cskaoyan.mall.service.UserService;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
@@ -20,28 +21,18 @@ import java.util.List;
 @Component
 public class WxRealm extends AuthorizingRealm {
 
+
     @Autowired
-    UserMapper userMapper;
+    UserService userService;
 
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken)
             throws AuthenticationException {
         UsernamePasswordToken token = (UsernamePasswordToken) authenticationToken;
         String username = token.getUsername();
-        List<String> strings = userMapper.selectPasswordByName(username);
+        List<String> strings = userService.selectPasswordByName(username);
         String credential = strings.size() >= 1 ? strings.get(0) : null;
         return new SimpleAuthenticationInfo(username, credential, this.getName());
-    }
-
-    /**
-     * 先全部允许
-     */
-    private AuthenticationInfo dealInfoByType(String type) {
-        if (type.equals("wx")){
-            return new SimpleAuthenticationInfo();
-        }
-        //根据info不同处理不同的认证信息
-        return new SimpleAuthenticationInfo();
     }
 
     @Override

@@ -6,6 +6,7 @@ import com.cskaoyan.mall.bean.VO.wx.WXUserLoginVO;
 import com.cskaoyan.mall.service.UserService;
 import com.cskaoyan.mall.shiro.MallToken;
 import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.apache.shiro.authz.annotation.RequiresGuest;
 import org.apache.shiro.authz.annotation.RequiresUser;
 import org.apache.shiro.crypto.hash.Md5Hash;
@@ -47,6 +48,7 @@ public class WXAuthController {
         try {
             subject.login(wxtoken);
             String token = (String) subject.getSession().getId();
+            System.out.println("token = " + token);
             Date tokenExpire = new Date();
             WXUserInfoVO userInfoVO = userService.getUserInfo(username);
             WXUserLoginVO loginVO = new WXUserLoginVO(token, tokenExpire, userInfoVO);
@@ -60,6 +62,7 @@ public class WXAuthController {
     /**
      * 退出已完成
      */
+    @RequiresAuthentication
     @RequiresUser
     @RequestMapping(value = "logout", method = RequestMethod.POST)
     public BaseRespVo logout() {

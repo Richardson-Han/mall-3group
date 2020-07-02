@@ -7,6 +7,8 @@ import com.cskaoyan.mall.bean.wx.CouponBase;
 import com.cskaoyan.mall.service.CouponService;
 import com.cskaoyan.mall.service.UserService;
 import com.cskaoyan.mall.utils.WXTokenUtils;
+import org.apache.shiro.authz.annotation.RequiresAuthentication;
+import org.apache.shiro.authz.annotation.RequiresGuest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -50,6 +52,7 @@ public class WXCouponContorller {
     /**
      * 我的优惠卷
      */
+    @RequiresAuthentication
     @RequestMapping("mylist")
     public BaseRespVo mylist(Integer status, Integer page, Integer size, HttpServletRequest request) {
         //后续要封装从request →username
@@ -73,9 +76,7 @@ public class WXCouponContorller {
      * "discount":"15.00","startTime":"2020-06-30 11:08:03","endTime":"2020-07-07 11:08:03"}],"errmsg":"成功"}
      */
     @RequestMapping("selectlist")
-    public BaseRespVo selectlist(@RequestBody Map map, HttpServletRequest request) {
-        Integer cartId = (Integer) map.get("cartId");
-        Integer grouponRulesId = (Integer) map.get("grouponRulesId");
+    public BaseRespVo selectlist(Integer cartId, Integer grouponRulesId, HttpServletRequest request) {
         String username = WXTokenUtils.requestToUsername(request);
         if (error.equals(username)) {
             return BaseRespVo.error("请先登陆");

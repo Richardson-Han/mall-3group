@@ -460,10 +460,12 @@ public class GoodsServiceImpl implements GoodsService {
         String shareImage = "";
         //specification
         ArrayList<GoodsSpec> valueList = (ArrayList<GoodsSpec>) goodsSpecMapper.selectByGoodsId(goodsId);
+
+        List list = new ArrayList();
         HashMap specificationList = new HashMap();
         specificationList.put("name", "规格");
         specificationList.put("valueList",valueList);
-
+        list.add(specificationList);
         //userHasCollect
         Subject subject = SecurityUtils.getSubject();
         String username = (String) subject.getPrincipal();
@@ -479,7 +481,7 @@ public class GoodsServiceImpl implements GoodsService {
         map.put("issue", issue);
         map.put("productList", productList);
         map.put("shareImage", shareImage);
-        map.put("specificationList", specificationList);
+        map.put("specificationList", list);
         map.put("userHasCollect", userHasCollect);
         return map;
     }

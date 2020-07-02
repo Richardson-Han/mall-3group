@@ -121,7 +121,7 @@
       #{picUrl,jdbcType=VARCHAR}, #{comment,jdbcType=INTEGER}, #{addTime,jdbcType=TIMESTAMP}, 
       #{updateTime,jdbcType=TIMESTAMP}, #{deleted,jdbcType=BIT})
   </insert>
-  <insert id="insertSelective" parameterType="com.cskaoyan.mall.bean.OrderGoods">
+  <insert id="insertSelective" parameterType="com.cskaoyan.mall.bean.OrderGoods" keyProperty="id" useGeneratedKeys="true">
     insert into cskaoyanmall_order_goods
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -219,10 +219,10 @@
     </if>
   </select>
     <select id="queryGoodsIdByOrderId" resultType="java.lang.Integer">
-      select goods_id from cskaoyanmall_order_goods where order_id = #{orderGoodsId}
+      select goods_id from cskaoyanmall_order_goods where order_id = #{orderGoodsId} and deleted = 0
     </select>
   <select id="selectByOrderId" resultType="com.cskaoyan.mall.bean.wx.WXOrderGoods">
-    select id , goods_name as goodsName , number, pic_url as picUrl from cskaoyanmall_order_goods where order_id = #{id}
+    select id , goods_name as goodsName , number, pic_url as picUrl from cskaoyanmall_order_goods where order_id = #{id} and deleted = 0
   </select>
   <update id="updateByExampleSelective" parameterType="map">
     update cskaoyanmall_order_goods

@@ -17,4 +17,8 @@ public interface AdminService {
     Integer deleteAdmin(AdminUpdateBO adminUpdateBO);
 
     InfoVO info(String username);
+
+    String[] selectAllRoleid();
+
+    String[] selectPermissionByRoleid(String roleId);
 }
