@@ -28,7 +28,7 @@ public class RegionServiceImpl implements RegionService {
 
         //查询一级(省份)
         RegionExample oneRegionExample = new RegionExample ();
-        oneRegionExample.createCriteria ().andTypeEqualTo ((byte)1);
+        RegionExample.Criteria criteria = oneRegionExample.createCriteria ().andTypeEqualTo ((byte) 1);
         List<Region > oneRegions=regionMapper.selectByExample (oneRegionExample);
 
         //查询二级 （市区，县）
@@ -50,7 +50,7 @@ public class RegionServiceImpl implements RegionService {
             for (int j = 0; j <threeRegions.size () ; j++) {
                 Region two=twoRegions.get (i);
                 Region three=threeRegions.get (j);
-                if (two.getId ()==three.getPid ()){
+                if (two.getId ().equals (three.getPid ())){
                     two.getChildren ().add (three);
                 }
             }
@@ -60,7 +60,7 @@ public class RegionServiceImpl implements RegionService {
             for (int j = 0; j <twoRegions.size () ; j++) {
                 Region one=oneRegions.get (i);
                 Region two = twoRegions.get (j);
-                if(one.getId ()==two.getPid ()){
+                if(one.getId ().equals (two.getPid ())){
                     one.getChildren ().add (two);
                 }
             }

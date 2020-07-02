@@ -89,7 +89,10 @@ public class OrderServiceImpl implements OrderService {
         //查询用户表
         User user=userMapper.selectByPrimaryKey (order.getUserId ());
         //查寻cskaoyanmall_order_goods表
-        OrderGoods orderGoods=orderGoodsMapper.selectByPrimaryKey (id);
+        OrderGoods goods=orderGoodsMapper.selectByPrimaryKey (id);
+        List<OrderGoods> orderGoods=new ArrayList<> ();
+        orderGoods.add (goods);
+
         map.put ("order",order);
         map.put("user",user);
         map.put ("orderGoods",orderGoods);

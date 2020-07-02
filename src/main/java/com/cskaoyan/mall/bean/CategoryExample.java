@@ -316,7 +316,7 @@ public class CategoryExample {
         }
 
         public Criteria andDescEqualTo(String value) {
-            addCriterion("desc =", value, "desc");
+            addCriterion(" `desc` =", value, "desc");
             return (Criteria) this;
         }
 
