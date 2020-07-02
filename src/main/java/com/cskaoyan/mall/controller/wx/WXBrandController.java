@@ -5,6 +5,7 @@ import com.cskaoyan.mall.bean.VO.BaseRespVo;
 import com.cskaoyan.mall.bean.wx.VO.BrandDetailVO;
 import com.cskaoyan.mall.bean.wx.WXBrandListData;
 import com.cskaoyan.mall.service.BrandService;
+import org.apache.shiro.authz.annotation.RequiresGuest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -22,12 +23,14 @@ public class WXBrandController {
     @Autowired
     BrandService brandService;
 
+    @RequiresGuest
     @RequestMapping("list")
     public BaseRespVo getBrandList(Integer page, Integer size) {
         WXBrandListData baseData = brandService.getBrandList(page, size);
         return BaseRespVo.ok(baseData);
     }
 
+    @RequiresGuest
     @RequestMapping("detail")
     public BaseRespVo getBrandDetail(Integer id) {
         Brand brand = brandService.getBrandDetail(id);
