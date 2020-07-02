@@ -102,4 +102,7 @@ public interface CouponMapper {
     List<Coupon> wxselectCouponByCartIdAndGrouponRulesIdAndUserId(@Param("cartId") Integer cartId,
                                                                   @Param("grouponRulesId") Integer grouponRulesId,
                                                                   @Param("userId") Integer userId);
+
+    @Select("select LAST_INSERT_ID()")
+    Integer selectLastId();
 }

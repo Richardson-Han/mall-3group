@@ -30,4 +30,5 @@ public interface TopicService {
 
     List<Topic> wxselectNewTopic();
 
+    Integer selectLastId();
 }
