@@ -20,7 +20,7 @@ import java.util.Map;
 */
 @RestController
 @RequestMapping("/wx/region")
-public class wxRegionController {
+public class WXRegionController {
     @Autowired
     RegionService regionService;
 
