@@ -157,6 +157,11 @@ public class CouponServiceImpl implements CouponService {
         return couponMapper.selectNewCoupons();
     }
 
+    @Override
+    public Integer selectLastId() {
+        return couponMapper.selectLastId();
+    }
+
 
     @Override
     public BaseData listuserUserIdCouponUser(Integer page, Integer limit, Integer couponId,

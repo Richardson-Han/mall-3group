@@ -40,6 +40,7 @@ public class TopicController {
         Integer insert = topicService.createTopic(topic);
         if (insert == 1) {
             topic.setGoods("[]");
+            topic.setId(topicService.selectLastId());
             return BaseRespVo.ok(topic);
         } else {
             return BaseRespVo.error("创建失败", 404);
@@ -49,8 +50,8 @@ public class TopicController {
     @RequiresPermissions("admin:topic:update")
     @RequestMapping(value = "/update", method = RequestMethod.POST)
     public BaseRespVo update(@RequestBody Topic topic) {
-        Integer insert = topicService.updateTopic(topic);
-        if (insert == 1) {
+        Integer update = topicService.updateTopic(topic);
+        if (update == 1) {
             return BaseRespVo.ok(topic);
         } else {
             return BaseRespVo.error("修改失败", 999);

@@ -44,6 +44,7 @@ public class WXHomeContorller {
     @Autowired
     TopicService topicService;
 
+    @RequiresGuest
     @RequestMapping(value = "/index", method = RequestMethod.GET)
     public BaseRespVo index() {
         //周一周四新品

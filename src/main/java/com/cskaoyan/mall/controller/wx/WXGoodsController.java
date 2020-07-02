@@ -30,7 +30,6 @@ public class WXGoodsController {
         return BaseRespVo.ok(data);
     }
 
-    @RequiresAuthentication
     @RequestMapping("list")
     public BaseRespVo list(Integer categoryId, Integer page, Integer size, String keyword, String sort, String order, Integer brandId) {
         Map data = goodsService.list(categoryId, page, size, keyword, sort, order, brandId);

@@ -32,19 +32,16 @@ public class AdvertisingController {
         return BaseRespVo.ok(baseData);
     }
 
-    @RequiresPermissions("admin:ad:create")
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     public BaseRespVo create(@RequestBody Advertising advertising) {
         Integer insert = advertisingService.insertAdvertising(advertising);
         if (insert == 1) {
-            return BaseRespVo.ok(advertisingService.
-                    queryAdvertising(0, 20, "add_time", "desc"));
+            return BaseRespVo.ok(advertisingService.selectLastAdvertising());
         } else {
             return BaseRespVo.error();
         }
     }
 
-    @RequiresPermissions("admin:ad:update")
     @RequestMapping(value = "/update", method = RequestMethod.POST)
     public BaseRespVo update(@RequestBody Advertising advertising) {
         advertising.setUpdateTime(new Date());
@@ -61,7 +58,6 @@ public class AdvertisingController {
     /**
      * 做虚拟删除，仅更改deleted列数据为ture
      */
-    @RequiresPermissions("admin:ad:delete")
     @RequestMapping(value = "/delete", method = RequestMethod.POST)
     public BaseRespVo delete(@RequestBody Advertising advertising) {
         Integer deleteAdvertising = advertisingService.deleteAdvertising(advertising);

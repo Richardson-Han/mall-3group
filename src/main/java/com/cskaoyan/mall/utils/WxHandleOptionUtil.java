@@ -33,7 +33,6 @@ public class WxHandleOptionUtil {
             case 203:
                 handleOption.setRebuy(true);
                 handleOption.setDelete(true);
-                handleOption.setComment(true);
                 break;
             //已发货
             case 301:

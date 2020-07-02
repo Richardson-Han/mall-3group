@@ -42,6 +42,8 @@ public class CartServiceImpl implements CartService {
     GoodsProductMapper productMapper;
     @Autowired
     OrderGoodsMapper orderGoodsMapper;
+    @Autowired
+    CouponUserMapper couponUserMapper;
 
 
     @Override
@@ -129,6 +131,9 @@ public class CartServiceImpl implements CartService {
         return goodsCount;
     }
 
+    /**
+     *  checked
+     */
     @Override
     public CartListVO checked(CartCheckBO cartCheckBO, String username){
         //根据username来获取对应的userId
@@ -202,34 +207,105 @@ public class CartServiceImpl implements CartService {
         }else {
             //若cartId为0，表示是从购物车来购买的
             //根据userID，找到对应的选中的商品，即checked = 1
-            cartExample.createCriteria().andUserIdEqualTo(userId).andCheckedEqualTo(true);
+            cartExample.createCriteria().andUserIdEqualTo(userId).andCheckedEqualTo(true).andDeletedEqualTo(false);
         }
         List<Cart> checkedGoodsList = cartMapper.selectByExample(cartExample);
+        //获取所有的goods信息
+        List<Goods> goodsList = new ArrayList<>();
         for (Cart cart : checkedGoodsList) {
             BigDecimal number = new BigDecimal(cart.getNumber());
             BigDecimal price = cart.getPrice();
             goodsTotalprice += price.multiply(number).doubleValue();
+            Integer goodsId = cart.getGoodsId();
+            Goods goods = goodsMapper.selectByPrimaryKey(goodsId);
+            goodsList.add(goods);
         }
 
         //根据选中的优惠券id来获取其优惠价格
         Double actualPrice = goodsTotalprice;
         Double orderTotalPrice = goodsTotalprice;
+        //优惠券id
         Integer couponId = checkoutBO.getCouponId();
+        //优惠券减少的金额
         Double couponPrice = 0.0;
+        //获取已拥有的优惠券, 查看coupon_user
+        CouponUserExample couponUserExample = new CouponUserExample();
+        couponUserExample.createCriteria().andDeletedEqualTo(false).andStatusEqualTo((short) 0).andUserIdEqualTo(userId);
+        List<CouponUser> couponUsers = couponUserMapper.selectByExample(couponUserExample);
+        //在获取全部的coupon
+        List<Coupon> coupons = new ArrayList<>();
+        for (CouponUser couponUser : couponUsers) {
+            //应该在这里就筛选 优惠券需要最低的消费 <= 商品总金额
+            //每天记得优化
+            Coupon coupon = couponMapper.selectByPrimaryKey(couponUser.getCouponId());
+            coupons.add(coupon);
+        }
+        //根据couponId来判断是  自动选择 还是 自定义选择 优惠券
+        //下面代码写的太辣鸡了，能力有限
         if(couponId <= 0){
-            couponPrice = 0.0;
+            if(coupons == null){
+                //若为null，则无优惠
+                couponPrice = 0.0;
+            }else {
+                for (Coupon coupon : coupons) {
+                    //查看其优惠券类型
+                    Short type = coupon.getType();
+                    if(type == 2){
+                        //兑换码优惠券
+                        if(coupon.getCode() == null){
+                            couponPrice = 0.0;
+                        }else {
+                            //假设没有商品限制
+                            //因为type=2，是兑换码优惠券，limit肯定为1
+                            if(goodsTotalprice >= coupon.getMin().doubleValue()){
+                                if(coupon.getDiscount().doubleValue() >= couponPrice){
+                                    couponId = coupon.getId();
+                                    couponPrice = coupon.getDiscount().doubleValue();
+                                }
+                            }
+                        }
+                    }else if(type == 0){
+                        //优惠券类型为用户领取
+                        //假如优惠券没有限制条件
+                        //假设limit为1
+                        Short limit = coupon.getLimit();
+                        if(limit == 1) {
+                            if (goodsTotalprice >= coupon.getMin().doubleValue()) {
+                                if (coupon.getDiscount().doubleValue() >= couponPrice) {
+                                    couponId = coupon.getId();
+                                    couponPrice = coupon.getDiscount().doubleValue();
+                                }
+                            }
+                        }else {
+                            //此时limit为0，表示可无限制领券
+                        }
+                    } else if(type == 1){
+                        //优惠券类型为 注册赠送券, 所以不能自己领，limit只能是1
+                        //假如优惠券没有限制条件
+                        if (goodsTotalprice >= coupon.getMin().doubleValue()) {
+                            if (coupon.getDiscount().doubleValue() >= couponPrice) {
+                                couponId = coupon.getId();
+                                couponPrice = coupon.getDiscount().doubleValue();
+                            }
+                        }
+                    }
+                }//foreach
+            }//coupons 不为null
+            actualPrice =  goodsTotalprice - couponPrice;
+            orderTotalPrice = goodsTotalprice - couponPrice;
         }else {
             //根据其couponId来获取其一条数据
             Coupon coupon = couponMapper.selectByPrimaryKey(couponId);
-            couponPrice = coupon.getDiscount().doubleValue();
-            if(goodsTotalprice >= coupon.getLimit()){
+            if(goodsTotalprice >= coupon.getMin().doubleValue()){
                 //优惠价格
                 actualPrice =  goodsTotalprice - couponPrice;
                 orderTotalPrice = goodsTotalprice - couponPrice;
+                couponId = coupon.getId();
+                couponPrice = coupon.getDiscount().doubleValue();
             }
         }
-        //优惠券数量
-        Integer availableCouponLength = couponMapper.selectCountNumber();
+        //有效优惠券数量
+        Integer availableCouponLength = coupons.size();
 
         //根据地址id去获得地址信息
         Address checkedAddress;
@@ -247,7 +323,7 @@ public class CartServiceImpl implements CartService {
         if(grouponRulesId == 0){
             grouponPrice = 0.0;
         }else {
-            //该逻辑没有理清楚
+            //
             grouponPrice = 0.0;
         }
 
@@ -259,8 +335,10 @@ public class CartServiceImpl implements CartService {
         return cartCheckoutVO;
     }
 
+
     /**
-     *  直接购买生成新商品订单
+     *  直接购买 生成 新cart
+     *  deleted 为true ,不显示
      */
     @Override
     public Integer fastadd(Map map, String username) {
@@ -278,12 +356,11 @@ public class CartServiceImpl implements CartService {
         Integer goodsId = (Integer) map.get("goodsId");
         //再来获得goods信息
         Goods goods = goodsMapper.selectByPrimaryKey(goodsId);
-        //新建一个商品订单
-        OrderGoods orderGoods = new OrderGoods(null, null, goodsId, goods.getName(), goodsId.toString(), productId, (short)number.intValue(), goodsProduct.getPrice(),
-                goodsProduct.getSpecifications(), goodsProduct.getUrl(), null, new Date(), new Date(), false);
-
-        orderGoodsMapper.insertSelective(orderGoods);
-        Integer id = orderGoods.getId();
+        //新建一个cart
+        Cart cart = new Cart(null, userId, goodsId, goodsId.toString(), goods.getName(), productId, goodsProduct.getPrice(),
+                (short)number.intValue(), goodsProduct.getSpecifications(), false, goodsProduct.getUrl(), new Date(), new Date(), true);
+        cartMapper.insertSelective(cart);
+        Integer id = cart.getId();
         return id;
     }
 

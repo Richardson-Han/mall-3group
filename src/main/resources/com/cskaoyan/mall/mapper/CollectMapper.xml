@@ -164,8 +164,8 @@
       <include refid="Example_Where_Clause" />
     </if>
   </select>
-    <select id="selectByUserIdAndValueId" resultType="com.cskaoyan.mall.bean.Collect">
-      select * from cskaoyanmall_collect where user_id = #{userId} &amp; value_id = #{valueId}
+    <select id="selectByUserIdAndValueId" resultMap="BaseResultMap">
+      select * from cskaoyanmall_collect where user_id = #{userId} and value_id = #{valueId}
     </select>
     <update id="updateByExampleSelective" parameterType="map">
     update cskaoyanmall_collect

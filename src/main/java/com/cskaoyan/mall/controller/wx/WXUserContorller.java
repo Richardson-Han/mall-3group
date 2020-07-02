@@ -6,6 +6,7 @@ import com.cskaoyan.mall.bean.wx.WXOrderState;
 import com.cskaoyan.mall.service.OrderService;
 import com.cskaoyan.mall.service.UserService;
 import com.cskaoyan.mall.utils.WXTokenUtils;
+import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -32,6 +33,7 @@ public class WXUserContorller {
     /**
      * 登录之后 个人界面的 待付款 待发货 待收货 待评价 数目的返回
      */
+    @RequiresAuthentication
     @RequestMapping(value = "/index", method = RequestMethod.GET)
     public BaseRespVo index(HttpServletRequest request) {
         // {"errno":0,"data":{"order":{"unrecv":4,"uncomment":0,"unpaid":0,"unship":0}},"errmsg":"成功"}

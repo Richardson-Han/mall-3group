@@ -30,7 +30,7 @@ public class WXSearchController {
     @Autowired
     SearchService searchService;
 
-    @RequiresAuthentication
+    //@RequiresAuthentication
     @RequestMapping("index")
     public BaseRespVo index() {
         Subject subject = SecurityUtils.getSubject();
@@ -39,7 +39,7 @@ public class WXSearchController {
         return BaseRespVo.ok(map);
     }
 
-    @RequiresAuthentication
+    //@RequiresAuthentication
     @RequestMapping("clearhistory")
     public BaseRespVo clearhistory() {
         Subject subject = SecurityUtils.getSubject();

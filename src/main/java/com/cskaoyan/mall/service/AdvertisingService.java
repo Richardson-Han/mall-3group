@@ -20,4 +20,6 @@ public interface AdvertisingService {
     Integer deleteAdvertising(Advertising advertising);
 
     List<Advertising> wxselectTopAdvertising();
+
+    Advertising selectLastAdvertising();
 }

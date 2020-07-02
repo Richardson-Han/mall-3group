@@ -19,6 +19,7 @@ import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.lang.System;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -37,18 +38,18 @@ public class AdminServiceImpl implements AdminService {
 
     //获取管理员列表
     @Override
-    public BaseData getAdmins(Integer page, Integer limit,String username, String sort, String order) {
+    public BaseData getAdmins(Integer page, Integer limit, String username, String sort, String order) {
         AdminExample adminExample = new AdminExample();
-        adminExample.setOrderByClause(sort + " " +order);
-        PageHelper.startPage(page,limit);
-        if (username != null){
+        adminExample.setOrderByClause(sort + " " + order);
+        PageHelper.startPage(page, limit);
+        if (username != null) {
             adminExample.createCriteria().andUsernameLike("%" + username + "%");
         }
         List<Admin> admins = adminMapper.selectByExample(adminExample);
         List<AdminListVO> adminListVOList = getAdminsVO(admins);
         PageInfo<AdminListVO> pageInfo = new PageInfo<>(adminListVOList);
         long total = pageInfo.getTotal();
-        return new BaseData(adminListVOList,total);
+        return new BaseData(adminListVOList, total);
     }
 
     //新建管理员
@@ -67,7 +68,7 @@ public class AdminServiceImpl implements AdminService {
 
         Integer result = adminMapper.insert(admin);
 
-        if(result > 0){
+        if (result > 0) {
             AdminCreateVO adminCreateVO = new AdminCreateVO();
             adminCreateVO.setId(adminMapper.getLastInsertId());
             adminCreateVO.setUsername(adminCreateBO.getUsername());
@@ -96,7 +97,7 @@ public class AdminServiceImpl implements AdminService {
         //更新数据库
         AdminExample adminExample = new AdminExample();
         adminExample.createCriteria().andIdEqualTo(adminUpdateBO.getId());
-        Integer result = adminMapper.updateByExampleSelective(admin,adminExample);
+        Integer result = adminMapper.updateByExampleSelective(admin, adminExample);
 
         //封装导出数据
         AdminUpdateVO adminUpdateVO = new AdminUpdateVO();
@@ -134,6 +135,21 @@ public class AdminServiceImpl implements AdminService {
             ss.add(role.getName());
         }
         return new InfoVO(avatar, username, perms, ss);
+        /*if (username == null) {
+            return null;
+        }
+        String avatar = adminMapper.selectAvatarByUsername(username);
+        String roleId = adminMapper.selectRoleidByUsername(username).
+                replace("[", "").replace("]", "").replace(" ","");
+        List<String> permissions = permissionMapper.selectPermissionByRoleId(Integer.parseInt(roleId));
+        List<String> perms = new ArrayList<>();
+        for (String permission : permissions) {
+            perms.add(parse(permission));
+        }
+        List<String> roles = new ArrayList();
+        Role role = roleMapper.selectByPrimaryKey(Integer.parseInt(roleId));
+        roles.add(role.getName());
+        return new InfoVO(avatar, username, perms, roles);*/
     }
 
     private  ArrayList<Integer> parseArrayList(String s) {
@@ -161,13 +177,14 @@ public class AdminServiceImpl implements AdminService {
     }
 
     /**
-     *  权限解析，比如数据库中给的数据是 admin:brand:list，则转换为
-     *  GET /admin/brand/list
+     * 权限解析，比如数据库中给的数据是 admin:brand:list，则转换为
+     * GET /admin/brand/list
+     *
      * @param permission
      */
     private String parse(String permission) {
         permission = "/" + permission.replace(":", "/");
-        switch (permission.substring(permission.lastIndexOf("/") + 1)){
+        switch (permission.substring(permission.lastIndexOf("/") + 1)) {
             case "read":
             case "list":
             case "listRecord":
@@ -179,24 +196,24 @@ public class AdminServiceImpl implements AdminService {
             default:
                 permission = "POST " + permission;
         }
-        return  permission;
+        return permission;
     }
 
     //将admin中的role_ids字符串数据转化为数组类型
     private List<AdminListVO> getAdminsVO(List<Admin> admins) {
         List<AdminListVO> adminListVO = new ArrayList<>();
-        for (Admin admin : admins ) {
+        for (Admin admin : admins) {
             ArrayList<Integer> roles = new ArrayList<>();
             String roleIds = admin.getRoleIds();
-            roleIds = roleIds.replace("[","");
-            roleIds = roleIds.replace("]","");
-            roleIds = roleIds.replace(",","");
-            roleIds = roleIds.replace(" ","");
-            for (int i = 0; i < roleIds.length(); i++){
-                String num = roleIds.substring(i,i+1);
+            roleIds = roleIds.replace("[", "");
+            roleIds = roleIds.replace("]", "");
+            roleIds = roleIds.replace(",", "");
+            roleIds = roleIds.replace(" ", "");
+            for (int i = 0; i < roleIds.length(); i++) {
+                String num = roleIds.substring(i, i + 1);
                 roles.add(Integer.parseInt(num));
             }
-            AdminListVO adminVO = new AdminListVO(admin.getId(),roles,admin.getUsername(),admin.getAvatar());
+            AdminListVO adminVO = new AdminListVO(admin.getId(), roles, admin.getUsername(), admin.getAvatar());
             adminListVO.add(adminVO);
         }
         return adminListVO;
