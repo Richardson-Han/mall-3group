@@ -130,6 +130,16 @@ public class AdminServiceImpl implements AdminService {
         return new InfoVO(avatar, username, perms, roles);
     }
 
+    @Override
+    public String[] selectAllRoleid() {
+        return adminMapper.selectAllRoleid();
+    }
+
+    @Override
+    public String[] selectPermissionByRoleid(String roleId) {
+        return adminMapper.selectPermissionByRoleid(roleId);
+    }
+
     /**
      *  权限解析，比如数据库中给的数据是 admin:brand:list，则转换为
      *  GET /admin/brand/list

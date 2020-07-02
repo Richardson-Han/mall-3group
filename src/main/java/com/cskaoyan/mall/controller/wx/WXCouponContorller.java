@@ -73,9 +73,7 @@ public class WXCouponContorller {
      * "discount":"15.00","startTime":"2020-06-30 11:08:03","endTime":"2020-07-07 11:08:03"}],"errmsg":"成功"}
      */
     @RequestMapping("selectlist")
-    public BaseRespVo selectlist(@RequestBody Map map, HttpServletRequest request) {
-        Integer cartId = (Integer) map.get("cartId");
-        Integer grouponRulesId = (Integer) map.get("grouponRulesId");
+    public BaseRespVo selectlist(Integer cartId,Integer grouponRulesId,HttpServletRequest request) {
         String username = WXTokenUtils.requestToUsername(request);
         if (error.equals(username)) {
             return BaseRespVo.error("请先登陆");
