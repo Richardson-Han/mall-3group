@@ -565,9 +565,9 @@
     order by ${sort1} ${order1}
   </select>
     <select id="selectByOrderStatus" resultMap="BaseResultMap">
-      select  <include refid="Base_Column_List" /> from cskaoyanmall_order where order_status = #{status}
+      select  <include refid="Base_Column_List" /> from cskaoyanmall_order where order_status = #{status} and deleted = 0
     </select>
   <select id="selectAllOrders" resultMap="BaseResultMap">
-    select  <include refid="Base_Column_List" /> from cskaoyanmall_order
+    select  <include refid="Base_Column_List" /> from cskaoyanmall_order where deleted = 0
   </select>
 </mapper>

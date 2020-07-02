@@ -15,10 +15,13 @@ import com.cskaoyan.mall.bean.wx.VO.OrderListDataVO;
 import com.cskaoyan.mall.service.GoodsCommentService;
 import com.cskaoyan.mall.service.GroupService;
 import com.cskaoyan.mall.service.OrderService;
+import com.cskaoyan.mall.service.UserService;
 import com.cskaoyan.mall.utils.WxHandleOptionUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.apache.ibatis.type.BaseTypeHandler;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -43,11 +46,14 @@ public class WXOrderController {
     @Autowired
     GroupService groupService;
 
+    @Autowired
+    UserService userService;
+
 
 
     @RequestMapping("comment")
     @Transactional
-    public BaseRespVo comment(OrderCommentBO commentBO){
+    public BaseRespVo comment(@RequestBody OrderCommentBO commentBO){
         //先在comment表添加评论
         GoodsComment goodsComment = new GoodsComment();
         goodsComment.setContent(commentBO.getContent());
@@ -58,8 +64,11 @@ public class WXOrderController {
         goodsComment.setStar(commentBO.getStar());
         goodsComment.setType((byte) 3);
         goodsComment.setUpdateTime(new Date());
-        //没有整合shiro ，先暂时手动填入
-        goodsComment.setUserId(1);
+        //获得userId
+        Subject subject = SecurityUtils.getSubject();
+        String username = (String) subject.getPrincipals().getPrimaryPrincipal();
+        Integer userId = userService.wxselectIdByUsername(username);
+        goodsComment.setUserId(userId);
         //根据orderId从order_goods表中获取商品id
         Integer goodsId = orderService.queryGoodsIdByOrderId(commentBO.getOrderGoodsId());
         goodsComment.setValueId(goodsId);

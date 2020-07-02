@@ -84,7 +84,7 @@ public class GoodsCommentServiceImpl implements GoodsCommentService {
 
     @Override
     public void insertComment(GoodsComment goodsComment) {
-        commentMapper.insertSelective(goodsComment);
+        int i = commentMapper.insertSelective(goodsComment);
     }
 
     @Override
