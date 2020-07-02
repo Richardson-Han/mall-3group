@@ -355,13 +355,18 @@ public class GoodsServiceImpl implements GoodsService {
     public Map category(Integer id) {
         //id是商品类目的id，首先要根据id查询对应的pid
         Map map = new HashMap();
-        Category parentCategory = wxCategoryMapper.selectByPrimaryKey(id);
+        Category category = wxCategoryMapper.selectByPrimaryKey(id);
+        Integer pid = category.getPid();
+        if(pid == 0) pid = id;
         CategoryExample categoryExample = new CategoryExample();
-        categoryExample.createCriteria().andPidEqualTo(id);
+        categoryExample.createCriteria().andPidEqualTo(pid);
         List<Category> brotherCategory = wxCategoryMapper.selectByExample(categoryExample);
+        Category parentCategory = wxCategoryMapper.selectByPrimaryKey(pid);
         map.put("brotherCategory", brotherCategory);
-        map.put("currentCategory", brotherCategory.get(0));
         map.put("parentCategory", parentCategory);
+        if (brotherCategory.size() != 0) {
+            map.put("currentCategory", brotherCategory.get(0));
+        }
         return map;
     }
 
