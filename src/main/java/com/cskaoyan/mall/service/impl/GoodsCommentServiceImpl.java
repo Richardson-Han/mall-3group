@@ -1,6 +1,7 @@
 package com.cskaoyan.mall.service.impl;
 
 import com.cskaoyan.mall.bean.*;
+import com.cskaoyan.mall.bean.BO.wx.PostCommentBO;
 import com.cskaoyan.mall.bean.GoodsComment;
 import com.cskaoyan.mall.bean.BO.GoodsCommentBO;
 import com.cskaoyan.mall.bean.BO.GoodsCommentListBO;
@@ -20,10 +21,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class GoodsCommentServiceImpl implements GoodsCommentService {
@@ -150,12 +148,41 @@ public class GoodsCommentServiceImpl implements GoodsCommentService {
     @Override
     public Map<String, Object> getWXCount(WXGoodCommentBo wxGoodCommentBo) {
         Map<String,Object> countmap=new HashMap<> ();
+        //查询所有的评论
         GoodsCommentExample goodsCommentExample = new GoodsCommentExample ();
         GoodsCommentExample.Criteria criteria = goodsCommentExample.createCriteria ()
-                .andTypeEqualTo (wxGoodCommentBo.getType ()).andValueIdEqualTo (wxGoodCommentBo.getValuedId ());
+                .andTypeEqualTo (wxGoodCommentBo.getType ())
+                .andValueIdEqualTo (wxGoodCommentBo.getValuedId ());
         long allCount= commentMapper.countByExample (goodsCommentExample);
         countmap.put ("allCount",allCount);
-        countmap.put ("hasPicCount",allCount);
+        //查询所有有图片的评论
+        GoodsCommentExample goodsExample2 = new GoodsCommentExample ();
+        GoodsCommentExample.Criteria criteria1 = goodsExample2.createCriteria ()
+                .andHasPictureEqualTo (true)
+                .andTypeEqualTo (wxGoodCommentBo.getType ())
+                .andValueIdEqualTo (wxGoodCommentBo.getValuedId ());
+        long hasPicCount = commentMapper.countByExample (goodsExample2);
+        countmap.put ("hasPicCount",hasPicCount);
         return countmap;
     }
+
+    @Override
+    public GoodsComment getWXPost(PostCommentBO postCommentBO) {
+        GoodsComment goodsComment = new GoodsComment ();
+        goodsComment.setAddTime (new Date ());
+        goodsComment.setContent (postCommentBO.getContent ());
+        goodsComment.setHasPicture (postCommentBO.getHasPicture ());
+        //id不知道怎么设置，就没加
+        goodsComment.setPicUrls (postCommentBO.getPicUrls ());
+        goodsComment.setStar (postCommentBO.getStar ());
+        goodsComment.setType (postCommentBO.getType ());
+        goodsComment.setUpdateTime (new Date ());
+        //userId不知道怎么设置，写成1
+        goodsComment.setUserId (1);
+        goodsComment.setValueId (postCommentBO.getValuedId ());
+
+
+        return goodsComment;
+    }
+
 }

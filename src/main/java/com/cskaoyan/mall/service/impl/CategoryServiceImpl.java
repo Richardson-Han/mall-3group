@@ -97,15 +97,24 @@ public class CategoryServiceImpl implements CategoryService {
 * */
     @Override
     public int updateCategory(Category category) {
+        String name=category.getName ();
+        String keywords=category.getKeywords ();
+        String desc= category.getDesc ();
+        String iconUrl=category.getIconUrl ();
+        String picUrl=category.getPicUrl ();
         String level=category.getLevel ();
 
+        //判断是否提交重复内容
         CategoryExample categoryExample = new CategoryExample ();
-        categoryExample.createCriteria ().andDeletedEqualTo (false).andLevelEqualTo (level);
+        categoryExample.createCriteria ().andDeletedEqualTo (false).andNameEqualTo (name)
+                .andKeywordsEqualTo (keywords).andIconUrlEqualTo (iconUrl)
+                .andDescEqualTo (desc)
+                .andPicUrlEqualTo (picUrl).andLevelEqualTo (level);
         List<Category> lists =  categoryMapper.selectByExample (categoryExample);
-        for (Category category1 : lists) {
-            if(category1.getName ().equals (category.getName ())){return 2;}
-        }
 
+            if(!lists.isEmpty ()){return 2;}
+
+       //若无出伏内容，则更新数据
         category.setUpdateTime (new Date ());
         if (categoryMapper.updateByPrimaryKey (category)==1){
             return 1;
