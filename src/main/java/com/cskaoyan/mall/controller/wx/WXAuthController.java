@@ -48,13 +48,12 @@ public class WXAuthController {
         try {
             subject.login(wxtoken);
             String token = (String) subject.getSession().getId();
-            System.out.println("token = " + token);
             Date tokenExpire = new Date();
             WXUserInfoVO userInfoVO = userService.getUserInfo(username);
             WXUserLoginVO loginVO = new WXUserLoginVO(token, tokenExpire, userInfoVO);
             return BaseRespVo.ok(loginVO);
         } catch (Exception e) {
-            System.out.println("*****************挂了*****************");
+            System.out.println("*****************************挂了*****************************");
             return BaseRespVo.error("用户名或密码错误", 401);
         }
     }
