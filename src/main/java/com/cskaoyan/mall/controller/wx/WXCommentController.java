@@ -20,7 +20,7 @@ import java.util.Map;
 public class WXCommentController {
     @Autowired
     GoodsCommentService goodsCommentService;
-    @GetMapping("/list")
+    @RequestMapping("/list")
     /*
         @RequestParam("valueId")Integer valueId,
                                      @RequestParam("type")     Byte type,
@@ -31,13 +31,15 @@ public class WXCommentController {
                                      显示所有评论
 
     * */
-    public BaseRespVo getCommentList(@RequestBody WXGoodCommentBo wxGoodCommentBo, HttpServletRequest request){
-        Map<String,Object> map=goodsCommentService.getWXCommentList(wxGoodCommentBo, request);
+    public BaseRespVo getCommentList(Integer valueId ,Byte type ,Byte showType,Integer page,Integer size ){
+        WXGoodCommentBo wxGoodCommentBo = new WXGoodCommentBo(type,size,page,showType,valueId);
+        Map<String,Object> map=goodsCommentService.getWXCommentList(wxGoodCommentBo);
         return BaseRespVo.ok (map);
     }
 
-    @GetMapping("/count")
-    public BaseRespVo getWXCount(@RequestBody WXGoodCommentBo wxGoodCommentBo){
+    @RequestMapping("/count")
+    public BaseRespVo getWXCount(Integer valueId ,Byte type ,Byte showType,Integer page,Integer size){
+        WXGoodCommentBo wxGoodCommentBo = new WXGoodCommentBo(type,size,page,showType,valueId);
         Map<String,Object> map= goodsCommentService.getWXCount(wxGoodCommentBo);
            return BaseRespVo.ok (map);
     }

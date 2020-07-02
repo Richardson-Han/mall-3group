@@ -14,6 +14,7 @@ import com.cskaoyan.mall.service.GoodsCommentService;
 import com.cskaoyan.mall.utils.WXTokenUtils;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -96,12 +97,11 @@ public class GoodsCommentServiceImpl implements GoodsCommentService {
     }
 //胡小强
     @Override
-    public Map<String,Object>  getWXCommentList(WXGoodCommentBo wxGoodCommentBo,
-                                         HttpServletRequest request) {
+    public Map<String,Object>  getWXCommentList(WXGoodCommentBo wxGoodCommentBo){
         Map<String,Object> map =new HashMap<> ();
         List<Object> lsit = new ArrayList<> ();
         //查询测试用户名
-        String username= WXTokenUtils.requestToUsername ( request);
+        String username = (String) SecurityUtils.getSubject().getPrincipal();;
         UserExample userExample = new UserExample ();
         UserExample.Criteria criteria = userExample.createCriteria ().andUsernameEqualTo (username);
         WXUserInfoVO wxUserInfoVO = UserMapper.selectUserInfoByUsername (username);
