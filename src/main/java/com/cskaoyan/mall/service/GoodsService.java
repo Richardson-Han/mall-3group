@@ -30,9 +30,9 @@ public interface GoodsService {
 
     void goodsDelete(Goods goods);
 
-    Map category(Integer id);
+    Map category(Integer pid);
 
-    Map list(Integer categoryId, Integer page, Integer size);
+    Map list(Integer categoryId, Integer page, Integer size, String keyword, String sort, String order, Integer brandId);
 
     Map detail(Integer goodsId);
 

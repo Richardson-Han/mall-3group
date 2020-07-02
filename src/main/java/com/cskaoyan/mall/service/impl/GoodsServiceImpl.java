@@ -355,33 +355,64 @@ public class GoodsServiceImpl implements GoodsService {
     public Map category(Integer id) {
         //id是商品类目的id，首先要根据id查询对应的pid
         Map map = new HashMap();
-        Category category = wxCategoryMapper.selectByPrimaryKey(id);
-        Integer pid = category.getPid();
+        Category parentCategory = wxCategoryMapper.selectByPrimaryKey(id);
         CategoryExample categoryExample = new CategoryExample();
-        categoryExample.createCriteria().andPidEqualTo(pid).andDeletedEqualTo(false);
-        List<Category> categories = wxCategoryMapper.selectByExample(categoryExample);
-        Category parentCategory = wxCategoryMapper.selectByPrimaryKey(pid);
-        map.put("brotherCategory", categories);
-        map.put("currentCategory", category);
+        categoryExample.createCriteria().andPidEqualTo(id);
+        List<Category> brotherCategory = wxCategoryMapper.selectByExample(categoryExample);
+        map.put("brotherCategory", brotherCategory);
+        map.put("currentCategory", brotherCategory.get(0));
         map.put("parentCategory", parentCategory);
         return map;
     }
 
+    @Autowired
+    SearchHistoryMapper searchHistoryMapper;
+
     //尚政宇
     @Override
-    public Map list(Integer categoryId, Integer page, Integer size) {
-        Map map = new HashMap();
+    public Map list(Integer categoryId, Integer page, Integer size, String keyword, String sort, String order, Integer brandId) {
         PageHelper.startPage(page, size);
-        GoodsExample goodsExample = new GoodsExample();
-        goodsExample.createCriteria().andCategoryIdEqualTo(categoryId);
-        long count = goodsMapper.countByExample(goodsExample);
-        List<Goods> goods = goodsMapper.selectByExample(goodsExample);
-
-        List<Category> filterCategoryList = wxCategoryMapper.selectFilterCategoryList();
-        map.put("count", count);
-        map.put("filterCategoryList", filterCategoryList);
-        map.put("goodsList", goods);
-
+        //goodsList
+        List<Goods> goodsList = goodsMapper.selectGoodsList(categoryId, keyword, sort, order, brandId);
+        Map map = new HashMap();
+        //count-->goodsList的大小
+        if (brandId == null) {
+            int count = goodsList.size();
+            map.put("count", count);
+        }
+        if (categoryId != null) {
+            //filterCategoryList
+            List<GoodsCategory> filterCategoryList = categoryMapper.selectFilterCategoryList(categoryId, keyword, sort, order, brandId);
+            map.put("filterCategoryList", filterCategoryList);
+        }
+        if (brandId != null) {
+            //brand
+            GoodsBrand brand = brandMapper.selectByPrimaryKey(brandId);
+            map.put("brand", brand);
+        }
+        map.put("goodsList", goodsList);
+        //将搜索记录插入到数据库中，如果该关键字已在数据库中存在，则更新时间
+        String username = (String) SecurityUtils.getSubject().getPrincipal();
+        if (username == null || keyword == null) {
+            return map;
+        }
+        List<SearchHistory> searchHistories = searchHistoryMapper.selectKeywordByUsername(username);
+        Date date = new Date();
+        outer:
+        if (searchHistories != null) {
+            for (SearchHistory searchHistory : searchHistories) {
+                if (searchHistory.getKeyword().equals(keyword)) {
+                    searchHistoryMapper.updateTime(date, userMapper.selectUserIdByUsername(username), keyword);
+                    break outer;
+                }
+            }
+            searchHistoryMapper.insert(
+                    new SearchHistory(null, userMapper.selectUserIdByUsername(username), keyword, "wx", date, date, false));
+        }
+        else{
+            searchHistoryMapper.insert(
+                    new SearchHistory(null, userMapper.selectUserIdByUsername(username), keyword, "wx", date, date, false));
+        }
         return map;
     }
 
@@ -428,11 +459,13 @@ public class GoodsServiceImpl implements GoodsService {
         //shareImage
         String shareImage = "";
         //specification
-        List<GoodsSpec> valueList = goodsSpecMapper.selectByGoodsId(goodsId);
+        ArrayList<GoodsSpec> valueList = (ArrayList<GoodsSpec>) goodsSpecMapper.selectByGoodsId(goodsId);
+
+        List list = new ArrayList();
         HashMap specificationList = new HashMap();
         specificationList.put("name", "规格");
         specificationList.put("valueList",valueList);
-
+        list.add(specificationList);
         //userHasCollect
         Subject subject = SecurityUtils.getSubject();
         String username = (String) subject.getPrincipal();
@@ -448,7 +481,7 @@ public class GoodsServiceImpl implements GoodsService {
         map.put("issue", issue);
         map.put("productList", productList);
         map.put("shareImage", shareImage);
-        map.put("specificationList", specificationList);
+        map.put("specificationList", list);
         map.put("userHasCollect", userHasCollect);
         return map;
     }

@@ -17,7 +17,7 @@ import java.util.Map;
  *
  */
 @RestController
-@RequestMapping("/wx/goods")
+@RequestMapping("wx/goods")
 public class WXGoodsController {
     @Autowired
     GoodsService goodsService;
@@ -29,8 +29,8 @@ public class WXGoodsController {
     }
 
     @RequestMapping("list")
-    public BaseRespVo list(Integer categoryId, Integer page, Integer size) {
-        Map data = goodsService.list(categoryId, page, size);
+    public BaseRespVo list(Integer categoryId, Integer page, Integer size, String keyword, String sort, String order, Integer brandId) {
+        Map data = goodsService.list(categoryId, page, size, keyword, sort, order, brandId);
         return BaseRespVo.ok(data);
     }
 

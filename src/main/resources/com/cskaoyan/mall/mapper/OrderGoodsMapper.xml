@@ -121,7 +121,7 @@
       #{picUrl,jdbcType=VARCHAR}, #{comment,jdbcType=INTEGER}, #{addTime,jdbcType=TIMESTAMP}, 
       #{updateTime,jdbcType=TIMESTAMP}, #{deleted,jdbcType=BIT})
   </insert>
-  <insert id="insertSelective" parameterType="com.cskaoyan.mall.bean.OrderGoods">
+  <insert id="insertSelective" parameterType="com.cskaoyan.mall.bean.OrderGoods" keyProperty="id" useGeneratedKeys="true">
     insert into cskaoyanmall_order_goods
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">

@@ -1,24 +1,38 @@
 package com.cskaoyan.mall.service.impl;
 
 import com.cskaoyan.mall.bean.*;
+import com.cskaoyan.mall.bean.GoodsComment;
 import com.cskaoyan.mall.bean.BO.GoodsCommentBO;
 import com.cskaoyan.mall.bean.BO.GoodsCommentListBO;
+import com.cskaoyan.mall.bean.BO.wx.WXGoodCommentBo;
+import com.cskaoyan.mall.bean.VO.wx.WXCommentVO;
+import com.cskaoyan.mall.bean.VO.wx.WXTopicVO;
+import com.cskaoyan.mall.bean.VO.wx.WXUserInfoVO;
 import com.cskaoyan.mall.mapper.GoodsCommentMapper;
+import com.cskaoyan.mall.mapper.UserMapper;
 import com.cskaoyan.mall.service.GoodsCommentService;
+import com.cskaoyan.mall.utils.WXTokenUtils;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class GoodsCommentServiceImpl implements GoodsCommentService {
 
     @Autowired
     GoodsCommentMapper commentMapper;
+    @Autowired
+    UserMapper UserMapper;
+
 
     /**
      *  查询商品评论
@@ -81,15 +95,67 @@ public class GoodsCommentServiceImpl implements GoodsCommentService {
         }
         return 0;
     }
+//胡小强
+    @Override
+    public Map<String,Object>  getWXCommentList(WXGoodCommentBo wxGoodCommentBo){
+        Map<String,Object> map =new HashMap<> ();
+        List<Object> lsit = new ArrayList<> ();
+        //查询测试用户名
+        String username = (String) SecurityUtils.getSubject().getPrincipal();;
+        UserExample userExample = new UserExample ();
+        UserExample.Criteria criteria = userExample.createCriteria ().andUsernameEqualTo (username);
+        WXUserInfoVO wxUserInfoVO = UserMapper.selectUserInfoByUsername (username);
+        //分页
+        PageHelper.startPage (wxGoodCommentBo.getPage (),wxGoodCommentBo.getSize ());
+        List<WXCommentVO> commentList =new ArrayList<> ();
+
+        GoodsCommentExample comExample = new GoodsCommentExample ();
+        comExample.setOrderByClause ("add_time desc");
+        comExample.createCriteria ().andValueIdEqualTo (wxGoodCommentBo.getValuedId ());
+
+        List<GoodsComment> goodsCommentListComments = commentMapper.selectByExample (comExample);
+        for (GoodsComment comment : goodsCommentListComments) {
+            WXCommentVO wxVO = new WXCommentVO ();
+            wxVO.setAddTime (comment.getAddTime ());
+            wxVO.setContent (comment.getContent ());
+            wxVO.setPicList (comment.getPicUrls ());
+            wxVO.setUserInfo (wxUserInfoVO);
+            commentList.add (wxVO);
+        }
+
+
+        PageInfo <GoodsComment> pageInfo=new PageInfo<> (goodsCommentListComments);
+        long count =pageInfo.getTotal ();
+
+        map.put ("count",count);
+        map.put("currentPage",wxGoodCommentBo.getPage ());
+        map.put ("data",commentList);
+        return map;
+    }
+
+
 
     @Override
-    public void insertComment(GoodsComment goodsComment) {
-        int i = commentMapper.insertSelective(goodsComment);
+    public void insertComment(GoodsComment  goodsComment) {
+        commentMapper.insertSelective(goodsComment);
     }
 
     @Override
     public Integer selectTheLastInsertId() {
         Integer id = commentMapper.selectTheLastInsertId();
         return id;
+
+    }
+
+    @Override
+    public Map<String, Object> getWXCount(WXGoodCommentBo wxGoodCommentBo) {
+        Map<String,Object> countmap=new HashMap<> ();
+        GoodsCommentExample goodsCommentExample = new GoodsCommentExample ();
+        GoodsCommentExample.Criteria criteria = goodsCommentExample.createCriteria ()
+                .andTypeEqualTo (wxGoodCommentBo.getType ()).andValueIdEqualTo (wxGoodCommentBo.getValuedId ());
+        long allCount= commentMapper.countByExample (goodsCommentExample);
+        countmap.put ("allCount",allCount);
+        countmap.put ("hasPicCount",allCount);
+        return countmap;
     }
 }

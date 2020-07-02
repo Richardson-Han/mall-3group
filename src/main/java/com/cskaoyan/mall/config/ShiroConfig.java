@@ -39,13 +39,27 @@ public class ShiroConfig {
         fiterChainDefinitionMap.put("/admin/storage/create", "anon");
         fiterChainDefinitionMap.put("/admin/auth/info", "anon");
         //微信权限设置，要是哪个网页不需要权限就能访问就在这添加fiterChainDefinitionMap.put("***", "anon");
-        fiterChainDefinitionMap.put("/wx/goods/*", "anon");
-        fiterChainDefinitionMap.put("/wx/catalog/current", "anon");
+
+        fiterChainDefinitionMap.put("/wx/storage/**", "anon");
+        fiterChainDefinitionMap.put("/wx/home/**", "anon");
+        fiterChainDefinitionMap.put("/wx/goods/**", "anon");
+        fiterChainDefinitionMap.put("/wx/catalog/**", "anon");
         fiterChainDefinitionMap.put("/wx/auth/login", "anon");
-        fiterChainDefinitionMap.put("/wx/home/index","anon");
-        fiterChainDefinitionMap.put("/wx/storage/*","anon");
+        fiterChainDefinitionMap.put("/wx/search/**", "anon");
+        fiterChainDefinitionMap.put("/wx/coupon/list", "anon");
+        fiterChainDefinitionMap.put("/wx/coupon/**", "authc");
+        fiterChainDefinitionMap.put("/wx/user/index", "authc");
+
+        fiterChainDefinitionMap.put("/wx/comment/**", "anon");
+        fiterChainDefinitionMap.put("/wx/topic/**", "anon");
+        fiterChainDefinitionMap.put("/wx/footprint/**", "anon");
+
+        fiterChainDefinitionMap.put("/wx/brand/**", "anon");
+
         fiterChainDefinitionMap.put("/wx/**", "authc");
+
         //开发时先给全部权限
+        fiterChainDefinitionMap.put("/wx/address/list", "authc");
 
         // fiterChainDefinitionMap.put("/**","perms[*]");*不需要设置 自动全权限
 

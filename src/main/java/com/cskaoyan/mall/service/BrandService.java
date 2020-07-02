@@ -2,6 +2,7 @@ package com.cskaoyan.mall.service;
 
 import com.cskaoyan.mall.bean.Brand;
 import com.cskaoyan.mall.bean.VO.BrandAddVo;
+import com.cskaoyan.mall.bean.wx.WXBrandListData;
 
 import java.util.List;
 import java.util.Map;
@@ -18,5 +19,11 @@ public interface BrandService {
     boolean delete(Brand brand);
     boolean updateByBrand(Brand brand);
 
+
+    WXBrandListData getBrandList(Integer page, Integer size);
+
+    Brand getBrandDetail(Integer id);
+
     List<Brand> wxselectDirectSupply();
+
 }

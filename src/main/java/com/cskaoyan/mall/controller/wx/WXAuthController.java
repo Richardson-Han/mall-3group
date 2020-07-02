@@ -1,10 +1,8 @@
 package com.cskaoyan.mall.controller.wx;
 
-import com.cskaoyan.mall.bean.User;
 import com.cskaoyan.mall.bean.VO.BaseRespVo;
 import com.cskaoyan.mall.bean.VO.wx.WXUserInfoVO;
 import com.cskaoyan.mall.bean.VO.wx.WXUserLoginVO;
-import com.cskaoyan.mall.mapper.UserMapper;
 import com.cskaoyan.mall.service.UserService;
 import com.cskaoyan.mall.shiro.MallToken;
 import org.apache.shiro.SecurityUtils;
@@ -18,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.io.Serializable;
 import java.util.Date;
 import java.util.Map;
 
@@ -45,16 +42,16 @@ public class WXAuthController {
         String password = (String) map.get("password");
         String username = (String) map.get("username");
         String passwordDB = new Md5Hash(password, username + "3groupWX", 3).toString();
-        MallToken wxtoken = new MallToken(username,passwordDB,"wx");
+        MallToken wxtoken = new MallToken(username, passwordDB, "wx");
         Subject subject = SecurityUtils.getSubject();
         try {
             subject.login(wxtoken);
             String token = (String) subject.getSession().getId();
             Date tokenExpire = new Date();
             WXUserInfoVO userInfoVO = userService.getUserInfo(username);
-            WXUserLoginVO loginVO = new WXUserLoginVO(token,tokenExpire,userInfoVO);
+            WXUserLoginVO loginVO = new WXUserLoginVO(token, tokenExpire, userInfoVO);
             return BaseRespVo.ok(loginVO);
-        }catch (Exception e) {
+        } catch (Exception e) {
             System.out.println("*****************挂了*****************");
             return BaseRespVo.error("用户名或密码错误", 401);
         }

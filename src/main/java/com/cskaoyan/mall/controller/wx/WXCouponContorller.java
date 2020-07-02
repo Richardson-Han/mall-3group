@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.Map;
 
@@ -33,6 +32,7 @@ public class WXCouponContorller {
     UserService userService;
 
     String error = "this token is error";
+
     /**
      * 优惠卷专区
      *
@@ -51,14 +51,14 @@ public class WXCouponContorller {
      * 我的优惠卷
      */
     @RequestMapping("mylist")
-    public BaseRespVo mylist(Integer status, Integer page, Integer size,HttpServletRequest request) {
+    public BaseRespVo mylist(Integer status, Integer page, Integer size, HttpServletRequest request) {
         //后续要封装从request →username
         String username = WXTokenUtils.requestToUsername(request);
-        if (error.equals(username)){
+        if (error.equals(username)) {
             return BaseRespVo.error("请先登陆");
         }
         Integer userId = userService.wxselectIdByUsername(username);
-        CouponBase couponBase = couponService.wxselectCouponByStatusPage(status,--page,size,userId);
+        CouponBase couponBase = couponService.wxselectCouponByStatusPage(status, --page, size, userId);
         return BaseRespVo.ok(couponBase);
     }
 
@@ -73,16 +73,15 @@ public class WXCouponContorller {
      * "discount":"15.00","startTime":"2020-06-30 11:08:03","endTime":"2020-07-07 11:08:03"}],"errmsg":"成功"}
      */
     @RequestMapping("selectlist")
-    public BaseRespVo selectlist(@RequestBody Map map,HttpServletRequest request) {
+    public BaseRespVo selectlist(@RequestBody Map map, HttpServletRequest request) {
         Integer cartId = (Integer) map.get("cartId");
         Integer grouponRulesId = (Integer) map.get("grouponRulesId");
         String username = WXTokenUtils.requestToUsername(request);
-        if (error.equals(username)){
+        if (error.equals(username)) {
             return BaseRespVo.error("请先登陆");
         }
         Integer userId = userService.wxselectIdByUsername(username);
-        //还有三条SQL语句没写 仅能在cartId=0，grouponRulesId=0状态下使用
-        List<Coupon> couponBase = couponService.wxselectCouponByCartId(cartId,grouponRulesId,userId);
+        List<Coupon> couponBase = couponService.wxselectCouponByCartId(cartId, grouponRulesId, userId);
         return BaseRespVo.ok(couponBase);
     }
 
@@ -99,10 +98,10 @@ public class WXCouponContorller {
         Integer couponId = (Integer) map.get("couponId");
         //先获取用户
         String username = WXTokenUtils.requestToUsername(request);
-        if (error.equals(username)){
+        if (error.equals(username)) {
             return BaseRespVo.error("请先登陆");
         }
-        return getCouponFunction(username,couponId);
+        return getCouponFunction(username, couponId);
     }
 
     /**
@@ -113,7 +112,7 @@ public class WXCouponContorller {
      * {"errno":0,"errmsg":"成功"}
      */
     @RequestMapping("exchange")
-    public BaseRespVo exchange(@RequestBody Map map , HttpServletRequest request) {
+    public BaseRespVo exchange(@RequestBody Map map, HttpServletRequest request) {
         String code = (String) map.get("code");
         System.out.println(code);
         //通过code查到对应优惠卷 id
@@ -125,16 +124,16 @@ public class WXCouponContorller {
         }
         //先获取用户
         String username = WXTokenUtils.requestToUsername(request);
-        if (error.equals(username)){
+        if (error.equals(username)) {
             return BaseRespVo.error("请先登陆");
         }
-        return getCouponFunction(username,couponId);
+        return getCouponFunction(username, couponId);
     }
 
     /**
      * 获取优惠卷工具方法
      */
-    private BaseRespVo getCouponFunction(String username,Integer couponId){
+    private BaseRespVo getCouponFunction(String username, Integer couponId) {
         //查看优惠卷剩余可领取次数
         Integer total = couponService.wxselectTolalNumberByCouponId(couponId);
         //total=null意味着优惠卷最后一张已经被领取 随之被虚拟删除标记
@@ -148,7 +147,7 @@ public class WXCouponContorller {
         //如果无限次的直接领卷并返回成功！
         if (limitnumber == 0) {
             //领卷并更新优惠卷剩余数目
-            Integer insert = userService.wxinsertGainCoupon(userId, couponId,total);
+            Integer insert = userService.wxinsertGainCoupon(userId, couponId, total);
             return insert == 0 ? BaseRespVo.error("领取失败,请重试", 711) : BaseRespVo.ok();
 
         }

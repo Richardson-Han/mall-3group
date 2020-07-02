@@ -29,12 +29,15 @@ public class WXUserContorller {
 
     String error = "this token is error";
 
+    /**
+     * 登录之后 个人界面的 待付款 待发货 待收货 待评价 数目的返回
+     */
     @RequestMapping(value = "/index", method = RequestMethod.GET)
     public BaseRespVo index(HttpServletRequest request) {
         // {"errno":0,"data":{"order":{"unrecv":4,"uncomment":0,"unpaid":0,"unship":0}},"errmsg":"成功"}
 
         String username = WXTokenUtils.requestToUsername(request);
-        if (error.equals(username)){
+        if (error.equals(username)) {
             return BaseRespVo.error("请先登陆");
         }
         //username得到user_id

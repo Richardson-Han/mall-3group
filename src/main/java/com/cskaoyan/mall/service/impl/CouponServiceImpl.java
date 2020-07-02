@@ -142,15 +142,12 @@ public class CouponServiceImpl implements CouponService {
             if (cartId == 0) {
                 return couponMapper.wxselectCouponByUserId(userId);
             } else {
-                //SQL未完成
                 return couponMapper.wxselectCouponByCartIdAndUserId(cartId, userId);
             }
         }
         if (cartId == 0) {
-            //SQL未完成
             return couponMapper.wxselectCouponByGrouponRulesIdAndUserId(grouponRulesId, userId);
         } else {
-            //SQL未完成
             return couponMapper.wxselectCouponByCartIdAndGrouponRulesIdAndUserId(cartId, grouponRulesId, userId);
         }
     }

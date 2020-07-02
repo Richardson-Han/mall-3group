@@ -6,6 +6,7 @@ import com.cskaoyan.mall.bean.OrderGoods;
 import com.cskaoyan.mall.bean.VO.OrderRefundVO;
 import com.cskaoyan.mall.bean.VO.ShipVO;
 import com.cskaoyan.mall.bean.VO.StatBaseVO;
+import com.cskaoyan.mall.bean.wx.VO.OrderSubmitVO;
 import com.cskaoyan.mall.bean.wx.VO.WXOrderInfoVO;
 import com.cskaoyan.mall.bean.wx.WXOrderGoods;
 
@@ -55,4 +56,7 @@ public interface OrderService {
     void confirmOrder(Integer orderId);
 
     OrderGoods getOrderGoods(Integer orderId, Integer goodsId);
+
+    //WX
+    OrderSubmitVO submit(Map map, String username);
 }

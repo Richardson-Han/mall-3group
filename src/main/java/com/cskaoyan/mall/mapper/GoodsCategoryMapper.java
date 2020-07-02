@@ -1,5 +1,6 @@
 package com.cskaoyan.mall.mapper;
 
+import com.cskaoyan.mall.bean.Category;
 import com.cskaoyan.mall.bean.VO.CatChildrenVO;
 import com.cskaoyan.mall.bean.GoodsCategory;
 import com.cskaoyan.mall.bean.GoodsCategoryExample;
@@ -32,4 +33,6 @@ public interface GoodsCategoryMapper {
     int updateByPrimaryKeySelective(GoodsCategory record);
 
     int updateByPrimaryKey(GoodsCategory record);
+
+    List<GoodsCategory> selectFilterCategoryList(@Param("categoryId") Integer categoryId, @Param("keyword") String keyword, @Param("sort") String sort, @Param("order") String order, @Param("brandId") Integer brandId);
 }

@@ -1,8 +1,9 @@
 package com.cskaoyan.mall;
 
-import com.cskaoyan.mall.utils.WXTokenUtils;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
+
+import java.security.CryptoPrimitive;
 
 /**
  * @author 韩
@@ -13,5 +14,6 @@ public class loginTokenTest {
 
     @Test
     public void hanTest(){
+        CryptoPrimitive cryptoPrimitive ;
     }
 }

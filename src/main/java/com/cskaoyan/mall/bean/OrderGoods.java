@@ -1,8 +1,14 @@
 package com.cskaoyan.mall.bean;
 
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import java.math.BigDecimal;
 import java.util.Date;
 
+@AllArgsConstructor
+@NoArgsConstructor
 public class OrderGoods {
     private Integer id;
 

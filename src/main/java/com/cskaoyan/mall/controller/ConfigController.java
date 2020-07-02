@@ -4,7 +4,6 @@ import com.cskaoyan.mall.bean.BO.ConfigExpressBO;
 import com.cskaoyan.mall.bean.BO.ConfigMallBO;
 import com.cskaoyan.mall.bean.BO.ConfigOrderBO;
 import com.cskaoyan.mall.bean.BO.ConfigWXBO;
-import com.cskaoyan.mall.bean.BaseData;
 import com.cskaoyan.mall.bean.VO.BaseRespVo;
 import com.cskaoyan.mall.service.ConfigService;
 import org.springframework.beans.factory.annotation.Autowired;

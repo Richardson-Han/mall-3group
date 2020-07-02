@@ -4,17 +4,14 @@ import com.cskaoyan.mall.bean.GoodsComment;
 import com.cskaoyan.mall.bean.Order;
 import com.cskaoyan.mall.bean.OrderGoods;
 import com.cskaoyan.mall.bean.VO.BaseRespVo;
-import com.cskaoyan.mall.bean.VO.OrderRefundVO;
 import com.cskaoyan.mall.bean.wx.BO.OrderCommentBO;
 import com.cskaoyan.mall.bean.wx.HandleOption;
-import com.cskaoyan.mall.bean.wx.VO.WXOrderDetailDataVO;
-import com.cskaoyan.mall.bean.wx.VO.WXOrderInfoVO;
+import com.cskaoyan.mall.bean.wx.VO.*;
 import com.cskaoyan.mall.bean.wx.WXOrderGoods;
-import com.cskaoyan.mall.bean.wx.VO.OrderListBaseVO;
-import com.cskaoyan.mall.bean.wx.VO.OrderListDataVO;
 import com.cskaoyan.mall.service.GoodsCommentService;
 import com.cskaoyan.mall.service.GroupService;
 import com.cskaoyan.mall.service.OrderService;
+import com.cskaoyan.mall.utils.WXTokenUtils;
 import com.cskaoyan.mall.service.UserService;
 import com.cskaoyan.mall.utils.WxHandleOptionUtil;
 import com.github.pagehelper.PageHelper;
@@ -28,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -79,14 +77,14 @@ public class WXOrderController {
         //获得comment的id
         Integer commentId = commentService.selectTheLastInsertId();
         //更新
-        orderService.updateCommentId(commentBO.getOrderGoodsId(),commentId);
+        orderService.updateCommentId(commentBO.getOrderGoodsId(), commentId);
         return BaseRespVo.ok();
     }
 
 
     @RequestMapping("list")
-    public BaseRespVo list(Integer showType, Integer page, Integer size){
-        PageHelper.startPage(page,size);
+    public BaseRespVo list(Integer showType, Integer page, Integer size) {
+        PageHelper.startPage(page, size);
         List<Order> orders = orderService.queryOrderByOrderStatus(showType);
         List<WXOrderGoods> goodsList;
         List<OrderListDataVO> orderListDataVOs = new ArrayList<>();
@@ -111,42 +109,51 @@ public class WXOrderController {
     }
 
     @RequestMapping("detail")
-    public BaseRespVo detail(Integer orderId){
+    public BaseRespVo detail(Integer orderId) {
         List<OrderGoods> orderGoodsList = orderService.selectOrderGoodsByOrderId(orderId);
-        WXOrderInfoVO  orderInfo = orderService.getWxOrderInfo(orderId);
-        WXOrderDetailDataVO wxOrderDetailDataVO = new WXOrderDetailDataVO(orderGoodsList,orderInfo);
+        WXOrderInfoVO orderInfo = orderService.getWxOrderInfo(orderId);
+        WXOrderDetailDataVO wxOrderDetailDataVO = new WXOrderDetailDataVO(orderGoodsList, orderInfo);
         return BaseRespVo.ok(wxOrderDetailDataVO);
     }
 
     @RequestMapping("cancel")
-    public BaseRespVo cancel(Integer orderId){
+    public BaseRespVo cancel(Integer orderId) {
         orderService.cancelOrder(orderId);
         return BaseRespVo.ok();
     }
 
     @RequestMapping("refund")
-    public BaseRespVo refund(@RequestBody Map map){
+    public BaseRespVo refund(@RequestBody Map map) {
         orderService.refund((Integer) map.get("orderId"));
         return BaseRespVo.ok();
     }
 
     @RequestMapping("delete")
-    public BaseRespVo delete(Integer orderId){
+    public BaseRespVo delete(Integer orderId) {
         orderService.deleteOrder(orderId);
         return BaseRespVo.ok();
     }
 
     @RequestMapping("confirm")
-    public BaseRespVo confirm(@RequestBody Map map){
+    public BaseRespVo confirm(@RequestBody Map map) {
         orderService.confirmOrder((Integer) map.get("orderId"));
         return BaseRespVo.ok();
     }
 
     @RequestMapping("goods")
-    public BaseRespVo goods (Integer orderId, Integer goodsId){
-        OrderGoods orderGoods = orderService.getOrderGoods(orderId,goodsId);
+    public BaseRespVo goods(Integer orderId, Integer goodsId) {
+        OrderGoods orderGoods = orderService.getOrderGoods(orderId, goodsId);
         return BaseRespVo.ok(orderGoods);
     }
 
 
+    //方惠
+    //订单提交
+    //付款操作不用写
+    @RequestMapping("submit")
+    public BaseRespVo submit(@RequestBody Map map, HttpServletRequest request) {
+        String username = WXTokenUtils.requestToUsername(request);
+        OrderSubmitVO orderSubmitVO = orderService.submit(map, username);
+        return BaseRespVo.ok(orderSubmitVO);
+    }
 }

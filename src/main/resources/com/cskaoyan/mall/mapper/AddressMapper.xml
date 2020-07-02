@@ -205,6 +205,10 @@
     </if>
   </select>
 
+  <select id="getLastUpdateId" resultType="java.lang.Integer">
+    select LAST_INSERT_ID()
+  </select>
+
   <update id="updateByExampleSelective" parameterType="map">
     update cskaoyanmall_address
     <set>
