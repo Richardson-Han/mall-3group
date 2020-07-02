@@ -93,7 +93,9 @@ public class CartServiceImpl implements CartService {
         //根据username来获取对应的userId
         Integer userId = userMapper.selectIdByUsername(username);
         //获得加入购物车的商品数量
-        Short number = (Short) map.get("number");
+        //Integer number = (Integer) map.get("number");
+        //number.shortValue();
+        Short number = ((Integer) map.get("number")).shortValue();
         //获得productId
         Integer productId = (Integer) map.get("productId");
         //根绝productId去获得goods_product表中对应的信息

@@ -28,7 +28,7 @@ import java.util.Map;
  * @create 2020/6/30-16:34
  */
 @RestController
-@RequestMapping("/wx/cart")
+@RequestMapping("wx/cart")
 public class WXCartController {
     @Autowired
     CartService cartService;
@@ -47,7 +47,7 @@ public class WXCartController {
         return BaseRespVo.ok(goodScount);
     }
 
-    @RequestMapping("add")
+    @RequestMapping(value = "add", method = RequestMethod.POST)
     public BaseRespVo add(@RequestBody Map map, HttpServletRequest request){
         String username = WXTokenUtils.requestToUsername(request);
         //加入购入车肯定成功，没库存的话会提前提示的

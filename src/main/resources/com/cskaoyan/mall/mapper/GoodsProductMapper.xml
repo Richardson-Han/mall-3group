@@ -180,7 +180,7 @@
       <include refid="Example_Where_Clause" />
     </if>
   </select>
-    <select id="selectByGoodsId" resultType="com.cskaoyan.mall.bean.GoodsProduct">
+    <select id="selectByGoodsId" resultMap="BaseResultMap">
       select * from cskaoyanmall_goods_product where goods_id = #{goodsId}
     </select>
     <update id="updateByExampleSelective" parameterType="map">
