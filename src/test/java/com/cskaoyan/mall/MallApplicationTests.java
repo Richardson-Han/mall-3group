@@ -1,6 +1,5 @@
 package com.cskaoyan.mall;
 
-import com.cskaoyan.mall.bean.Category;
 import com.cskaoyan.mall.bean.Goods;
 import com.cskaoyan.mall.bean.GoodsCategory;
 import com.cskaoyan.mall.mapper.*;
@@ -154,8 +153,8 @@ class MallApplicationTests {
     @Test
     void selectGoodsListTest() {
         List<Goods> goodsList = goodsMapper.selectGoodsList(
-                0, "花", "retail_price", "desc"
+                0, "花", "retail_price", "desc",0
         );
-        List<GoodsCategory> filterCategoryList = goodsCategoryMapper.selectFilterCategoryList(1008001, "花", "name", "desc");
+        List<GoodsCategory> filterCategoryList = goodsCategoryMapper.selectFilterCategoryList(1008001, "花", "name", "desc", 0);
     }
 }
