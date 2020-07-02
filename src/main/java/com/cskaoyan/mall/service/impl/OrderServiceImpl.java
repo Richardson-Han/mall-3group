@@ -10,9 +10,7 @@ import com.cskaoyan.mall.bean.wx.HandleOption;
 import com.cskaoyan.mall.bean.wx.VO.OrderSubmitVO;
 import com.cskaoyan.mall.bean.wx.VO.WXOrderInfoVO;
 import com.cskaoyan.mall.bean.wx.WXOrderGoods;
-import com.cskaoyan.mall.mapper.OrderGoodsMapper;
-import com.cskaoyan.mall.mapper.OrderMapper;
-import com.cskaoyan.mall.mapper.UserMapper;
+import com.cskaoyan.mall.mapper.*;
 import com.cskaoyan.mall.service.OrderService;
 import com.cskaoyan.mall.utils.WxHandleOptionUtil;
 import com.github.pagehelper.PageHelper;
@@ -20,6 +18,9 @@ import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.lang.System;
+import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /***
@@ -253,7 +254,14 @@ public class OrderServiceImpl implements OrderService {
 
 
 
+
     //方惠
+    @Autowired
+    AddressMapper addressMapper;
+    @Autowired
+    RegionMapper regionMapper;
+    @Autowired
+    CartMapper cartMapper;
 
     /**
      *  提交订单，返回订单号
@@ -261,6 +269,55 @@ public class OrderServiceImpl implements OrderService {
      */
     @Override
     public OrderSubmitVO submit(Map map, String username) {
+        //根据username来获取对应的userId
+        Integer userId = userMapper.selectIdByUsername(username);
+        //获取地址id
+        Integer addressId = (Integer) map.get("addressId");
+        //获取cartId
+        Integer cartId = (Integer) map.get("cartId");
+        //获取优惠券id
+        Integer couponId = (Integer) map.get("couponId");
+        //获取组团信息，先不管这个
+        Integer grouponLinkId = (Integer) map.get("grouponLinkId");
+        Integer grouponRulesId = (Integer) map.get("grouponRulesId");
+        //获取备注信息
+        String message = (String) map.get("message");
+
+        //订单号的生成，时间日期+随机数
+        String orderSn = createOrderSn();
+        //订单状态，未付款
+        Short orderStatus = 101;
+        //获取签收人
+        Address address = addressMapper.selectByPrimaryKey(addressId);
+        String consignee = address.getName();
+        //获取电话号码
+        String mobile = address.getMobile();
+        //获取地址，包括省份，城市， 区域
+        Integer areaId = address.getAreaId();
+        Region areaRegion = regionMapper.selectByPrimaryKey(areaId);
+        //区域名
+        String area = areaRegion.getName();
+        //
+        Region cityRegion = regionMapper.selectByPrimaryKey(areaRegion.getPid());
+        String city = cityRegion.getName();
+        //
+        Region provinceRegion = regionMapper.selectByPrimaryKey(cityRegion.getPid());
+        String province = provinceRegion.getName();
+        //完整的地址为
+        String wholeAddress = province + " " + city + " " + area + " " + address.getAddress();
+
+        //商品价格
+        Cart cart = cartMapper.selectByPrimaryKey(cartId);
+        BigDecimal price = cart.getPrice();
+
         return null;
+    }
+
+    private String createOrderSn(){
+        //当前日期 + 六位随机数
+        String str = new SimpleDateFormat("yyyyMMdd").format(new Date());
+        Random random = new Random();
+        int r = (random.nextInt() * (999999 - 100000 +1)) + 100000;
+        return r + str;
     }
 }
