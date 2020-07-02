@@ -99,9 +99,9 @@ public class AddressServiceImpl implements AddressService {
         Date date = new Date();
         addressBO.setUpdateTime(date);
         addressBO.setAddTime(date);
+        Integer userId = userMapper.selectUserIdByUsername(username);
+        addressBO.setUserId(userId);
         if (addressBO.getId() > 0){
-            Integer userId = userMapper.selectUserIdByUsername(username);
-            addressBO.setUserId(userId);
             addressExample.createCriteria().andIdEqualTo(addressBO.getId());
             addressMapper.updateByExampleSelective(addressBO,addressExample);
             return addressBO.getId();

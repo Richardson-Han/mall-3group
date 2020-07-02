@@ -1,5 +1,6 @@
 package com.cskaoyan.mall.config;
 
+import com.cskaoyan.mall.service.AdminService;
 import com.cskaoyan.mall.shiro.AdminRealm;
 import com.cskaoyan.mall.mapper.AdminMapper;
 import com.cskaoyan.mall.shiro.WxRealm;
@@ -21,8 +22,9 @@ import java.util.*;
  */
 @Configuration
 public class ShiroConfig {
+
     @Autowired
-    AdminMapper adminMapper;
+    AdminService adminService;
 
     @Bean
     public ShiroFilterFactoryBean shiroFilterFactoryBean(DefaultWebSecurityManager securityManager) {
@@ -40,18 +42,21 @@ public class ShiroConfig {
         fiterChainDefinitionMap.put("/admin/auth/info", "anon");
         //微信权限设置，要是哪个网页不需要权限就能访问就在这添加fiterChainDefinitionMap.put("***", "anon");
 
+        fiterChainDefinitionMap.put("/wx/storage/**", "anon");
         fiterChainDefinitionMap.put("/wx/home/**", "anon");
         fiterChainDefinitionMap.put("/wx/goods/**", "anon");
         fiterChainDefinitionMap.put("/wx/catalog/**", "anon");
         fiterChainDefinitionMap.put("/wx/auth/login", "anon");
         fiterChainDefinitionMap.put("/wx/search/**", "anon");
-        fiterChainDefinitionMap.put("/wx/storage/**","anon");
-
+        fiterChainDefinitionMap.put("/wx/coupon/list", "anon");
         fiterChainDefinitionMap.put("/wx/comment/**", "anon");
         fiterChainDefinitionMap.put("/wx/topic/**", "anon");
         fiterChainDefinitionMap.put("/wx/footprint/**", "anon");
+        fiterChainDefinitionMap.put("/wx/brand/**", "anon");
 
-        fiterChainDefinitionMap.put("/wx/brand/**","anon");
+
+        fiterChainDefinitionMap.put("/wx/coupon/**", "authc");
+        fiterChainDefinitionMap.put("/wx/user/index", "authc");
 
         fiterChainDefinitionMap.put("/wx/**", "authc");
 
@@ -63,7 +68,7 @@ public class ShiroConfig {
         //("admin/category/read","perms["perms[admin:category:read]"]")
         fiterChainDefinitionMap.put("admin/category/read", "perms[admin:category:read]");
         //取全部的roleid出来 做对应
-        String[] Roleids = adminMapper.selectAllRoleid();
+        String[] Roleids = adminService.selectAllRoleid();
 
         for (String roleid : Roleids) {
             // ==1的 已经做了 跳过
@@ -90,7 +95,7 @@ public class ShiroConfig {
     }
 
     public LinkedHashMap<String, String> authorizationGroup(String RoleId) {
-        String[] permissionByRoleids = adminMapper.selectPermissionByRoleid(RoleId);
+        String[] permissionByRoleids = adminService.selectPermissionByRoleid(RoleId);
         if (permissionByRoleids != null) {
             LinkedHashMap<String, String> stringStringLinkedHashMap = new LinkedHashMap<>();
             String perms;

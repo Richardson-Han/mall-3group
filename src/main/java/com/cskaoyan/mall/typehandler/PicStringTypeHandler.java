@@ -10,7 +10,7 @@ import org.apache.ibatis.type.MappedTypes;
 import java.sql.*;
 
 /**
- *  数据库 String----> String[]
+ * 数据库 String----> String[]
  */
 @MappedTypes(String[].class)
 public class PicStringTypeHandler extends BaseTypeHandler<String[]> {
@@ -41,12 +41,12 @@ public class PicStringTypeHandler extends BaseTypeHandler<String[]> {
         return string2Array(stringValue);
     }
 
-    private String[] string2Array(String stringValue){
+    private String[] string2Array(String stringValue) {
         String[] strings = null;
-        if(stringValue == null){
+        if (stringValue == null) {
             return strings;
         }
-        String replace = stringValue.replace("[","").replace("]","");
+        String replace = stringValue.replace("[", "").replace("]", "");
         String replace2 = replace.replaceAll("\\\"", "");
         String replace3 = replace2.replace(" ", "");
         return replace3.split(",");

@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author 杨
@@ -62,7 +63,8 @@ public class WXAddressController {
     }
 
     @PostMapping("delete")
-    public BaseRespVo wxAddressDelete(@RequestBody Integer id) {
+    public BaseRespVo wxAddressDelete(@RequestBody Map map) {
+        Integer id = (int)map.get("id");
         Integer result = addressService.deleteAddressById(id);
         if (result > 0) {
             return BaseRespVo.ok();

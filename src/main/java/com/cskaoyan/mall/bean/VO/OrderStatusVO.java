@@ -8,7 +8,7 @@ public class OrderStatusVO {
 
     /*
     * 101:未付款    102：用户取消    103：系统取消
-    * 201：已付款   202：申请付款    203：已付款
+    * 201：已付款   202：申请退款    203：已退款
     * 301：已发货   401：用户收货    402：系统收货
     * */
     public final static Short order_uppaid=101;

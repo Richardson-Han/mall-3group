@@ -5,12 +5,18 @@ import com.cskaoyan.mall.bean.Feedback;
 import com.cskaoyan.mall.bean.FeedbackExample;
 import com.cskaoyan.mall.mapper.FeedbackMapper;
 import com.cskaoyan.mall.service.FeedbackService;
+import com.cskaoyan.mall.service.UserService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /***
  * @author 社会主义好
@@ -22,6 +28,9 @@ public class FeedbackServiceImpl implements FeedbackService {
 
     @Autowired
     FeedbackMapper feedbackMapper;
+
+    @Autowired
+    UserService userService;
 
     @Override
     public BaseData queryFeedback(Integer page, Integer limit, String sort, String order, String username, Integer id) {
@@ -42,5 +51,22 @@ public class FeedbackServiceImpl implements FeedbackService {
         PageInfo<Feedback> feedbackPageInfo = new PageInfo<>(feedbacks);
         long total = feedbackPageInfo.getTotal();
         return new BaseData(feedbacks, total);
+    }
+
+    @Override
+    public void submitFeedBack(Feedback feedback) {
+        Subject subject = SecurityUtils.getSubject();
+        String username = (String) subject.getPrincipals().getPrimaryPrincipal();
+        Integer userId = userService.wxselectIdByUsername(username);
+
+        feedback.setUserId(userId);
+        feedback.setAddTime(new Date());
+        feedback.setDeleted(false);
+        //默认是0，改动时变为1
+        feedback.setStatus(0);
+        feedback.setUpdateTime(new Date());
+        feedback.setUsername(username);
+
+        feedbackMapper.insert(feedback);
     }
 }

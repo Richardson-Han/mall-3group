@@ -3,6 +3,8 @@ package com.cskaoyan.mall;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.security.CryptoPrimitive;
+
 /**
  * @author 韩
  * @create 2020-07-01 13:08
@@ -12,5 +14,6 @@ public class loginTokenTest {
 
     @Test
     public void hanTest(){
+        CryptoPrimitive cryptoPrimitive ;
     }
 }

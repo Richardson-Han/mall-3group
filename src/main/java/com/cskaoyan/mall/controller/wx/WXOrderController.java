@@ -6,23 +6,26 @@ import com.cskaoyan.mall.bean.OrderGoods;
 import com.cskaoyan.mall.bean.VO.BaseRespVo;
 import com.cskaoyan.mall.bean.wx.BO.OrderCommentBO;
 import com.cskaoyan.mall.bean.wx.HandleOption;
-import com.cskaoyan.mall.bean.wx.VO.WXOrderDetailDataVO;
-import com.cskaoyan.mall.bean.wx.VO.WXOrderInfoVO;
+import com.cskaoyan.mall.bean.wx.VO.*;
 import com.cskaoyan.mall.bean.wx.WXOrderGoods;
-import com.cskaoyan.mall.bean.wx.VO.OrderListBaseVO;
-import com.cskaoyan.mall.bean.wx.VO.OrderListDataVO;
 import com.cskaoyan.mall.service.GoodsCommentService;
 import com.cskaoyan.mall.service.GroupService;
 import com.cskaoyan.mall.service.OrderService;
+import com.cskaoyan.mall.utils.WXTokenUtils;
+import com.cskaoyan.mall.service.UserService;
 import com.cskaoyan.mall.utils.WxHandleOptionUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.apache.ibatis.type.BaseTypeHandler;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -41,10 +44,14 @@ public class WXOrderController {
     @Autowired
     GroupService groupService;
 
+    @Autowired
+    UserService userService;
+
+
 
     @RequestMapping("comment")
     @Transactional
-    public BaseRespVo comment(OrderCommentBO commentBO) {
+    public BaseRespVo comment(@RequestBody OrderCommentBO commentBO){
         //先在comment表添加评论
         GoodsComment goodsComment = new GoodsComment();
         goodsComment.setContent(commentBO.getContent());
@@ -55,8 +62,11 @@ public class WXOrderController {
         goodsComment.setStar(commentBO.getStar());
         goodsComment.setType((byte) 3);
         goodsComment.setUpdateTime(new Date());
-        //没有整合shiro ，先暂时手动填入
-        goodsComment.setUserId(1);
+        //获得userId
+        Subject subject = SecurityUtils.getSubject();
+        String username = (String) subject.getPrincipals().getPrimaryPrincipal();
+        Integer userId = userService.wxselectIdByUsername(username);
+        goodsComment.setUserId(userId);
         //根据orderId从order_goods表中获取商品id
         Integer goodsId = orderService.queryGoodsIdByOrderId(commentBO.getOrderGoodsId());
         goodsComment.setValueId(goodsId);
@@ -137,4 +147,13 @@ public class WXOrderController {
     }
 
 
+    //方惠
+    //订单提交
+    //付款操作不用写
+    @RequestMapping("submit")
+    public BaseRespVo submit(@RequestBody Map map, HttpServletRequest request) {
+        String username = WXTokenUtils.requestToUsername(request);
+        OrderSubmitVO orderSubmitVO = orderService.submit(map, username);
+        return BaseRespVo.ok(orderSubmitVO);
+    }
 }

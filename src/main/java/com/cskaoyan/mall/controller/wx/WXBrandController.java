@@ -2,6 +2,7 @@ package com.cskaoyan.mall.controller.wx;
 
 import com.cskaoyan.mall.bean.Brand;
 import com.cskaoyan.mall.bean.VO.BaseRespVo;
+import com.cskaoyan.mall.bean.wx.VO.BrandDetailVO;
 import com.cskaoyan.mall.bean.wx.WXBrandListData;
 import com.cskaoyan.mall.service.BrandService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,9 +31,10 @@ public class WXBrandController {
     @RequestMapping("detail")
     public BaseRespVo getBrandDetail(Integer id) {
         Brand brand = brandService.getBrandDetail(id);
-        if (brand != null) {
-            return BaseRespVo.ok(brand);
-        } else {
+        BrandDetailVO brandDetailVO = new BrandDetailVO(brand);
+        if ( brand != null ){
+            return BaseRespVo.ok(brandDetailVO);
+        }else {
             return BaseRespVo.error();
         }
     }

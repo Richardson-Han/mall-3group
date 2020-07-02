@@ -171,6 +171,7 @@
     <select id="selectKeywordByUsername" resultType="com.cskaoyan.mall.bean.SearchHistory">
       select keyword from cskaoyanmall_search_history s  join
       cskaoyanmall_user u on s.user_id = u.id where u.username = #{username}
+      order by s.update_time desc
     </select>
 
     <update id="updateByExampleSelective" parameterType="map">
