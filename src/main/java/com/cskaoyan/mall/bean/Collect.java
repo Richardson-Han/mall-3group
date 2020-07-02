@@ -1,11 +1,15 @@
 package com.cskaoyan.mall.bean;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import net.sf.jsqlparser.expression.DateTimeLiteralExpression;
 
 import java.sql.Timestamp;
 import java.util.Date;
 
+@AllArgsConstructor
+@NoArgsConstructor
 public class Collect {
     private Integer id;
 

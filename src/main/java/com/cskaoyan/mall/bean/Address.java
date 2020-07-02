@@ -1,7 +1,12 @@
 package com.cskaoyan.mall.bean;
 
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+
 import java.util.Date;
 
+@AllArgsConstructor
+@NoArgsConstructor
 public class Address {
     private Integer id;
 
@@ -26,6 +31,10 @@ public class Address {
     private Date updateTime;
 
     private Boolean deleted;
+
+    public Address(Integer id) {
+        this.id = id;
+    }
 
     /***************额外增加的******************/
     private String area;
