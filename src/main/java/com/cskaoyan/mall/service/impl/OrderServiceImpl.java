@@ -173,6 +173,16 @@ public class OrderServiceImpl implements OrderService {
                 break;
         }
         List<Order> orders =  orderMapper.selectByOrderStatus(status);
+        //待评价的订单需要另加判断
+        if(showType == 4){
+            ArrayList<Order> ordersfor4 = new ArrayList<Order>();
+            for (Order order : orders) {
+                if(order.getComments() != 0){
+                    ordersfor4.add(order);
+                }
+            }
+            return ordersfor4;
+        }
         return orders;
     }
 

@@ -41,13 +41,13 @@ public class AuthController {
         Subject subject = SecurityUtils.getSubject();
         try {
             subject.login(new MallToken(username,passwordDB,"admin"));
+            Serializable id  = subject.getSession().getId();
+            return BaseRespVo.ok(id);
             //微信端传入
             //subject.login(new MallToken(username,passwordDB,"wx"));
         } catch (Exception e) {
             return BaseRespVo.error("用户名或密码错误", 401);
         }
-        Serializable id  = subject.getSession().getId();
-        return BaseRespVo.ok(id);
     }
 
     /**
