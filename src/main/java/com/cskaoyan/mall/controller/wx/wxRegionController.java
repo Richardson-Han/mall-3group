@@ -23,9 +23,10 @@ import java.util.Map;
 public class wxRegionController {
     @Autowired
     RegionService regionService;
+
     @GetMapping("/list")
-    public BaseRespVo getRegionList(@RequestParam("pid") Integer pid){
+    public BaseRespVo getRegionList(@RequestParam("pid") Integer pid) {
         List<Region> list = regionService.queryWXRegionList(pid);
-        return BaseRespVo.ok (list);
+        return BaseRespVo.ok(list);
     }
 }

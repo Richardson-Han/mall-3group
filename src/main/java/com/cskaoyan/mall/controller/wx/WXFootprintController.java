@@ -19,20 +19,21 @@ import java.util.Map;
 public class WXFootprintController {
     @Autowired
     WXFootprintService wxFootprintService;
+
     @GetMapping("/list")
     public BaseRespVo getWXFootprintList(@RequestParam("page") Integer page,
-                                         @RequestParam("size")  Integer size){
-        Map<String,Object> map= wxFootprintService.queryWXFootprintList(page,size);
+                                         @RequestParam("size") Integer size) {
+        Map<String, Object> map = wxFootprintService.queryWXFootprintList(page, size);
 
-        return BaseRespVo.ok (map);
+        return BaseRespVo.ok(map);
     }
 
     @PostMapping("/delete")
-    public BaseRespVo deleteWXFootprint(@RequestBody WXFootprint wxFootprint){
-        if(wxFootprintService.deleteWXFootprint(wxFootprint.getId ())){
-            return BaseRespVo.ok ();
+    public BaseRespVo deleteWXFootprint(@RequestBody WXFootprint wxFootprint) {
+        if (wxFootprintService.deleteWXFootprint(wxFootprint.getId())) {
+            return BaseRespVo.ok();
         }
-        return BaseRespVo.error ("删除失败",603);
+        return BaseRespVo.error("删除失败", 603);
     }
 
 }

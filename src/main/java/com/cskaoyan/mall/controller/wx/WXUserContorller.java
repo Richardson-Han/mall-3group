@@ -34,7 +34,7 @@ public class WXUserContorller {
         // {"errno":0,"data":{"order":{"unrecv":4,"uncomment":0,"unpaid":0,"unship":0}},"errmsg":"成功"}
 
         String username = WXTokenUtils.requestToUsername(request);
-        if (error.equals(username)){
+        if (error.equals(username)) {
             return BaseRespVo.error("请先登陆");
         }
         //username得到user_id

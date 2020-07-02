@@ -42,16 +42,16 @@ public class WXAuthController {
         String password = (String) map.get("password");
         String username = (String) map.get("username");
         String passwordDB = new Md5Hash(password, username + "3groupWX", 3).toString();
-        MallToken wxtoken = new MallToken(username,passwordDB,"wx");
+        MallToken wxtoken = new MallToken(username, passwordDB, "wx");
         Subject subject = SecurityUtils.getSubject();
         try {
             subject.login(wxtoken);
             String token = (String) subject.getSession().getId();
             Date tokenExpire = new Date();
             WXUserInfoVO userInfoVO = userService.getUserInfo(username);
-            WXUserLoginVO loginVO = new WXUserLoginVO(token,tokenExpire,userInfoVO);
+            WXUserLoginVO loginVO = new WXUserLoginVO(token, tokenExpire, userInfoVO);
             return BaseRespVo.ok(loginVO);
-        }catch (Exception e) {
+        } catch (Exception e) {
             System.out.println("*****************挂了*****************");
             return BaseRespVo.error("用户名或密码错误", 401);
         }
