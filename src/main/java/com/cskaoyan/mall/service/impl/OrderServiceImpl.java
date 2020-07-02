@@ -7,6 +7,7 @@ import com.cskaoyan.mall.bean.VO.OrderStatusVO;
 import com.cskaoyan.mall.bean.VO.ShipVO;
 import com.cskaoyan.mall.bean.VO.StatBaseVO;
 import com.cskaoyan.mall.bean.wx.HandleOption;
+import com.cskaoyan.mall.bean.wx.VO.OrderSubmitVO;
 import com.cskaoyan.mall.bean.wx.VO.WXOrderInfoVO;
 import com.cskaoyan.mall.bean.wx.WXOrderGoods;
 import com.cskaoyan.mall.mapper.OrderGoodsMapper;
@@ -248,5 +249,18 @@ public class OrderServiceImpl implements OrderService {
         List<OrderGoods> orderGoodsList = orderGoodsMapper.selectByExample(example);
         //只有一条数据
         return orderGoodsList.get(0);
+    }
+
+
+
+    //方惠
+
+    /**
+     *  提交订单，返回订单号
+     *  要修改库存，以及商品订单表的order_id
+     */
+    @Override
+    public OrderSubmitVO submit(Map map, String username) {
+        return null;
     }
 }
