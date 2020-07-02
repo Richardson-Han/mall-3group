@@ -3,6 +3,8 @@ package com.cskaoyan.mall.controller.wx;
 import com.cskaoyan.mall.bean.BaseData;
 import com.cskaoyan.mall.bean.VO.BaseRespVo;
 import com.cskaoyan.mall.service.GoodsService;
+import org.apache.shiro.authz.annotation.RequiresAuthentication;
+import org.apache.shiro.authz.annotation.RequiresGuest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -28,6 +30,7 @@ public class WXGoodsController {
         return BaseRespVo.ok(data);
     }
 
+    @RequiresAuthentication
     @RequestMapping("list")
     public BaseRespVo list(Integer categoryId, Integer page, Integer size, String keyword, String sort, String order, Integer brandId) {
         Map data = goodsService.list(categoryId, page, size, keyword, sort, order, brandId);

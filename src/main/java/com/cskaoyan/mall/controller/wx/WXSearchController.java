@@ -4,6 +4,8 @@ import com.cskaoyan.mall.bean.VO.BaseRespVo;
 import com.cskaoyan.mall.service.SearchService;
 import lombok.AllArgsConstructor;
 import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authz.annotation.RequiresAuthentication;
+import org.apache.shiro.authz.annotation.RequiresGuest;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.session.mgt.DefaultSessionKey;
 import org.apache.shiro.subject.PrincipalCollection;
@@ -28,6 +30,7 @@ public class WXSearchController {
     @Autowired
     SearchService searchService;
 
+    @RequiresAuthentication
     @RequestMapping("index")
     public BaseRespVo index() {
         Subject subject = SecurityUtils.getSubject();
@@ -36,6 +39,7 @@ public class WXSearchController {
         return BaseRespVo.ok(map);
     }
 
+    @RequiresAuthentication
     @RequestMapping("clearhistory")
     public BaseRespVo clearhistory() {
         Subject subject = SecurityUtils.getSubject();

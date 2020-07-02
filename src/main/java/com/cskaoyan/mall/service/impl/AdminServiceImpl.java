@@ -117,17 +117,37 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public InfoVO info(String username) {
         String avatar = adminMapper.selectAvatarByUsername(username);
-        String roleId = adminMapper.selectRoleidByUsername(username).
-                replace("[", "").replace("]", "");
-        List<String> permissions = permissionMapper.selectPermissionByRoleId(Integer.parseInt(roleId));
+        String s = adminMapper.selectRoleidByUsername(username);
+        ArrayList<Integer> roleIdList = parseArrayList(s);
+        List<String> permissions = new ArrayList<>();
+        for (Integer roleId : roleIdList) {
+            List<String> list = permissionMapper.selectPermissionByRoleId(roleId);
+            permissions.addAll(list);
+        }
         List<String> perms = new ArrayList<>();
         for (String permission : permissions) {
             perms.add(parse(permission));
         }
-        List<String> roles = new ArrayList();
-        Role role = roleMapper.selectByPrimaryKey(Integer.parseInt(roleId));
-        roles.add(role.getName());
-        return new InfoVO(avatar, username, perms, roles);
+        List<Role> roles = roleMapper.selectInId(roleIdList);
+        List<String> ss = new ArrayList<>();
+        for (Role role : roles) {
+            ss.add(role.getName());
+        }
+        return new InfoVO(avatar, username, perms, ss);
+    }
+
+    private  ArrayList<Integer> parseArrayList(String s) {
+        s = s.replace("[", "").replace("]", "");
+        ArrayList<Integer> integers = new ArrayList<>();
+        for (int i = 0; i < s.length(); i++) {
+            if (s.charAt(i) == ',') {
+                integers.add(Integer.parseInt(s.substring(0, i)));
+                s = s.substring(i+1);
+                i = 0;//重新从0开始循环
+            }
+        }
+        integers.add(Integer.parseInt(s));
+        return integers;
     }
 
     @Override

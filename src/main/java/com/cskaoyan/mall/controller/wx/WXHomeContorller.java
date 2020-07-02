@@ -6,6 +6,7 @@ import com.cskaoyan.mall.bean.wx.WXFloorGoods;
 import com.cskaoyan.mall.bean.wx.WXGroupBuy;
 import com.cskaoyan.mall.bean.wx.WXUser;
 import com.cskaoyan.mall.service.*;
+import org.apache.shiro.authz.annotation.RequiresGuest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;

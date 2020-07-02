@@ -22,7 +22,7 @@ public class WXCatalogController {
     @Autowired
     CatalogService catalogService;
 
-    @RequiresGuest
+    //@RequiresGuest
     @RequestMapping("index")
     public BaseRespVo catalogIndex(){
         CatalogVO catalog = catalogService.catalogIndex();
@@ -33,7 +33,7 @@ public class WXCatalogController {
         }
     }
 
-    @RequiresGuest
+    //@RequiresGuest
     @RequestMapping("current")
     public BaseRespVo catalogCurrent(Integer id){
         CatalogCurrentVO catalogCurrent = catalogService.catalogCurrent(id);
