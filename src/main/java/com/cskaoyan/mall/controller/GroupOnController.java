@@ -5,6 +5,7 @@ import com.cskaoyan.mall.bean.VO.BaseRespVo;
 import com.cskaoyan.mall.bean.GroupOnRules;
 import com.cskaoyan.mall.service.GroupService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -37,6 +38,7 @@ public class GroupOnController {
      * @return
      */
     @RequestMapping("update")
+    @Transactional
     public BaseRespVo update(@RequestBody GroupOnRules groupOnRules){
         //先判断过期时间是否合法
         Date expireTime;
@@ -59,6 +61,7 @@ public class GroupOnController {
      * @return
      */
     @RequestMapping("create")
+    @Transactional
     public BaseRespVo create(@RequestBody GroupOnRules groupOnRules){
         BaseRespVo baseRespVo = groupService.create(groupOnRules);
         return baseRespVo;
