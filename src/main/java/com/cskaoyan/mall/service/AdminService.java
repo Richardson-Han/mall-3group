@@ -7,6 +7,8 @@ import com.cskaoyan.mall.bean.VO.AdminCreateVO;
 import com.cskaoyan.mall.bean.VO.AdminUpdateVO;
 import com.cskaoyan.mall.bean.VO.InfoVO;
 
+import java.util.List;
+
 public interface AdminService {
     BaseData getAdmins(Integer page, Integer limit,String username, String sort, String order);
 
@@ -21,4 +23,8 @@ public interface AdminService {
     String[] selectAllRoleid();
 
     String[] selectPermissionByRoleid(String roleId);
+
+    String selectRoleidByUsername(String username);
+
+    List<String> selectPasswordByName(String username);
 }
