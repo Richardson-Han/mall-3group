@@ -11,7 +11,7 @@ import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
+
 import java.util.List;
 import java.util.Map;
 
@@ -25,8 +25,6 @@ import java.util.Map;
 public class WXCommentController {
     @Autowired
     GoodsCommentService goodsCommentService;
-
-    @RequiresAuthentication
     @RequestMapping("/list")
     /*
         @RequestParam("valueId")Integer valueId,

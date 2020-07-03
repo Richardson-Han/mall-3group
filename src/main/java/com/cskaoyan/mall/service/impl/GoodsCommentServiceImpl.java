@@ -99,7 +99,6 @@ public class GoodsCommentServiceImpl implements GoodsCommentService {
     //胡小强
     @Override
 
-    @RequiresGuest
     public Map<String,Object>  getWXCommentList(WXGoodCommentBo wxGoodCommentBo){
         Map<String,Object> map =new HashMap<> ();
         List<Object> lsit = new ArrayList<> ();
