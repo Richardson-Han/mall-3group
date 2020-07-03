@@ -36,7 +36,7 @@ public class WXCommentController {
      * <p>
      * 显示所有评论
      */
-    @RequiresAuthentication
+    //@RequiresAuthentication
 
     @RequestMapping("/list")
     public BaseRespVo getCommentList(Integer valueId, Byte type, Byte showType, Integer page, Integer size) {

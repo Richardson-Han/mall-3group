@@ -1,9 +1,12 @@
 package com.cskaoyan.mall.bean;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 
 import java.util.Date;
-
+@AllArgsConstructor
+@NoArgsConstructor
 public class Log {
     private Integer id;
 

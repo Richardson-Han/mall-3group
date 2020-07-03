@@ -6,11 +6,13 @@ import com.cskaoyan.mall.bean.BO.GoodsUpdateBO;
 import com.cskaoyan.mall.bean.GoodsExample;
 import com.cskaoyan.mall.bean.GoodsStat;
 import com.cskaoyan.mall.bean.VO.*;
+import com.cskaoyan.mall.bean.VO.wx.WXCommentVO;
 import com.cskaoyan.mall.bean.wx.WXFloorGoods;
 import com.cskaoyan.mall.mapper.GoodsMapper;
 import com.cskaoyan.mall.bean.*;
 import com.cskaoyan.mall.mapper.*;
 import com.cskaoyan.mall.service.GoodsService;
+import com.cskaoyan.mall.utils.CharacterArrayConversionUtils;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.apache.shiro.SecurityUtils;
@@ -19,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.lang.System;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /***
@@ -430,7 +433,7 @@ public class GoodsServiceImpl implements GoodsService {
     }
 
     @Autowired
-    CommentMapper commentMapper;
+    GoodsCommentMapper commentMapper;
 
     @Autowired
     GroupOnRulesMapper groupOnRulesMapper;
@@ -449,6 +452,9 @@ public class GoodsServiceImpl implements GoodsService {
     @Autowired
     UserMapper userMapper;
 
+    @Autowired
+    FootprintMapper footprintMapper;
+
     @Override
     public Map detail(Integer goodsId) {
         //attribute
@@ -458,10 +464,28 @@ public class GoodsServiceImpl implements GoodsService {
         //brand
         GoodsBrand brand = brandMapper.selectByPrimaryKey(goods.getBrandId());
         //comment
-        List<Comment> data = commentMapper.selectByValueId(goodsId);
+         List<Object> commentList = new ArrayList<>();
+        GoodsCommentExample comExample = new GoodsCommentExample();
+        comExample.setOrderByClause("add_time desc limit 2");
+        comExample.createCriteria().andValueIdEqualTo(goodsId);
+        List<GoodsComment> goodsCommentListComments = commentMapper.selectByExample(comExample);
+        for (GoodsComment comment : goodsCommentListComments) {
+            Map wxVO = new HashMap();
+            User user = userMapper.selectByPrimaryKey(comment.getUserId());
+            wxVO.put("avatar", user.getAvatar());
+            wxVO.put("nickname", user.getNickname());
+            String format = new SimpleDateFormat("yyyy-MM-dd hh-mm-ss").format(comment.getAddTime());
+            wxVO.put("addTime", format);
+            wxVO.put("content", comment.getContent());
+            wxVO.put("id", comment.getId());
+            wxVO.put("picList", comment.getPicUrls());
+            commentList.add(wxVO);
+        }
+
+
         HashMap comment = new HashMap();
-        comment.put("count", data.size());
-        comment.put("data", data);
+        comment.put("count", commentList.size());
+        comment.put("data", commentList);
         //groupon
         List<GroupOn> groupon = groupOnRulesMapper.selectByGoodsId(goodsId);
 
@@ -496,6 +520,19 @@ public class GoodsServiceImpl implements GoodsService {
         map.put("shareImage", shareImage);
         map.put("specificationList", list);
         map.put("userHasCollect", userHasCollect);
+
+        //添加足迹：如果是相同的商品id，则只更新时间，如果是新商品，则插入一条记录
+        if (username != null) {
+            FootprintExample footprintExample = new FootprintExample();
+            footprintExample.createCriteria().andUserIdEqualTo(userId).andGoodsIdEqualTo(goodsId);
+            List<Footprint> footprints = footprintMapper.selectByExample(footprintExample);
+            Date date = new Date();
+            if (footprints.size() != 0) {
+                footprintMapper.updateTime(date, userId, goodsId);
+            }else{
+                footprintMapper.insert(new Footprint(null, userId, goodsId, date, date, false));
+            }
+        }
         return map;
     }
 

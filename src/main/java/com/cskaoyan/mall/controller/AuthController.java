@@ -1,6 +1,7 @@
 package com.cskaoyan.mall.controller;
 
 
+import com.cskaoyan.mall.bean.Log;
 import com.cskaoyan.mall.bean.VO.InfoVO;
 import com.cskaoyan.mall.service.AdminService;
 import com.cskaoyan.mall.service.LogService;
@@ -16,7 +17,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.Serializable;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Map;
 
 @RestController
@@ -38,7 +42,7 @@ public class AuthController {
      * (只会生成32位的 不懂怎么弄成60位的相类似的)
      */
     @RequestMapping("login")
-    public BaseRespVo login(@RequestBody Map map) {
+    public BaseRespVo login(@RequestBody Map map) throws UnknownHostException {
         String username = (String) map.get("username");
         String password = (String) map.get("password");
         String passwordDB = new Md5Hash(password, username + "3group", 8).toString();

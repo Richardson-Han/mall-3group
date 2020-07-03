@@ -3,6 +3,7 @@ package com.cskaoyan.mall;
 import com.cskaoyan.mall.bean.Goods;
 import com.cskaoyan.mall.bean.GoodsCategory;
 import com.cskaoyan.mall.mapper.*;
+import com.cskaoyan.mall.utils.CharacterArrayConversionUtils;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -156,5 +157,13 @@ class MallApplicationTests {
                 0, "花", "retail_price", "desc",0
         );
         List<GoodsCategory> filterCategoryList = goodsCategoryMapper.selectFilterCategoryList(1008001, "花", "name", "desc", 0);
+    }
+
+    @Test
+    void arrayTest() {
+        String s = "[\"https://yanxuan.nosdn.127.net/218783173f303ec6d8766810951d0790.jpg\", \"[\"https://yanxuan.nosdn.127.net/218783173f303ec6d8766810951d0790.jpg\"]\"]";
+        String[] strings = CharacterArrayConversionUtils.stringConvertsAnArrayOfStrings(s);
+        System.out.println(strings[0].substring(1, strings[0].length()-1));
+        System.out.println("skdjfh");
     }
 }
