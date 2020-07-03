@@ -4,6 +4,8 @@ import com.cskaoyan.mall.bean.BaseData;
 import com.cskaoyan.mall.bean.VO.BaseRespVo;
 import com.cskaoyan.mall.bean.Coupon;
 import com.cskaoyan.mall.service.CouponService;
+import com.cskaoyan.mall.service.LogService;
+import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +25,8 @@ public class CouponController {
 
     @Autowired
     CouponService couponService;
+    @Autowired
+    LogService logService;
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public BaseRespVo list(Integer page, Integer limit, String sort, String order) {
@@ -36,6 +40,9 @@ public class CouponController {
         if (insert == 1) {
             coupon.setGoodsValue("[]");
             coupon.setId(couponService.selectLastId());
+            String username = (String) SecurityUtils.getSubject().getPrincipals().getPrimaryPrincipal();
+            String operationName = "优惠卷";
+            logService.setAdminCreate(username,operationName,coupon.getId());
             return BaseRespVo.ok(coupon);
         } else {
             return BaseRespVo.error("创建优惠卷失败", 888);
@@ -68,6 +75,9 @@ public class CouponController {
     public BaseRespVo update(@RequestBody Coupon coupon) {
         Integer updateCoupon = couponService.updateCoupon(coupon);
         if (updateCoupon == 1) {
+            String username = (String) SecurityUtils.getSubject().getPrincipals().getPrimaryPrincipal();
+            String operationName = "优惠卷";
+            logService.updateAdmin(username,coupon.getName(),operationName);
             return BaseRespVo.ok();
         } else {
             return BaseRespVo.error("数据更新失败", 112);
@@ -78,6 +88,8 @@ public class CouponController {
     public BaseRespVo delete(@RequestBody Coupon coupon) {
         Integer deleteCoupon = couponService.deleteCoupon(coupon);
         if (deleteCoupon == 1) {
+            String username = (String) SecurityUtils.getSubject().getPrincipals().getPrimaryPrincipal();
+            logService.deleteAdmin(username,coupon.getId());
             return BaseRespVo.ok();
         } else {
             return BaseRespVo.error("删除失败", 404);

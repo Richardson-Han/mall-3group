@@ -33,7 +33,7 @@ public interface PermissionMapper {
 
     List<String> selectPermission(Integer roleId);
 
-    @Select("select permission from cskaoyanmall_permission where role_id = #{roleId} and permission is not null")
+    @Select("select permission from cskaoyanmall_permission where role_id = #{roleId} and permission is not null and deleted = 0")
     List<String> selectPermissionByRoleId(@Param("roleId") int roleId);
 
 }

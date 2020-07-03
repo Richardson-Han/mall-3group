@@ -8,4 +8,10 @@ public interface LogService {
     void setLogin(String username);
 
     void setLogout(String username);
+
+    void setAdminCreate(String username,String operationName, Integer id);
+
+    void updateAdmin(String username,String updateName,String operationName);
+
+    void deleteAdmin(String username,Integer id);
 }

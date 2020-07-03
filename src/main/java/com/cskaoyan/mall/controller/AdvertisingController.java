@@ -4,6 +4,8 @@ import com.cskaoyan.mall.bean.Advertising;
 import com.cskaoyan.mall.bean.BaseData;
 import com.cskaoyan.mall.bean.VO.BaseRespVo;
 import com.cskaoyan.mall.service.AdvertisingService;
+import com.cskaoyan.mall.service.LogService;
+import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +27,11 @@ public class AdvertisingController {
     @Autowired
     AdvertisingService advertisingService;
 
+    @Autowired
+    LogService logService;
+
+    String operation = "广告";
+
     @RequiresAuthentication
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public BaseRespVo list(Integer page, Integer limit, String sort, String order) {
@@ -36,6 +43,11 @@ public class AdvertisingController {
     public BaseRespVo create(@RequestBody Advertising advertising) {
         Integer insert = advertisingService.insertAdvertising(advertising);
         if (insert == 1) {
+            advertising.setId(advertisingService.selectLastAdvertisingId());
+            String username = (String) SecurityUtils.getSubject().getPrincipals().getPrimaryPrincipal();
+            if (username != null) {
+                logService.setAdminCreate(username,operation,advertising.getId());
+            }
             return BaseRespVo.ok(advertisingService.selectLastAdvertising());
         } else {
             return BaseRespVo.error();
@@ -47,6 +59,10 @@ public class AdvertisingController {
         advertising.setUpdateTime(new Date());
         Integer updateAdvertising = advertisingService.updateAdvertising(advertising);
         if (updateAdvertising == 1) {
+            String username = (String) SecurityUtils.getSubject().getPrincipals().getPrimaryPrincipal();
+            if (username != null) {
+                logService.updateAdmin(username,advertising.getName(),operation);
+            }
             return BaseRespVo.ok(advertisingService.
                     queryAdvertising(1, 20, "add_time", "desc"));
         } else {
@@ -61,8 +77,9 @@ public class AdvertisingController {
     @RequestMapping(value = "/delete", method = RequestMethod.POST)
     public BaseRespVo delete(@RequestBody Advertising advertising) {
         Integer deleteAdvertising = advertisingService.deleteAdvertising(advertising);
-        System.out.println("id = " + advertising.getId() + ",deleted = " + advertising.getDeleted());
         if (deleteAdvertising == 1) {
+            String username = (String) SecurityUtils.getSubject().getPrincipals().getPrimaryPrincipal();
+            logService.deleteAdmin(username,advertising.getId());
             return BaseRespVo.ok();
         } else {
             return BaseRespVo.error("删除失败", 404);

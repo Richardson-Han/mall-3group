@@ -11,6 +11,7 @@ import com.cskaoyan.mall.bean.VO.AdminListVO;
 import com.cskaoyan.mall.bean.VO.AdminUpdateVO;
 import com.cskaoyan.mall.bean.VO.InfoVO;
 import com.cskaoyan.mall.mapper.AdminMapper;
+import com.cskaoyan.mall.mapper.LogMapper;
 import com.cskaoyan.mall.mapper.PermissionMapper;
 import com.cskaoyan.mall.mapper.RoleMapper;
 import com.cskaoyan.mall.service.AdminService;
@@ -36,6 +37,9 @@ public class AdminServiceImpl implements AdminService {
 
     @Autowired
     RoleMapper roleMapper;
+
+    @Autowired
+    LogMapper logMapper;
 
     //获取管理员列表
     @Override
@@ -156,6 +160,11 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public List<String> selectPasswordByName(String username) {
         return adminMapper.selectPasswordByName(username);
+    }
+
+    @Override
+    public Integer selectLastId() {
+        return adminMapper.selectLastId();
     }
 
     /**

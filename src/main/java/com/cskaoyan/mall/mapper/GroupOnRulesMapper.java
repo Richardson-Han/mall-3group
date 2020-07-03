@@ -43,4 +43,6 @@ public interface GroupOnRulesMapper {
     List<WXGroupBuy> selectGroupBuy();
 
     List<GroupOn> selectByGoodsId(@Param("goodsId") Integer goodsId);
+
+    List<Integer> selectIdByGoodsId(Integer goodsId);
 }

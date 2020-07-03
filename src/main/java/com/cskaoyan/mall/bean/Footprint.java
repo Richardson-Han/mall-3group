@@ -1,9 +1,12 @@
 package com.cskaoyan.mall.bean;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 
 import java.util.Date;
-
+@NoArgsConstructor
+@AllArgsConstructor
 public class Footprint {
     private Integer id;
 

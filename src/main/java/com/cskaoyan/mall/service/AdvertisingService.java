@@ -22,4 +22,6 @@ public interface AdvertisingService {
     List<Advertising> wxselectTopAdvertising();
 
     Advertising selectLastAdvertising();
+
+    Integer selectLastAdvertisingId();
 }

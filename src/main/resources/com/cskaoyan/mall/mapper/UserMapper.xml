@@ -90,6 +90,7 @@
     from cskaoyanmall_user
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
+      and deleted = 0
     </if>
     <if test="orderByClause != null">
       order by ${orderByClause}
@@ -99,7 +100,7 @@
     select 
     <include refid="Base_Column_List" />
     from cskaoyanmall_user
-    where id = #{id,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER} and deleted=0
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from cskaoyanmall_user
@@ -238,7 +239,7 @@
     select DATE_FORMAT(add_time,"%Y-%m-%d") as `day` ,count(id) as users from cskaoyanmall_user group by DATE_FORMAT(add_time,"%Y-%m-%d")
   </select>
     <select id="selectUserIdByUsername" resultType="java.lang.Integer">
-      select id from cskaoyanmall_user where username = #{username}
+      select id from cskaoyanmall_user where username = #{username} and deleted=0
     </select>
     <update id="updateByExampleSelective" parameterType="map">
     update cskaoyanmall_user
