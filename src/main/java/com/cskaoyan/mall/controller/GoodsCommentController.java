@@ -42,11 +42,11 @@ public class GoodsCommentController {
      */
     @RequestMapping("order/reply")
     public BaseRespVo reply(@RequestBody GoodsCommentBO commentBO){
-        int i = commentService.replyComment(commentBO);
-        if(i == 0){
+        GoodsComment goodsComment = commentService.replyComment(commentBO);
+        if(goodsComment == null){
             return BaseRespVo.errorString("订单商品已回复");
         }
-        return BaseRespVo.ok();
+        return BaseRespVo.ok(goodsComment);
     }
 
 

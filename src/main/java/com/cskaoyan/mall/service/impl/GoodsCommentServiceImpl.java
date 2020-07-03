@@ -86,16 +86,16 @@ public class GoodsCommentServiceImpl implements GoodsCommentService {
      */
     @Override
 
-    public int replyComment(GoodsCommentBO commentBO) {
+    public GoodsComment replyComment(GoodsCommentBO commentBO) {
         Integer id = commentBO.getCommentId();
         GoodsComment comment = commentMapper.selectByPrimaryKey(id);
         //id对应的content有内容，则无法回复
-        if (comment.getContent() == null) {
+        if (comment.getContent().equals("")) {
             comment.setContent(commentBO.getContent());
             commentMapper.updateByPrimaryKeySelective(comment);
-            return 1;
+            return comment;
         }
-        return 0;
+        return null;
     }
 
     //胡小强
