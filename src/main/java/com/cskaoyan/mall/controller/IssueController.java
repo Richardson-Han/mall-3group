@@ -31,7 +31,7 @@ public class IssueController {
      @PostMapping("/create")
      public BaseRespVo addIssue(@RequestBody Issue issue){
       if( issueService.addIssue(issue)){
-             return BaseRespVo.ok ( );
+             return BaseRespVo.ok (issue );
          }
         return  BaseRespVo.error ("添加失败",603);
     }

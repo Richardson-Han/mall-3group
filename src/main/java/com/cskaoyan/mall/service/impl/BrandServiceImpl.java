@@ -41,7 +41,7 @@ public class BrandServiceImpl implements BrandService {
     }
 
     @Override
-    public boolean add(BrandAddVo brandAddVo) {
+    public BaseRespVo add(BrandAddVo brandAddVo) {
         Brand brand = new Brand ();
         BeanUtils.copyProperties (brandAddVo,brand);
 
@@ -53,7 +53,10 @@ public class BrandServiceImpl implements BrandService {
         } catch (Exception e) {
             e.printStackTrace ();
         }
-        return i==1;
+        if(i==1){
+            return BaseRespVo.ok (brand);
+        }
+        return BaseRespVo.error ("添加失败",888);
     }
 
     @Override

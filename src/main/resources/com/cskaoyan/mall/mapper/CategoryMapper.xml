@@ -305,7 +305,7 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.cskaoyan.mall.bean.Category">
+  <update id="updateByPrimaryKey" parameterType="com.cskaoyan.mall.bean.Category" keyProperty="id" useGeneratedKeys="true">
     update cskaoyanmall_category
     set name = #{name,jdbcType=VARCHAR},
       keywords = #{keywords,jdbcType=VARCHAR},

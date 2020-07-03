@@ -35,10 +35,9 @@ public class BrandController {
 
     @PostMapping("/create")
     public BaseRespVo addBrand(@RequestBody BrandAddVo brandAddVo){
-        if(brandService.add(brandAddVo)){
-            return  BaseRespVo.ok ();
-        }
-        return BaseRespVo.error ("参数不能为空，添加失败",888);
+        BaseRespVo base= brandService.add(brandAddVo);
+            return  base;
+
     }
     @PostMapping("/delete")
     public BaseRespVo deleteBrand(@RequestBody Brand brand){

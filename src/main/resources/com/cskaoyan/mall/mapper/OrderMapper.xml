@@ -435,7 +435,7 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.cskaoyan.mall.bean.Order">
+  <update id="updateByPrimaryKeySelective" parameterType="com.cskaoyan.mall.bean.Order" keyProperty="id">
     update cskaoyanmall_order
     <set>
       <if test="userId != null">
