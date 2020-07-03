@@ -174,7 +174,13 @@
       <include refid="Example_Where_Clause" />
     </if>
   </select>
-  <update id="updateByExampleSelective" parameterType="map">
+    <select id="selectInId" resultMap="BaseResultMap">
+      select name from cskaoyanmall_role where id in 
+      <foreach collection="roleIdList" item="id" open="(" close=")" separator=",">
+        #{id}
+      </foreach>
+    </select>
+    <update id="updateByExampleSelective" parameterType="map">
     update cskaoyanmall_role
     <set>
       <if test="record.id != null">

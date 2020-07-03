@@ -86,7 +86,9 @@ public class TopicServiceImpl implements TopicService {
         topicExample.createCriteria ().andIdEqualTo (id).andDeletedEqualTo (false);
         Topic topic=topicMapper.selectByPrimaryKey (id);
         Map<String,Object> map =new HashMap<> ();
-        map.put ("goods",topic.getGoods ());
+        String[] goods=new String[]{};
+
+        map.put ("goods",goods);
         map.put ("topic",topic);
         return map;
     }

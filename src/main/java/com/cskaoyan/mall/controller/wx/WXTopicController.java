@@ -4,6 +4,7 @@ import com.cskaoyan.mall.bean.BaseData;
 import com.cskaoyan.mall.bean.Topic;
 import com.cskaoyan.mall.bean.VO.BaseRespVo;
 import com.cskaoyan.mall.service.TopicService;
+import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,6 +21,7 @@ import java.util.Map;
 */
 @RestController
 @RequestMapping("/wx/topic")
+
 public class WXTopicController {
     @Autowired
     TopicService topicService;
