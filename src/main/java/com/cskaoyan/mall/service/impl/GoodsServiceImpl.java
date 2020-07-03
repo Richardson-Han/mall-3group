@@ -49,10 +49,10 @@ public class GoodsServiceImpl implements GoodsService {
     @Autowired
     CategoryMapper wxCategoryMapper;
 
-    @Override
+    /*@Override
     public Integer selectLastId() {
         return goodsMapper.selectLastId();
-    }
+    }*/
 
     /**
      *  返回商品数量

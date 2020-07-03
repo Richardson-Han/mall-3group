@@ -25,7 +25,7 @@ public class GoodsController {
     @Autowired
     LogService logService;
 
-    String operation = "商品";
+    //String operation = "商品";
 
 
     /**
@@ -45,8 +45,8 @@ public class GoodsController {
     @RequestMapping("detail")
     public BaseRespVo detail(Integer id){
         GoodsDetailVO list = goodsService.queryGoods(id);
-        Subject subject = SecurityUtils.getSubject();
-        String username = (String) subject.getPrincipals().getPrimaryPrincipal();
+        //Subject subject = SecurityUtils.getSubject();
+        //String username = (String) subject.getPrincipals().getPrimaryPrincipal();
         return BaseRespVo.ok(list);
     }
 
@@ -66,15 +66,18 @@ public class GoodsController {
     @RequestMapping("update")
     public BaseRespVo goodsUpdate(@RequestBody GoodsUpdateBO goodsUpdateBO){
         int i = goodsService.updateGoods(goodsUpdateBO);
-        Subject subject = SecurityUtils.getSubject();
-        String username = (String) subject.getPrincipals().getPrimaryPrincipal();
+        //Subject subject = SecurityUtils.getSubject();
+        //String username = (String) subject.getPrincipals().getPrimaryPrincipal();
+        //Goods goods = goodsUpdateBO.getGoods();
         if(i == 0){
             //表示当前操作失败，要有错误提示，暂时先没写
             return BaseRespVo.errorString("该商品编号已存在");
         }else if(i == -1){
             return BaseRespVo.errorString("请完整填写商品介绍的信息");
         }
-        //logService.updateAdmin(username, goodsUpdateBO.get);
+        /*if(username != null){
+            logService.updateAdmin(username, goods.getName(), operation);
+        }*/
         return BaseRespVo.ok();
     }
 
@@ -84,15 +87,17 @@ public class GoodsController {
     @RequestMapping("create")
     public BaseRespVo goodsCreate(@RequestBody GoodsUpdateBO goodsUpdateBO){
         int i = goodsService.createGoods(goodsUpdateBO);
-        Subject subject = SecurityUtils.getSubject();
+        /*Subject subject = SecurityUtils.getSubject();
         String username = (String) subject.getPrincipals().getPrimaryPrincipal();
+        Goods goods = goodsUpdateBO.getGoods();
+        goods.setId(goodsService.selectLastId());*/
         if(i == 0){
             return BaseRespVo.errorString("该商品编号已存在");
         }else if(i == -1){
             return BaseRespVo.errorString("请完整填写商品介绍的信息");
         }
         /*if(username != null){
-            //logService.setAdminCreate(username, operation, );
+            logService.setAdminCreate(username, operation, goods.getId());
         }*/
         return BaseRespVo.ok();
     }
@@ -104,13 +109,10 @@ public class GoodsController {
     @RequestMapping("delete")
     public BaseRespVo goodsDelete(@RequestBody Goods goods){
         goodsService.goodsDelete(goods);
-        Subject subject = SecurityUtils.getSubject();
+        /*Subject subject = SecurityUtils.getSubject();
         String username = (String) subject.getPrincipals().getPrimaryPrincipal();
-        goods.setId(goodsService.selectLastId());
+        goods.setId(goodsService.selectLastId());*/
         return BaseRespVo.ok();
     }
-
-
-
 
 }

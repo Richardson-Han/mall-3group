@@ -74,6 +74,6 @@ public interface GoodsMapper {
     @Select("select * from cskaoyanmall_goods where id = #{id} and deleted = 0")
     Goods selectByIdAndDeteled(@Param("id") Integer valueId);
 
-    @Select("select LAST_DELETE_ID")
-    Integer selectLastId();
+    /*@Select("select LAST_INSERT_ID()")
+    Integer selectLastId();*/
 }
