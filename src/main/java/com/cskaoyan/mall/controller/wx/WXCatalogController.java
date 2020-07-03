@@ -33,7 +33,6 @@ public class WXCatalogController {
         }
     }
 
-    @RequiresGuest
     @RequestMapping("current")
     public BaseRespVo catalogCurrent(Integer id){
         CatalogCurrentVO catalogCurrent = catalogService.catalogCurrent(id);
