@@ -100,43 +100,42 @@ public class GoodsCommentServiceImpl implements GoodsCommentService {
 
     //胡小强
     @Override
-    public Map<String, Object> getWXCommentList(WXGoodCommentBo wxGoodCommentBo) {
-        Map<String, Object> map = new HashMap<>();
-        List<Object> lsit = new ArrayList<>();
-        //查询测试用户名
+    public Map<String,Object>  getWXCommentList(WXGoodCommentBo wxGoodCommentBo) {
+        Map<String, Object> map = new HashMap<> ();
+        List<Object> lsit = new ArrayList<> ();
+            //查询测试用户名
 
-        String username = (String) SecurityUtils.getSubject().getPrincipal();
-        ;
-        UserExample userExample = new UserExample();
-        UserExample.Criteria criteria = userExample.createCriteria().andUsernameEqualTo(username);
-        WXUserInfoVO wxUserInfoVO = UserMapper.selectUserInfoByUsername(username);
-        //分页
-        PageHelper.startPage(wxGoodCommentBo.getPage(), wxGoodCommentBo.getSize());
-        List<WXCommentVO> commentList = new ArrayList<>();
+            String username = (String) SecurityUtils.getSubject ().getPrincipal ();
+            UserExample userExample = new UserExample ();
+            UserExample.Criteria criteria = userExample.createCriteria ().andUsernameEqualTo (username);
+            WXUserInfoVO wxUserInfoVO = UserMapper.selectUserInfoByUsername (username);
+            //分页
+            PageHelper.startPage (wxGoodCommentBo.getPage (), wxGoodCommentBo.getSize ());
+            List<WXCommentVO> commentList = new ArrayList<> ();
 
-        GoodsCommentExample comExample = new GoodsCommentExample();
-        comExample.setOrderByClause("add_time desc");
-        comExample.createCriteria().andValueIdEqualTo(wxGoodCommentBo.getValuedId());
+            GoodsCommentExample comExample = new GoodsCommentExample ();
+            comExample.setOrderByClause ("add_time desc");
+            comExample.createCriteria ().andValueIdEqualTo (wxGoodCommentBo.getValuedId ());
 
-        List<GoodsComment> goodsCommentListComments = commentMapper.selectByExample(comExample);
-        for (GoodsComment comment : goodsCommentListComments) {
-            WXCommentVO wxVO = new WXCommentVO();
-            wxVO.setAddTime(comment.getAddTime());
-            wxVO.setContent(comment.getContent());
-            wxVO.setPicList(comment.getPicUrls());
-            wxVO.setUserInfo(wxUserInfoVO);
-            commentList.add(wxVO);
+            List<GoodsComment> goodsCommentListComments = commentMapper.selectByExample (comExample);
+            for (GoodsComment comment : goodsCommentListComments) {
+                WXCommentVO wxVO = new WXCommentVO ();
+                wxVO.setAddTime (comment.getAddTime ());
+                wxVO.setContent (comment.getContent ());
+                wxVO.setPicList (comment.getPicUrls ());
+                wxVO.setUserInfo (wxUserInfoVO);
+                commentList.add (wxVO);
+            }
+
+
+            PageInfo<GoodsComment> pageInfo = new PageInfo<> (goodsCommentListComments);
+            long count = pageInfo.getTotal ();
+
+            map.put ("count", count);
+            map.put ("currentPage", wxGoodCommentBo.getPage ());
+            map.put ("data", commentList);
+            return map;
         }
-
-
-        PageInfo<GoodsComment> pageInfo = new PageInfo<>(goodsCommentListComments);
-        long count = pageInfo.getTotal();
-
-        map.put("count", count);
-        map.put("currentPage", wxGoodCommentBo.getPage());
-        map.put("data", commentList);
-        return map;
-    }
 
 
     @Override

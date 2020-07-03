@@ -21,7 +21,7 @@ import java.util.Map;
 */
 @RestController
 @RequestMapping("/wx/topic")
-@RequiresAuthentication
+
 public class WXTopicController {
     @Autowired
     TopicService topicService;

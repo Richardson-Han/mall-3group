@@ -2,6 +2,7 @@ package com.cskaoyan.mall.service.impl;
 
 
 import com.cskaoyan.mall.bean.*;
+import com.cskaoyan.mall.bean.System;
 import com.cskaoyan.mall.bean.VO.OrderRefundVO;
 import com.cskaoyan.mall.bean.VO.OrderStatusVO;
 import com.cskaoyan.mall.bean.VO.ShipVO;
@@ -279,6 +280,8 @@ public class OrderServiceImpl implements OrderService {
     CouponMapper couponMapper;
     @Autowired
     GoodsProductMapper productMapper;
+    @Autowired
+    SystemMapper systemMapper;
 
     /**
      *  提交订单，返回订单号
@@ -332,26 +335,48 @@ public class OrderServiceImpl implements OrderService {
         String province = provinceRegion.getName();
         //完整的地址为
         String wholeAddress = province + " " + city + " " + area + " " + address.getAddress();
-        //商品价格
-        //Cart cart = cartMapper.selectByPrimaryKey(cartId);
-        BigDecimal goodPrice = new BigDecimal(0);
-        //邮费，默认为0
-        BigDecimal freightPrice = new BigDecimal(0);
         //优惠价格
-        BigDecimal couponPrice = couponMapper.selectDiscountById(couponId);
+        BigDecimal couponPrice = new BigDecimal(0);
+        if(couponId == 0){
+
+        }else {
+             couponPrice = couponMapper.selectDiscountById(couponId);
+        }
         //优惠积分减免，integral_price, 设置为0
         BigDecimal integralPrice = new BigDecimal(0);
         //团购优惠价减免，不要求做
         BigDecimal grouponPrice = new BigDecimal(0);
-        //订单费用
-        BigDecimal orderPrice = new BigDecimal(0);
-        //实付费用
-        BigDecimal actualPrice = new BigDecimal(0);
+
+        //商品价格
+        //Cart cart = cartMapper.selectByPrimaryKey(cartId);
+        BigDecimal goodPrice = new BigDecimal(0);
+        //邮费，默认为0,
+        BigDecimal freightPrice = new BigDecimal(0);
         for (Cart cart : cartList) {
+            //获得商品的总价格
             goodPrice = goodPrice.add(cart.getPrice().multiply(new BigDecimal(cart.getNumber())));
-            orderPrice = goodPrice.add(freightPrice).subtract(couponPrice);
-            actualPrice = orderPrice.subtract(integralPrice);
         }
+        //根据商品总价格goodPrice去判断邮费
+        Integer systemFreightMin = 0;
+        Integer systemFreightValue = 0;
+        SystemExample systemExample = new SystemExample();
+        List<System> systems = systemMapper.selectByExample(systemExample);
+        for (System system : systems) {
+            if(system.getKeyName().equals("cskaoyan_mall_express_freight_min")){
+                systemFreightMin = Integer.parseInt(system.getKeyValue());
+            }
+            if(system.getKeyName().equals("cskaoyan_mall_express_freight_value")){
+                systemFreightValue = Integer.parseInt(system.getKeyValue());
+            }
+        }
+        if(goodPrice.doubleValue() >= systemFreightMin){
+            //邮费不变，还是0
+        }else
+            freightPrice = new BigDecimal(systemFreightValue);
+        //订单费用
+        BigDecimal orderPrice = (goodPrice.add(freightPrice)).subtract(couponPrice);
+        //实付费用
+        BigDecimal actualPrice = orderPrice.subtract(integralPrice);
 
         //新建order
         Order order = new Order(null, userId, orderSn, orderStatus, consignee, mobile, wholeAddress, message, goodPrice,
@@ -397,9 +422,6 @@ public class OrderServiceImpl implements OrderService {
     private String createOrderSn(){
         //当前日期 + 六位随机数
         String str = new SimpleDateFormat("yyyyMMdd").format(new Date());
-        /*Random random = new Random();
-        int r = (random.nextInt() * (999999 - 100000 +1)) + 100000;
-        r = r > 0 ? r : (-r);*/
         int r = (int) ((Math.random()*9 + 1) * 100000);
         return str + r;
     }

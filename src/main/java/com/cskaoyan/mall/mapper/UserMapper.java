@@ -48,7 +48,7 @@ public interface UserMapper {
     @Insert("insert into cskaoyanmall_coupon_user(user_id,coupon_id,add_time) values (#{userId},#{couponId},#{addtime})")
     Integer wxinsertCouponByUseridAndCouponid(@Param("userId") Integer userId, @Param("couponId") Integer couponId, @Param("addtime") Date addtime);
 
-    @Update("update cskaoyanmall_coupon set total=#{total} where coupon_id = #{couponId}")
+    @Update("update cskaoyanmall_coupon set total=#{total} where id = #{couponId}")
     Integer wxupdateCouponByCouponId(@Param("couponId") Integer couponId, @Param("total") Integer total);
 
     @Update("update cskaoyanmall_coupon set deleted = 1 where coupon_id = #{couponId}")

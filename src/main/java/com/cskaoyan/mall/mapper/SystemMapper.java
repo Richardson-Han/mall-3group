@@ -35,4 +35,6 @@ public interface SystemMapper {
 
     int updateMallConfig(@Param("key_name") String key_name, @Param("key_value") String key_value, @Param("update_time") Date update_time);
 
+    //WX
+
 }
