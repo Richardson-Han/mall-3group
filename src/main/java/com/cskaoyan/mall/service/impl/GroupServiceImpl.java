@@ -147,9 +147,11 @@ public class GroupServiceImpl implements GroupService {
         GoodsExample goodsExample = new GoodsExample();
         goodsExample.setOrderByClause(sort + " " + order);
         //在按商品id搜索时有goodsId
-//        if(goodsId != null){
-//            groupOnExample.createCriteria().andGoodsIdEqualTo(goodsId);
-//        }
+        if(goodsId != null){
+            groupOnRulesExample.createCriteria().andGoodsIdEqualTo(goodsId);
+            List<Integer> groupOnIds = groupOnRulesMapper.selectIdByGoodsId(goodsId);
+            groupOnExample.createCriteria().andRulesIdIn(groupOnIds);
+        }
         PageHelper.startPage(page,limit);
         List<GroupOn> groupOns = groupOnMapper.selectByExample(groupOnExample);
         List<GroupOnListRecordVO> groupOnListRecordVOs = new ArrayList<>();
@@ -168,7 +170,7 @@ public class GroupServiceImpl implements GroupService {
             groupOnListRecordVOs.add(recordVO);
             }
 
-        PageInfo<GroupOnListRecordVO> pageInfo = new PageInfo<>(groupOnListRecordVOs);
+        PageInfo<GroupOn> pageInfo = new PageInfo<>(groupOns);
         long total = pageInfo.getTotal();
         return new BaseData(groupOnListRecordVOs,total);
     }
