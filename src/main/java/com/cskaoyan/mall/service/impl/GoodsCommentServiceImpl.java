@@ -35,7 +35,8 @@ public class GoodsCommentServiceImpl implements GoodsCommentService {
 
 
     /**
-     *  查询商品评论
+     * 查询商品评论
+     *
      * @param commentListBO
      * @return
      */
@@ -54,13 +55,13 @@ public class GoodsCommentServiceImpl implements GoodsCommentService {
         String userId = commentListBO.getUserId();
         Integer valueId = commentListBO.getValueId();
         //userId为空， valueId不为空
-        if(userId == null && valueId != null){
+        if (userId == null && valueId != null) {
             commentExample.createCriteria().andValueIdEqualTo(valueId);
-        }else if(userId != null && valueId == null){
+        } else if (userId != null && valueId == null) {
             //userId不为空， valueId为空
             //需要转换下userId的类型
             commentExample.createCriteria().andUserIdEqualTo(Integer.parseInt(userId));
-        }else if(userId != null && valueId != null){
+        } else if (userId != null && valueId != null) {
             //userId不为空， valueId不为空
             commentExample.createCriteria().andValueIdEqualTo(valueId).andUserIdEqualTo(Integer.parseInt(userId));
         }
@@ -72,7 +73,7 @@ public class GoodsCommentServiceImpl implements GoodsCommentService {
     }
 
     /**
-     *  删除评论
+     * 删除评论
      */
     @Override
     public void deleteComment(GoodsComment goodsComment) {
@@ -81,7 +82,7 @@ public class GoodsCommentServiceImpl implements GoodsCommentService {
     }
 
     /**
-     *  回复评论
+     * 回复评论
      */
     @Override
 
@@ -89,57 +90,56 @@ public class GoodsCommentServiceImpl implements GoodsCommentService {
         Integer id = commentBO.getCommentId();
         GoodsComment comment = commentMapper.selectByPrimaryKey(id);
         //id对应的content有内容，则无法回复
-        if(comment.getContent() == null){
+        if (comment.getContent() == null) {
             comment.setContent(commentBO.getContent());
             commentMapper.updateByPrimaryKeySelective(comment);
             return 1;
         }
         return 0;
     }
+
     //胡小强
     @Override
-
-    public Map<String,Object>  getWXCommentList(WXGoodCommentBo wxGoodCommentBo){
-        Map<String,Object> map =new HashMap<> ();
+    public Map<String,Object>  getWXCommentList(WXGoodCommentBo wxGoodCommentBo) {
+        Map<String, Object> map = new HashMap<> ();
         List<Object> lsit = new ArrayList<> ();
-        //查询测试用户名
+            //查询测试用户名
 
-        String username = (String) SecurityUtils.getSubject().getPrincipal();;
-        UserExample userExample = new UserExample ();
-        UserExample.Criteria criteria = userExample.createCriteria ().andUsernameEqualTo (username);
-        WXUserInfoVO wxUserInfoVO = UserMapper.selectUserInfoByUsername (username);
-        //分页
-        PageHelper.startPage (wxGoodCommentBo.getPage (),wxGoodCommentBo.getSize ());
-        List<WXCommentVO> commentList =new ArrayList<> ();
+            String username = (String) SecurityUtils.getSubject ().getPrincipal ();
+            UserExample userExample = new UserExample ();
+            UserExample.Criteria criteria = userExample.createCriteria ().andUsernameEqualTo (username);
+            WXUserInfoVO wxUserInfoVO = UserMapper.selectUserInfoByUsername (username);
+            //分页
+            PageHelper.startPage (wxGoodCommentBo.getPage (), wxGoodCommentBo.getSize ());
+            List<WXCommentVO> commentList = new ArrayList<> ();
 
-        GoodsCommentExample comExample = new GoodsCommentExample ();
-        comExample.setOrderByClause ("add_time desc");
-        comExample.createCriteria ().andValueIdEqualTo (wxGoodCommentBo.getValuedId ());
+            GoodsCommentExample comExample = new GoodsCommentExample ();
+            comExample.setOrderByClause ("add_time desc");
+            comExample.createCriteria ().andValueIdEqualTo (wxGoodCommentBo.getValuedId ());
 
-        List<GoodsComment> goodsCommentListComments = commentMapper.selectByExample (comExample);
-        for (GoodsComment comment : goodsCommentListComments) {
-            WXCommentVO wxVO = new WXCommentVO ();
-            wxVO.setAddTime (comment.getAddTime ());
-            wxVO.setContent (comment.getContent ());
-            wxVO.setPicList (comment.getPicUrls ());
-            wxVO.setUserInfo (wxUserInfoVO);
-            commentList.add (wxVO);
+            List<GoodsComment> goodsCommentListComments = commentMapper.selectByExample (comExample);
+            for (GoodsComment comment : goodsCommentListComments) {
+                WXCommentVO wxVO = new WXCommentVO ();
+                wxVO.setAddTime (comment.getAddTime ());
+                wxVO.setContent (comment.getContent ());
+                wxVO.setPicList (comment.getPicUrls ());
+                wxVO.setUserInfo (wxUserInfoVO);
+                commentList.add (wxVO);
+            }
+
+
+            PageInfo<GoodsComment> pageInfo = new PageInfo<> (goodsCommentListComments);
+            long count = pageInfo.getTotal ();
+
+            map.put ("count", count);
+            map.put ("currentPage", wxGoodCommentBo.getPage ());
+            map.put ("data", commentList);
+            return map;
         }
 
 
-        PageInfo <GoodsComment> pageInfo=new PageInfo<> (goodsCommentListComments);
-        long count =pageInfo.getTotal ();
-
-        map.put ("count",count);
-        map.put("currentPage",wxGoodCommentBo.getPage ());
-        map.put ("data",commentList);
-        return map;
-    }
-
-
-
     @Override
-    public void insertComment(GoodsComment  goodsComment) {
+    public void insertComment(GoodsComment goodsComment) {
         commentMapper.insertSelective(goodsComment);
     }
 
@@ -152,39 +152,39 @@ public class GoodsCommentServiceImpl implements GoodsCommentService {
 
     @Override
     public Map<String, Object> getWXCount(WXGoodCommentBo wxGoodCommentBo) {
-        Map<String,Object> countmap=new HashMap<> ();
+        Map<String, Object> countmap = new HashMap<>();
         //查询所有的评论
-        GoodsCommentExample goodsCommentExample = new GoodsCommentExample ();
-        GoodsCommentExample.Criteria criteria = goodsCommentExample.createCriteria ()
-                .andTypeEqualTo (wxGoodCommentBo.getType ())
-                .andValueIdEqualTo (wxGoodCommentBo.getValuedId ());
-        long allCount= commentMapper.countByExample (goodsCommentExample);
-        countmap.put ("allCount",allCount);
+        GoodsCommentExample goodsCommentExample = new GoodsCommentExample();
+        GoodsCommentExample.Criteria criteria = goodsCommentExample.createCriteria()
+                .andTypeEqualTo(wxGoodCommentBo.getType())
+                .andValueIdEqualTo(wxGoodCommentBo.getValuedId());
+        long allCount = commentMapper.countByExample(goodsCommentExample);
+        countmap.put("allCount", allCount);
         //查询所有有图片的评论
-        GoodsCommentExample goodsExample2 = new GoodsCommentExample ();
-        GoodsCommentExample.Criteria criteria1 = goodsExample2.createCriteria ()
-                .andHasPictureEqualTo (true)
-                .andTypeEqualTo (wxGoodCommentBo.getType ())
-                .andValueIdEqualTo (wxGoodCommentBo.getValuedId ());
-        long hasPicCount = commentMapper.countByExample (goodsExample2);
-        countmap.put ("hasPicCount",hasPicCount);
+        GoodsCommentExample goodsExample2 = new GoodsCommentExample();
+        GoodsCommentExample.Criteria criteria1 = goodsExample2.createCriteria()
+                .andHasPictureEqualTo(true)
+                .andTypeEqualTo(wxGoodCommentBo.getType())
+                .andValueIdEqualTo(wxGoodCommentBo.getValuedId());
+        long hasPicCount = commentMapper.countByExample(goodsExample2);
+        countmap.put("hasPicCount", hasPicCount);
         return countmap;
     }
 
     @Override
     public GoodsComment getWXPost(PostCommentBO postCommentBO) {
-        GoodsComment goodsComment = new GoodsComment ();
-        goodsComment.setAddTime (new Date ());
-        goodsComment.setContent (postCommentBO.getContent ());
-        goodsComment.setHasPicture (postCommentBO.getHasPicture ());
+        GoodsComment goodsComment = new GoodsComment();
+        goodsComment.setAddTime(new Date());
+        goodsComment.setContent(postCommentBO.getContent());
+        goodsComment.setHasPicture(postCommentBO.getHasPicture());
         //id不知道怎么设置，就没加
-        goodsComment.setPicUrls (postCommentBO.getPicUrls ());
-        goodsComment.setStar (postCommentBO.getStar ());
-        goodsComment.setType (postCommentBO.getType ());
-        goodsComment.setUpdateTime (new Date ());
+        goodsComment.setPicUrls(postCommentBO.getPicUrls());
+        goodsComment.setStar(postCommentBO.getStar());
+        goodsComment.setType(postCommentBO.getType());
+        goodsComment.setUpdateTime(new Date());
         //userId不知道怎么设置，写成1
-        goodsComment.setUserId (1);
-        goodsComment.setValueId (postCommentBO.getValuedId ());
+        goodsComment.setUserId(1);
+        goodsComment.setValueId(postCommentBO.getValuedId());
 
 
         return goodsComment;

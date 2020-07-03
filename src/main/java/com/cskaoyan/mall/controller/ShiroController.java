@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class ShiroController {
 
     @RequestMapping(value = "/noperm")
-    public String noperm(){
+    public String noperm() {
         return "noperm";
     }
 

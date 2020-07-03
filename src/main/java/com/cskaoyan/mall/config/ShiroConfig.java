@@ -47,8 +47,13 @@ public class ShiroConfig {
         fiterChainDefinitionMap.put("/wx/brand/detail","anon");
         fiterChainDefinitionMap.put("/wx/coupon/list","anon");
         fiterChainDefinitionMap.put("/wx/coupon/list","anon");
+
         fiterChainDefinitionMap.put("/wx/topic/**","anon");
         fiterChainDefinitionMap.put("/wx/comment/**","anon");
+
+        fiterChainDefinitionMap.put("/wx/goods/**","anon");
+        fiterChainDefinitionMap.put("/wx/search/**","anon");
+
 
         // fiterChainDefinitionMap.put("/**","perms[*]");*不需要设置 自动全权限
 

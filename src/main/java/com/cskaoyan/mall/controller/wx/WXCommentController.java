@@ -25,17 +25,20 @@ import java.util.Map;
 public class WXCommentController {
     @Autowired
     GoodsCommentService goodsCommentService;
+
+
+    /**
+     * @RequestParam("valueId")Integer valueId,
+     * @RequestParam("type") Byte type,
+     * @RequestParam("size") Integer size,
+     * @RequestParam("page") Integer page,
+     * @RequestParam("showType") Integer showType
+     * <p>
+     * 显示所有评论
+     */
+    @RequiresAuthentication
+
     @RequestMapping("/list")
-    /*
-        @RequestParam("valueId")Integer valueId,
-                                     @RequestParam("type")     Byte type,
-                                     @RequestParam("size")      Integer size,
-                                     @RequestParam("page")      Integer page,
-                                     @RequestParam("showType")  Integer showType
-
-                                     显示所有评论
-
-    * */
     public BaseRespVo getCommentList(Integer valueId, Byte type, Byte showType, Integer page, Integer size) {
         WXGoodCommentBo wxGoodCommentBo = new WXGoodCommentBo(type, size, page, showType, valueId);
         Map<String, Object> map = goodsCommentService.getWXCommentList(wxGoodCommentBo);
@@ -48,10 +51,11 @@ public class WXCommentController {
         Map<String, Object> map = goodsCommentService.getWXCount(wxGoodCommentBo);
         return BaseRespVo.ok(map);
     }
-//老师任务尚没写，但有这个接口，在专题下有个评论
+
+    //老师任务尚没写，但有这个接口，在专题下有个评论
     @PostMapping("/post")
-    public BaseRespVo getWXPost(@RequestBody PostCommentBO postCommentBO){
-        GoodsComment comment= goodsCommentService.getWXPost(postCommentBO);
-        return BaseRespVo.ok (comment);
+    public BaseRespVo getWXPost(@RequestBody PostCommentBO postCommentBO) {
+        GoodsComment comment = goodsCommentService.getWXPost(postCommentBO);
+        return BaseRespVo.ok(comment);
     }
 }

@@ -39,7 +39,7 @@ public interface GroupOnRulesMapper {
 
     int updateByPrimaryKey(GroupOnRules record);
 
-    @Select("select (g.retail_price - gr.discount) as groupon_price,g.id as `goods.id`,g.name as `goods.name`,g.brief as `goods.brief`,g.pic_url as `gooods.picUrl`,g.counter_price as `goods.counterPrice`,g.retail_price as `goods.retailPrice`,gr.discount_member as groupon_member from cskaoyanmall_groupon_rules gr left join cskaoyanmall_goods g on gr.goods_id = g.id order by g.id desc limit 0,5;")
+    @Select("select (g.retail_price - gr.discount) as groupon_price,g.id as `goods.id`,g.name as `goods.name`,g.brief as `goods.brief`,g.pic_url as `goods.picUrl`,g.counter_price as `goods.counterPrice`,g.retail_price as `goods.retailPrice`,gr.discount_member as groupon_member from cskaoyanmall_groupon_rules gr left join cskaoyanmall_goods g on gr.goods_id = g.id order by g.id desc limit 0,5;")
     List<WXGroupBuy> selectGroupBuy();
 
     List<GroupOn> selectByGoodsId(@Param("goodsId") Integer goodsId);
