@@ -1,13 +1,16 @@
 package com.cskaoyan.mall.service.impl;
 
 import com.cskaoyan.mall.bean.Brand;
+import com.cskaoyan.mall.bean.VO.BaseRespVo;
 import com.cskaoyan.mall.bean.VO.BrandAddVo;
 import com.cskaoyan.mall.bean.VO.wx.BrandGetListVO;
 import com.cskaoyan.mall.bean.wx.WXBrandListData;
+import com.cskaoyan.mall.constants.MallError;
 import com.cskaoyan.mall.mapper.BrandMapper;
 import com.cskaoyan.mall.service.BrandService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.apache.tomcat.jni.Error;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -38,13 +41,19 @@ public class BrandServiceImpl implements BrandService {
     }
 
     @Override
-    public Brand add(BrandAddVo brandAddVo) {
+    public boolean add(BrandAddVo brandAddVo) {
         Brand brand = new Brand ();
         BeanUtils.copyProperties (brandAddVo,brand);
+
         brand.setAddTime (new Date ());
         brand.setDeleted (false);
-        brandMapper.insert (brand);
-        return brand;
+        int i= 0;
+        try {
+            i = brandMapper.insert (brand);
+        } catch (Exception e) {
+            e.printStackTrace ();
+        }
+        return i==1;
     }
 
     @Override
@@ -52,6 +61,7 @@ public class BrandServiceImpl implements BrandService {
         brand.setDeleted (true);
         brand.setAddTime (new Date ());
         int i=brandMapper.updateByPrimaryKeySelective (brand);
+
         return i==1;
     }
 

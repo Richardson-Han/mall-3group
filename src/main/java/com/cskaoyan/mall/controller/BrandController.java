@@ -15,6 +15,7 @@ import java.util.Map;
 */
 @RestController
 @RequestMapping("/admin/brand")
+@CrossOrigin
 public class BrandController {
     @Autowired
     private BrandService brandService;
@@ -34,8 +35,10 @@ public class BrandController {
 
     @PostMapping("/create")
     public BaseRespVo addBrand(@RequestBody BrandAddVo brandAddVo){
-        Brand brand=brandService.add(brandAddVo);
-        return BaseRespVo.ok (brand);
+        if(brandService.add(brandAddVo)){
+            return  BaseRespVo.ok ();
+        }
+        return BaseRespVo.error ("参数不能为空，添加失败",888);
     }
     @PostMapping("/delete")
     public BaseRespVo deleteBrand(@RequestBody Brand brand){

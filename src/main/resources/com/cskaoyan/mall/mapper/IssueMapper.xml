@@ -100,7 +100,7 @@
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.cskaoyan.mall.bean.Issue">
+  <insert id="insert" parameterType="com.cskaoyan.mall.bean.Issue" keyProperty="id" useGeneratedKeys="true">
     insert into cskaoyanmall_issue (id, question, answer, 
       add_time, update_time, deleted
       )

@@ -44,9 +44,11 @@ public class OrderController {
     }
 
     @PostMapping ("/refund")
-    public  BaseRespVo refund(@RequestParam("orderId") Integer orderId,
-                              @RequestParam("refundMoney" ) BigDecimal refundMoney){
-        OrderRefundVO orderRefundVO = new OrderRefundVO (orderId, refundMoney);
+    public  BaseRespVo refund(
+//    @RequestParam("orderId") Integer orderId,
+//                              @RequestParam("refundMoney" ) BigDecimal refundMoney
+    @RequestBody  OrderRefundVO orderRefundVO
+                              ){
         orderService.orderRefund(orderRefundVO);
         return BaseRespVo.ok ();
     }

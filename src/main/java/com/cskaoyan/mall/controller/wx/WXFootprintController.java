@@ -3,6 +3,7 @@ package com.cskaoyan.mall.controller.wx;
 import com.cskaoyan.mall.bean.VO.BaseRespVo;
 import com.cskaoyan.mall.bean.wx.WXFootprint;
 import com.cskaoyan.mall.service.WXFootprintService;
+import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,6 +15,7 @@ import java.util.Map;
 */
 @RestController
 @RequestMapping("/wx/footprint")
+@RequiresAuthentication
 public class WXFootprintController {
     @Autowired
     WXFootprintService wxFootprintService;

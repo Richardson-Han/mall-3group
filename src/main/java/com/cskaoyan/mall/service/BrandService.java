@@ -15,7 +15,7 @@ import java.util.Map;
 public interface BrandService {
     Map<String,Object> queryBrandPageList(Integer page,Integer limit,
                                           Integer id,String name,String sort,String order);
-    Brand add(BrandAddVo brandAddVo);
+    boolean add(BrandAddVo brandAddVo);
     boolean delete(Brand brand);
     boolean updateByBrand(Brand brand);
 

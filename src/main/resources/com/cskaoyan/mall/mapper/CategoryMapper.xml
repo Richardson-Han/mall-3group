@@ -107,7 +107,7 @@
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.cskaoyan.mall.bean.Category">
+  <insert id="insert" parameterType="com.cskaoyan.mall.bean.Category" keyProperty="id" useGeneratedKeys="true">
     insert into cskaoyanmall_category (id, name, keywords, 
       `desc`, pid, icon_url,
       pic_url, level, sort_order, 
