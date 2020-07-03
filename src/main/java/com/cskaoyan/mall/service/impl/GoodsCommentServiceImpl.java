@@ -96,7 +96,7 @@ public class GoodsCommentServiceImpl implements GoodsCommentService {
         }
         return 0;
     }
-//胡小强
+    //胡小强
     @Override
     @RequiresAuthentication
     @RequiresGuest
