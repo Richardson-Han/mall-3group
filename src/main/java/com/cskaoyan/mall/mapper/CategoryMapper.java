@@ -36,4 +36,9 @@ public interface CategoryMapper {
     @Select("select * from cskaoyanmall_category a left join cskaoyanmall_category b\n" +
             "on a.pid=b.id")
     List<Category> selectFilterCategoryList();
+
+    @Select("select id,name,keywords,`desc`,pid,icon_url as iconUrl,pic_url as picUrl,level," +
+            "add_time as addTime,update_time as updateTime,sort_order as sortOrder,deleted " +
+            "from cskaoyanmall_category where pid = 0 and deleted = 0")
+    List<Category> selectCategoryList();
 }
