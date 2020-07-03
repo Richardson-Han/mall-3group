@@ -1,6 +1,5 @@
 package com.cskaoyan.mall.shiro;
 
-import com.cskaoyan.mall.mapper.AdminMapper;
 import com.cskaoyan.mall.service.AdminService;
 import com.cskaoyan.mall.utils.CharacterArrayConversionUtils;
 import org.apache.shiro.authc.*;
