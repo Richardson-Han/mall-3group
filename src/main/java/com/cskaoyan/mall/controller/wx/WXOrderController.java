@@ -164,10 +164,18 @@ public class WXOrderController {
     //方惠
     //订单提交
     //付款操作不用写
+    @RequiresAuthentication
     @RequestMapping("submit")
     public BaseRespVo submit(@RequestBody Map map, HttpServletRequest request) {
         String username = WXTokenUtils.requestToUsername(request);
         OrderSubmitVO orderSubmitVO = orderService.submit(map, username);
         return BaseRespVo.ok(orderSubmitVO);
+    }
+
+    @RequiresAuthentication
+    @RequestMapping("prepay")
+    public BaseRespVo prepay(@RequestBody Map map, HttpServletRequest request) {
+        //String username = WXTokenUtils.requestToUsername(request);
+        return BaseRespVo.error("订单不能支付", 724);
     }
 }

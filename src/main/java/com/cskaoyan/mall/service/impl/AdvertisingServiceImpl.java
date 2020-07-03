@@ -40,6 +40,8 @@ public class AdvertisingServiceImpl implements AdvertisingService {
      */
     @Override
     public Integer insertAdvertising(Advertising advertising) {
+        advertising.setAddTime(new Date());
+        advertising.setUpdateTime(new Date());
         return advertisingMapper.insertSelective(advertising);
     }
 
@@ -56,7 +58,6 @@ public class AdvertisingServiceImpl implements AdvertisingService {
      */
     @Override
     public Integer deleteAdvertising(Advertising advertising) {
-        advertising.setDeleted(true);
         advertising.setUpdateTime(new Date());
         return advertisingMapper.updateByPrimaryKeySelective(advertising);
     }
@@ -64,5 +65,11 @@ public class AdvertisingServiceImpl implements AdvertisingService {
     @Override
     public List<Advertising> wxselectTopAdvertising() {
         return advertisingMapper.selectTopAdvertising();
+    }
+
+    @Override
+    public Advertising selectLastAdvertising() {
+        Integer id = advertisingMapper.selectLastAdvertisingId();
+        return advertisingMapper.selectLastAdvertising(id);
     }
 }

@@ -50,8 +50,7 @@ public class TopicServiceImpl implements TopicService {
 
     @Override
     public Integer updateTopic(Topic topic) {
-        int update = topicMapper.updateByPrimaryKey(topic);
-        return update;
+        return topicMapper.updateByPrimaryKey(topic);
     }
 
     /**
@@ -65,23 +64,44 @@ public class TopicServiceImpl implements TopicService {
         return update;
     }
 
-    @Override
 
+
+
+
+
+
+    public List<Topic> wxselectNewTopic() {
+        return topicMapper.selectNewTopic();
+    }
+
+    @Override
+    public Integer selectLastId() {
+        return topicMapper.selectLatId();
+    }
+
+    //胡小强
+    @Override
     public Map<String, Object> selectDetail(Integer id) {
-        return null;
+        TopicExample topicExample = new TopicExample ();
+        topicExample.createCriteria ().andIdEqualTo (id).andDeletedEqualTo (false);
+        Topic topic=topicMapper.selectByPrimaryKey (id);
+        Map<String,Object> map =new HashMap<> ();
+        map.put ("goods",topic.getGoods ());
+        map.put ("topic",topic);
+        return map;
     }
 
     @Override
     public List<Topic> selectRelated(Integer id) {
-        String sort="add_time";
-        String order="desc";
+        String sort="id";
+        String order="asc";
         TopicExample topicExample = new TopicExample();
         topicExample.setOrderByClause(sort + " " + order);
         List<Topic> topics = topicMapper.selectByExample(topicExample);
         List<Topic> list=new ArrayList<> ();
         for (int i = 0; i < 4; i++) {
-            if(id !=topics.get (i).getId ()){
-                  list.add (topics.get (i)) ;
+            if(!id .equals (topics.get (i).getId ())){
+                list.add (topics.get (i)) ;
             }
             continue;
         }
@@ -89,12 +109,6 @@ public class TopicServiceImpl implements TopicService {
             list.add (topics.get (5));
         }
         return list;
-    }
-
-
-
-    public List<Topic> wxselectNewTopic() {
-        return topicMapper.selectNewTopic();
     }
 
 }
