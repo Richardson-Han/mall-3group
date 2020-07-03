@@ -162,6 +162,11 @@ public class AdminServiceImpl implements AdminService {
         return adminMapper.selectPasswordByName(username);
     }
 
+    @Override
+    public Integer selectLastId() {
+        return adminMapper.selectLastId();
+    }
+
     /**
      * 权限解析，比如数据库中
      *给的数据是 admin:brand:list，则转换为

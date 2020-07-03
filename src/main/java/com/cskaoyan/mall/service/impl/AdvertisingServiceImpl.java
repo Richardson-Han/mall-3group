@@ -72,4 +72,9 @@ public class AdvertisingServiceImpl implements AdvertisingService {
         Integer id = advertisingMapper.selectLastAdvertisingId();
         return advertisingMapper.selectLastAdvertising(id);
     }
+
+    @Override
+    public Integer selectLastAdvertisingId() {
+        return advertisingMapper.selectLastAdvertisingId();
+    }
 }

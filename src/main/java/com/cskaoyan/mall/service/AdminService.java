@@ -27,4 +27,6 @@ public interface AdminService {
     String selectRoleidByUsername(String username);
 
     List<String> selectPasswordByName(String username);
+
+    Integer selectLastId();
 }

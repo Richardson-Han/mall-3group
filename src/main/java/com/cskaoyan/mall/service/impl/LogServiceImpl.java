@@ -25,14 +25,14 @@ public class LogServiceImpl implements LogService {
     public BaseData getLogList(Integer page, Integer limit, String name, String sort, String order) {
         LogExample logExample = new LogExample();
         logExample.setOrderByClause(sort + " " + order);
-        PageHelper.startPage(page,limit);
-        if ( name != null){
+        PageHelper.startPage(page, limit);
+        if (name != null) {
             logExample.createCriteria().andAdminLike("%" + name + "%");
         }
         List<Log> logs = logMapper.selectByExample(logExample);
         PageInfo<Log> pageInfo = new PageInfo<>(logs);
         long total = pageInfo.getTotal();
-        return new BaseData(logs,total);
+        return new BaseData(logs, total);
     }
 
     @Override
@@ -74,7 +74,7 @@ public class LogServiceImpl implements LogService {
     }
 
     @Override
-    public void setAdminCreate(String username) {
+    public void setAdminCreate(String username, String operationName, Integer id) {
         Date date = new Date();
         Log log = new Log();
         try {
@@ -86,15 +86,15 @@ public class LogServiceImpl implements LogService {
         log.setAdmin(username);
         log.setUpdateTime(date);
         log.setAddTime(date);
-        log.setAction("管理员创建");
+        log.setAction("管理员创建" + operationName);
         log.setStatus(true);
-        log.setResult("创建成功");
+        log.setResult("创建成功,id为:" + id);
         log.setType(1);
         logMapper.insertSelective(log);
     }
 
     @Override
-    public void updateAdmin(String username,String updateName) {
+    public void updateAdmin(String username, String updateName, String operationName) {
         Date date = new Date();
         Log log = new Log();
         try {
@@ -106,7 +106,7 @@ public class LogServiceImpl implements LogService {
         log.setAdmin(username);
         log.setUpdateTime(date);
         log.setAddTime(date);
-        log.setAction("管理员修改");
+        log.setAction("管理员修改" + operationName);
         log.setStatus(true);
         log.setType(1);
         log.setResult(updateName);
@@ -114,7 +114,7 @@ public class LogServiceImpl implements LogService {
     }
 
     @Override
-    public void deleteAdmin(String username) {
+    public void deleteAdmin(String username,Integer id) {
         Date date = new Date();
         Log log = new Log();
         try {
@@ -126,7 +126,7 @@ public class LogServiceImpl implements LogService {
         log.setAdmin(username);
         log.setUpdateTime(date);
         log.setAddTime(date);
-        log.setAction("管理员修改");
+        log.setAction("管理员修改deleted(虚拟删除)");
         log.setStatus(true);
         log.setType(1);
         log.setResult("删除成功");

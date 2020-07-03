@@ -1,7 +1,6 @@
 package com.cskaoyan.mall.service;
 
 import com.cskaoyan.mall.bean.BaseData;
-import com.cskaoyan.mall.bean.VO.AdminUpdateVO;
 
 public interface LogService {
     BaseData getLogList(Integer page, Integer limit, String name, String sort, String order);
@@ -10,9 +9,9 @@ public interface LogService {
 
     void setLogout(String username);
 
-    void setAdminCreate(String username);
+    void setAdminCreate(String username,String operationName, Integer id);
 
-    void updateAdmin(String username,String updateName);
+    void updateAdmin(String username,String updateName,String operationName);
 
-    void deleteAdmin(String username);
+    void deleteAdmin(String username,Integer id);
 }

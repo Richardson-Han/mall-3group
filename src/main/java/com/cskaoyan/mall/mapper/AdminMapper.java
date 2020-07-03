@@ -51,4 +51,7 @@ public interface AdminMapper {
 
     @Select("select avatar from cskaoyanmall_admin where username = #{username}")
     String selectAvatarByUsername(@Param("username") String username);
+
+    @Select("select LAST_INSERT_ID()")
+    Integer selectLastId();
 }

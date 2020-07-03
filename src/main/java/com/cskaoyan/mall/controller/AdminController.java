@@ -41,7 +41,9 @@ public class AdminController {
         Subject subject = SecurityUtils.getSubject();
         String username = (String) subject.getPrincipals().getPrimaryPrincipal();
         if ( admin != null ){
-            logService.setAdminCreate(username);
+            String operation = "新管理账户";
+            admin.setId(adminService.selectLastId());
+            logService.setAdminCreate(username,operation,admin.getId());
             return BaseRespVo.ok(admin);
         }else {
             return BaseRespVo.error();
@@ -55,7 +57,8 @@ public class AdminController {
         Subject subject = SecurityUtils.getSubject();
         String username = (String) subject.getPrincipals().getPrimaryPrincipal();
         if (adminUpdateVO != null){
-            logService.updateAdmin(username,adminUpdateBO.getUsername());
+            String operation = "管理员数据";
+            logService.updateAdmin(username,adminUpdateBO.getUsername(),operation);
             return BaseRespVo.ok(adminUpdateVO);
         }
         return BaseRespVo.error();
@@ -68,7 +71,7 @@ public class AdminController {
         Subject subject = SecurityUtils.getSubject();
         String username = (String) subject.getPrincipals().getPrimaryPrincipal();
         if ( result > 0 ){
-            logService.deleteAdmin(username);
+            logService.deleteAdmin(username,adminUpdateBO.getId());
             return BaseRespVo.ok();
         }
         return BaseRespVo.error();
