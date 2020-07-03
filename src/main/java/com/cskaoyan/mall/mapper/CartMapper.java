@@ -31,7 +31,7 @@ public interface CartMapper {
 
     int updateByPrimaryKey(Cart record);
 
-    @Update("update cskaoyanmall_cart set checked = #{checked} where product_id = #{productId} and user_id = #{userId}")
+    @Update("update cskaoyanmall_cart set checked = #{checked} where product_id = #{productId} and user_id = #{userId} and deleted = 0")
     void updateCheckedByIdAndUserId(@Param("productId")Integer productId, @Param("checked") Integer checked, @Param("userId") Integer userId);
 
     @Update("update cskaoyanmall_cart set number = #{number} where id = #{id}")
@@ -40,4 +40,6 @@ public interface CartMapper {
     @Update("update cskaoyanmall_cart set deleted = 1 where user_id = #{userId} and product_id = #{productId}")
     void updateDeletedByProductIdAndUserId(@Param("userId")Integer userId, @Param("productId") Integer productId);
 
+    @Select("select * from cskaoyanmall_cart where user_id = #{userId} and goods_id = #{goodsId} and product_id = #{productId} and deleted = 0")
+    Cart selectByUserIdAndGoodsIdAndProductId(@Param("userId")Integer userId, @Param("goodsId")Integer goodsId, @Param("productId")Integer productId);
 }

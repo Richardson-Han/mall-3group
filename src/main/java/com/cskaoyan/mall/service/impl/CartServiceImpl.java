@@ -1,6 +1,7 @@
 package com.cskaoyan.mall.service.impl;
 
 import com.cskaoyan.mall.bean.*;
+import com.cskaoyan.mall.bean.System;
 import com.cskaoyan.mall.bean.wx.BO.CartCheckBO;
 import com.cskaoyan.mall.bean.wx.BO.CartCheckoutBO;
 import com.cskaoyan.mall.bean.wx.BO.CartUpdateBO;
@@ -44,6 +45,8 @@ public class CartServiceImpl implements CartService {
     OrderGoodsMapper orderGoodsMapper;
     @Autowired
     CouponUserMapper couponUserMapper;
+    @Autowired
+    SystemMapper systemMapper;
 
 
     @Override
@@ -111,13 +114,20 @@ public class CartServiceImpl implements CartService {
         //再来获得goods信息
         Goods goods = goodsMapper.selectByPrimaryKey(goodsId);
 
+        //如果添加的商品在购物车中已存在，则合并
+        Cart cart1 = cartMapper.selectByUserIdAndGoodsIdAndProductId(userId, goodsId, productId);
+        if(cart1 != null){
+            cart1.setNumber((short) (cart1.getNumber() + number));
+            cartMapper.updateByPrimaryKeySelective(cart1);
+        }else {
 
-        //放入cart需要的goods信息
-        //价格是 现价 retailPrice
-        Cart addCart = new Cart(null, userId, goodsId, goodsId.toString(), goods.getName(), productId, goodsProduct.getPrice(),
-                number, goodsProduct.getSpecifications(), false, goodsProduct.getUrl(), new Date(), new Date(), false);
+            //放入cart需要的goods信息
+            //价格是 现价 retailPrice
+            Cart addCart = new Cart(null, userId, goodsId, goodsId.toString(), goods.getName(), productId, goodsProduct.getPrice(),
+                    number, goodsProduct.getSpecifications(), false, goodsProduct.getUrl(), new Date(), new Date(), false);
 
-        cartMapper.insertSelective(addCart);
+            cartMapper.insertSelective(addCart);
+        }
 
         //根据userId来获取用户的购物车信息
         CartExample cartExample = new CartExample();
@@ -235,15 +245,19 @@ public class CartServiceImpl implements CartService {
         //在获取全部的coupon
         List<Coupon> coupons = new ArrayList<>();
         for (CouponUser couponUser : couponUsers) {
-            //应该在这里就筛选 优惠券需要最低的消费 <= 商品总金额
-            //每天记得优化
-            Coupon coupon = couponMapper.selectByPrimaryKey(couponUser.getCouponId());
-            coupons.add(coupon);
+            //应该在这里就筛选
+            //根据couponId去找对应的优惠券，其最低的消费 <= 商品总金额
+            //Coupon coupon = couponMapper.selectByPrimaryKey(couponUser.getCouponId());
+            Coupon coupon = couponMapper.selectByIdAndMin(couponUser.getCouponId(), new BigDecimal(goodsTotalprice));
+            //要对coupon进行判断，为null不被添加, 不然会出现 空指针异常
+            if(coupon != null){
+                coupons.add(coupon);
+            }
         }
         //根据couponId来判断是  自动选择 还是 自定义选择 优惠券
         //下面代码写的太辣鸡了，能力有限
         if(couponId <= 0){
-            if(coupons == null){
+            if(coupons.size() == 0){
                 //若为null，则无优惠
                 couponPrice = 0.0;
             }else {
@@ -257,11 +271,9 @@ public class CartServiceImpl implements CartService {
                         }else {
                             //假设没有商品限制
                             //因为type=2，是兑换码优惠券，limit肯定为1
-                            if(goodsTotalprice >= coupon.getMin().doubleValue()){
-                                if(coupon.getDiscount().doubleValue() >= couponPrice){
-                                    couponId = coupon.getId();
-                                    couponPrice = coupon.getDiscount().doubleValue();
-                                }
+                            if(coupon.getDiscount().doubleValue() >= couponPrice){
+                                couponId = coupon.getId();
+                                couponPrice = coupon.getDiscount().doubleValue();
                             }
                         }
                     }else if(type == 0){
@@ -270,11 +282,9 @@ public class CartServiceImpl implements CartService {
                         //假设limit为1
                         Short limit = coupon.getLimit();
                         if(limit == 1) {
-                            if (goodsTotalprice >= coupon.getMin().doubleValue()) {
-                                if (coupon.getDiscount().doubleValue() >= couponPrice) {
-                                    couponId = coupon.getId();
-                                    couponPrice = coupon.getDiscount().doubleValue();
-                                }
+                            if(coupon.getDiscount().doubleValue() >= couponPrice){
+                                couponId = coupon.getId();
+                                couponPrice = coupon.getDiscount().doubleValue();
                             }
                         }else {
                             //此时limit为0，表示可无限制领券
@@ -282,11 +292,9 @@ public class CartServiceImpl implements CartService {
                     } else if(type == 1){
                         //优惠券类型为 注册赠送券, 所以不能自己领，limit只能是1
                         //假如优惠券没有限制条件
-                        if (goodsTotalprice >= coupon.getMin().doubleValue()) {
-                            if (coupon.getDiscount().doubleValue() >= couponPrice) {
-                                couponId = coupon.getId();
-                                couponPrice = coupon.getDiscount().doubleValue();
-                            }
+                        if(coupon.getDiscount().doubleValue() >= couponPrice){
+                            couponId = coupon.getId();
+                            couponPrice = coupon.getDiscount().doubleValue();
                         }
                     }
                 }//foreach
@@ -296,12 +304,19 @@ public class CartServiceImpl implements CartService {
         }else {
             //根据其couponId来获取其一条数据
             Coupon coupon = couponMapper.selectByPrimaryKey(couponId);
-            if(goodsTotalprice >= coupon.getMin().doubleValue()){
-                //优惠价格
-                actualPrice =  goodsTotalprice - couponPrice;
-                orderTotalPrice = goodsTotalprice - couponPrice;
-                couponId = coupon.getId();
-                couponPrice = coupon.getDiscount().doubleValue();
+            //判断该优惠券是否在 有效的优惠券中
+            //boolean contains = coupons.contains(coupon);
+            for (Coupon coupon1 : coupons) {
+                if(coupon1.getId().equals(coupon.getId())){
+                    if (goodsTotalprice >= coupon.getMin().doubleValue()) {
+                        //优惠价格
+                        actualPrice = goodsTotalprice - couponPrice;
+                        orderTotalPrice = goodsTotalprice - couponPrice;
+                        couponId = coupon.getId();
+                        couponPrice = coupon.getDiscount().doubleValue();
+                        break;
+                    }
+                }
             }
         }
         //有效优惠券数量
@@ -327,9 +342,28 @@ public class CartServiceImpl implements CartService {
             grouponPrice = 0.0;
         }
 
-        //运费设置为0
+        //运费去比较system表中的字段
+        //若>=cskaoyan_mall_express_freight_min，则包邮，不然邮费为cskaoyan_mall_express_freight_value
         Integer freightPrice = 0;
+        Integer systemFreightMin = 0;
+        Integer systemFreightValue = 0;
+        SystemExample systemExample = new SystemExample();
+        List<System> systems = systemMapper.selectByExample(systemExample);
+        for (System system : systems) {
+            if(system.getKeyName().equals("cskaoyan_mall_express_freight_min")){
+                systemFreightMin = Integer.parseInt(system.getKeyValue());
+            }
+            if(system.getKeyName().equals("cskaoyan_mall_express_freight_value")){
+                systemFreightValue = Integer.parseInt(system.getKeyValue());
+            }
+        }
+        if(goodsTotalprice >= systemFreightMin){
+            freightPrice = 0;
+        }else
+            freightPrice = systemFreightValue;
 
+        orderTotalPrice = orderTotalPrice + freightPrice;
+        actualPrice = orderTotalPrice;
         CartCheckoutVO cartCheckoutVO = new CartCheckoutVO(actualPrice, addressId, availableCouponLength, checkedAddress, checkedGoodsList,
                 couponId, couponPrice, freightPrice, goodsTotalprice, grouponPrice, grouponRulesId, orderTotalPrice);
         return cartCheckoutVO;
@@ -337,6 +371,7 @@ public class CartServiceImpl implements CartService {
 
 
     /**
+     *  fastadd
      *  直接购买 生成 新cart
      *  deleted 为true ,不显示
      */

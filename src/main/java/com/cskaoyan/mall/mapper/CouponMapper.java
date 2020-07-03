@@ -112,4 +112,7 @@ public interface CouponMapper {
     //Fang
     @Select("select discount from cskaoyanmall_coupon where id = #{id}")
     BigDecimal selectDiscountById(@Param("id") Integer id);
+
+    @Select("select * from cskaoyanmall_coupon where id = #{id} and min <= #{goodsTotalPrice}")
+    Coupon selectByIdAndMin(@Param("id") Integer id, @Param("goodsTotalPrice") BigDecimal goodsTotalPrice);
 }
