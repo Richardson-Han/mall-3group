@@ -1,4 +1,4 @@
-package com.cskaoyan.mall.service.wx;
+package com.cskaoyan.mall.service;
 
 import java.util.Map;
 

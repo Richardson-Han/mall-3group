@@ -22,8 +22,8 @@ public interface GoodsCommentService {
 
     int replyComment(GoodsCommentBO commentBO);
 
-//显示所有评论
-Map<String,Object>  getWXCommentList(WXGoodCommentBo wxGoodCommentBo);
+    //显示所有评论
+    Map<String,Object> getWXCommentList(WXGoodCommentBo wxGoodCommentBo);
 
 
     void insertComment(GoodsComment goodsComment);

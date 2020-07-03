@@ -4,6 +4,7 @@ import com.cskaoyan.mall.bean.VO.BaseRespVo;
 import com.cskaoyan.mall.bean.VO.wx.CatalogCurrentVO;
 import com.cskaoyan.mall.bean.VO.wx.CatalogVO;
 import com.cskaoyan.mall.service.CatalogService;
+import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.apache.shiro.authz.annotation.RequiresGuest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,7 +25,6 @@ public class WXCatalogController {
 
     @RequestMapping("index")
     public BaseRespVo catalogIndex(){
-        System.out.println("*****************************进入*****************************");
         CatalogVO catalog = catalogService.catalogIndex();
         if ( catalog != null ){
             return BaseRespVo.ok(catalog);
@@ -33,7 +33,6 @@ public class WXCatalogController {
         }
     }
 
-    @RequiresGuest
     @RequestMapping("current")
     public BaseRespVo catalogCurrent(Integer id){
         CatalogCurrentVO catalogCurrent = catalogService.catalogCurrent(id);

@@ -1,10 +1,8 @@
 package com.cskaoyan.mall.controller.wx;
 
 import com.cskaoyan.mall.bean.VO.BaseRespVo;
-import com.cskaoyan.mall.bean.VO.wx.WXBaseRespVo;
 import com.cskaoyan.mall.bean.wx.WXFootprint;
-import com.cskaoyan.mall.service.FootprintService;
-import com.cskaoyan.mall.service.wx.WXFootprintService;
+import com.cskaoyan.mall.service.WXFootprintService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

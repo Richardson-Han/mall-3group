@@ -19,6 +19,7 @@ import com.github.pagehelper.PageInfo;
 import org.apache.ibatis.type.BaseTypeHandler;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
+import org.apache.shiro.authz.annotation.RequiresGuest;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
@@ -53,6 +54,7 @@ public class WXOrderController {
 
     @RequestMapping("comment")
     @Transactional
+    @RequiresAuthentication
     public BaseRespVo comment(@RequestBody OrderCommentBO commentBO){
         //先在comment表添加评论
         GoodsComment goodsComment = new GoodsComment();
@@ -85,6 +87,7 @@ public class WXOrderController {
 
 
     @RequestMapping("list")
+    @RequiresAuthentication
     public BaseRespVo list(Integer showType, Integer page, Integer size) {
         PageHelper.startPage(page, size);
         List<Order> orders = orderService.queryOrderByOrderStatus(showType);
@@ -104,13 +107,17 @@ public class WXOrderController {
 
             orderListDataVOs.add(orderListDataVO);
         }
-        PageInfo<OrderListDataVO> pageInfo = new PageInfo<>(orderListDataVOs);
-        int totalPages = pageInfo.getPages();
+        // List<Order> orders = orderService.queryOrderByOrderStatus(showType); 这个 list 通过分页插件处理后的结果，
+        // 表面上是 List 类型，实际是 Page( extends ArrayList)，下面这条代码传入的orderListDataVOs包含的page信息已经不同
+        //PageInfo<OrderListDataVO> pageInfo = new PageInfo<>(orderListDataVOs);
+        PageInfo<Order> orderPageInfo = new PageInfo<>(orders);
+        int totalPages = orderPageInfo.getPages();
         OrderListBaseVO orderListBaseVO = new OrderListBaseVO(orders.size(), orderListDataVOs, totalPages);
         return BaseRespVo.ok(orderListBaseVO);
     }
 
     @RequestMapping("detail")
+    @RequiresAuthentication
     public BaseRespVo detail(Integer orderId) {
         List<OrderGoods> orderGoodsList = orderService.selectOrderGoodsByOrderId(orderId);
         WXOrderInfoVO orderInfo = orderService.getWxOrderInfo(orderId);
@@ -119,30 +126,35 @@ public class WXOrderController {
     }
 
     @PostMapping("cancel")
+    @RequiresAuthentication
     public BaseRespVo cancel(@RequestBody Map map) {
         orderService.cancelOrder((Integer) map.get("orderId"));
         return BaseRespVo.ok();
     }
 
     @RequestMapping("refund")
+    @RequiresAuthentication
     public BaseRespVo refund(@RequestBody Map map) {
         orderService.refund((Integer) map.get("orderId"));
         return BaseRespVo.ok();
     }
 
     @RequestMapping("delete")
+    @RequiresAuthentication
     public BaseRespVo delete(@RequestBody Map map) {
         orderService.deleteOrder((Integer) map.get("orderId"));
         return BaseRespVo.ok();
     }
 
     @RequestMapping("confirm")
+    @RequiresAuthentication
     public BaseRespVo confirm(@RequestBody Map map) {
         orderService.confirmOrder((Integer) map.get("orderId"));
         return BaseRespVo.ok();
     }
 
     @RequestMapping("goods")
+    @RequiresAuthentication
     public BaseRespVo goods(Integer orderId, Integer goodsId) {
         OrderGoods orderGoods = orderService.getOrderGoods(orderId, goodsId);
         return BaseRespVo.ok(orderGoods);

@@ -1,6 +1,8 @@
 package com.cskaoyan.mall.shiro;
 
 import com.cskaoyan.mall.mapper.AdminMapper;
+import com.cskaoyan.mall.service.AdminService;
+import com.cskaoyan.mall.utils.CharacterArrayConversionUtils;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
@@ -21,15 +23,16 @@ import java.util.stream.Collectors;
 @Component
 public class AdminRealm extends AuthorizingRealm {
 
+
     @Autowired
-    AdminMapper adminMapper;
+    AdminService adminService;
 
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken)
             throws AuthenticationException {
         UsernamePasswordToken token = (UsernamePasswordToken) authenticationToken;
         String username = token.getUsername();
-        List<String> strings = adminMapper.selectPasswordByName(username);
+        List<String> strings = adminService.selectPasswordByName(username);
         String credential = strings.size() >= 1 ? strings.get(0) : null;
         return new SimpleAuthenticationInfo(username, credential, this.getName());
     }
@@ -37,17 +40,14 @@ public class AdminRealm extends AuthorizingRealm {
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
         String username = (String) principalCollection.getPrimaryPrincipal();
-        String string = adminMapper.selectRoleidByUsername(username);
+        String string = adminService.selectRoleidByUsername(username);
         //取出的数据是形如 "[1]" 、 "[2]" 、 "[1,2]"
         //对取出的数据做处理
-        string = string.replace("[", "");
-        string = string.replace("]", "");
-        string = string.replace(" ", "");
-        String[] strings = string.split(",");
+        String[] strings = CharacterArrayConversionUtils.stringConvertsAnArrayOfStrings(string);
 
-        List<String> permissionByRoleid = Arrays.asList(adminMapper.selectPermissionByRoleid(strings[0]));
+        List<String> permissionByRoleid = Arrays.asList(adminService.selectPermissionByRoleid(strings[0]));
         for (int i = 1; i < strings.length; i++) {
-            Collections.addAll(permissionByRoleid, adminMapper.selectPermissionByRoleid(strings[i]));
+            Collections.addAll(permissionByRoleid, adminService.selectPermissionByRoleid(strings[i]));
         }
         //去重
         List<String> permissions = permissionByRoleid.stream().distinct().collect(Collectors.toList());

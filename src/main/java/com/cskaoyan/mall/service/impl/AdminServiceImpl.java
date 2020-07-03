@@ -14,6 +14,7 @@ import com.cskaoyan.mall.mapper.AdminMapper;
 import com.cskaoyan.mall.mapper.PermissionMapper;
 import com.cskaoyan.mall.mapper.RoleMapper;
 import com.cskaoyan.mall.service.AdminService;
+import com.cskaoyan.mall.utils.CharacterArrayConversionUtils;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -121,16 +122,19 @@ public class AdminServiceImpl implements AdminService {
             return null;
         }
         String avatar = adminMapper.selectAvatarByUsername(username);
-        String roleId = adminMapper.selectRoleidByUsername(username).
-                replace("[", "").replace("]", "").replace(" ","");
-        List<String> permissions = permissionMapper.selectPermissionByRoleId(Integer.parseInt(roleId));
+        String[] roleId = CharacterArrayConversionUtils.stringConvertsAnArrayOfStrings(adminMapper.selectRoleidByUsername(username));
+        List<String> permissions = new ArrayList<>();
+        List<String> roles = new ArrayList<>();
+        for (String id : roleId) {
+            permissions.addAll(permissionMapper.selectPermissionByRoleId(Integer.parseInt(id)));
+            Role role = roleMapper.selectByPrimaryKey(Integer.parseInt(id));
+            roles.add(role.getName());
+        }
+
         List<String> perms = new ArrayList<>();
         for (String permission : permissions) {
             perms.add(parse(permission));
         }
-        List<String> roles = new ArrayList();
-        Role role = roleMapper.selectByPrimaryKey(Integer.parseInt(roleId));
-        roles.add(role.getName());
         return new InfoVO(avatar, username, perms, roles);
     }
 
@@ -142,6 +146,16 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public String[] selectPermissionByRoleid(String roleId) {
         return adminMapper.selectPermissionByRoleid(roleId);
+    }
+
+    @Override
+    public String selectRoleidByUsername(String username) {
+        return adminMapper.selectRoleidByUsername(username);
+    }
+
+    @Override
+    public List<String> selectPasswordByName(String username) {
+        return adminMapper.selectPasswordByName(username);
     }
 
     /**
@@ -173,13 +187,9 @@ public class AdminServiceImpl implements AdminService {
         for (Admin admin : admins) {
             ArrayList<Integer> roles = new ArrayList<>();
             String roleIds = admin.getRoleIds();
-            roleIds = roleIds.replace("[", "");
-            roleIds = roleIds.replace("]", "");
-            roleIds = roleIds.replace(",", "");
-            roleIds = roleIds.replace(" ", "");
-            for (int i = 0; i < roleIds.length(); i++) {
-                String num = roleIds.substring(i, i + 1);
-                roles.add(Integer.parseInt(num));
+            String[] roleIdArray = CharacterArrayConversionUtils.stringConvertsAnArrayOfStrings(roleIds);
+            for (int i = 0; i < roleIdArray.length; i++) {
+                roles.add(Integer.parseInt(roleIdArray[i]));
             }
             AdminListVO adminVO = new AdminListVO(admin.getId(), roles, admin.getUsername(), admin.getAvatar());
             adminListVO.add(adminVO);
