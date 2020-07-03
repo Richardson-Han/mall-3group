@@ -14,6 +14,7 @@ import com.cskaoyan.mall.mapper.AdminMapper;
 import com.cskaoyan.mall.mapper.PermissionMapper;
 import com.cskaoyan.mall.mapper.RoleMapper;
 import com.cskaoyan.mall.service.AdminService;
+import com.cskaoyan.mall.utils.CharacterArrayConversionUtils;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -117,53 +118,24 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public InfoVO info(String username) {
-        String avatar = adminMapper.selectAvatarByUsername(username);
-        String s = adminMapper.selectRoleidByUsername(username);
-        ArrayList<Integer> roleIdList = parseArrayList(s);
-        List<String> permissions = new ArrayList<>();
-        for (Integer roleId : roleIdList) {
-            List<String> list = permissionMapper.selectPermissionByRoleId(roleId);
-            permissions.addAll(list);
-        }
-        List<String> perms = new ArrayList<>();
-        for (String permission : permissions) {
-            perms.add(parse(permission));
-        }
-        List<Role> roles = roleMapper.selectInId(roleIdList);
-        List<String> ss = new ArrayList<>();
-        for (Role role : roles) {
-            ss.add(role.getName());
-        }
-        return new InfoVO(avatar, username, perms, ss);
-        /*if (username == null) {
+        if (username == null) {
             return null;
         }
         String avatar = adminMapper.selectAvatarByUsername(username);
-        String roleId = adminMapper.selectRoleidByUsername(username).
-                replace("[", "").replace("]", "").replace(" ","");
-        List<String> permissions = permissionMapper.selectPermissionByRoleId(Integer.parseInt(roleId));
+        String[] roleId = CharacterArrayConversionUtils.stringConvertsAnArrayOfStrings(adminMapper.selectRoleidByUsername(username));
+        List<String> permissions = new ArrayList<>();
+        List<String> roles = new ArrayList<>();
+        for (String id : roleId) {
+            permissions.addAll(permissionMapper.selectPermissionByRoleId(Integer.parseInt(id)));
+            Role role = roleMapper.selectByPrimaryKey(Integer.parseInt(id));
+            roles.add(role.getName());
+        }
+
         List<String> perms = new ArrayList<>();
         for (String permission : permissions) {
             perms.add(parse(permission));
         }
-        List<String> roles = new ArrayList();
-        Role role = roleMapper.selectByPrimaryKey(Integer.parseInt(roleId));
-        roles.add(role.getName());
-        return new InfoVO(avatar, username, perms, roles);*/
-    }
-
-    private  ArrayList<Integer> parseArrayList(String s) {
-        s = s.replace("[", "").replace("]", "");
-        ArrayList<Integer> integers = new ArrayList<>();
-        for (int i = 0; i < s.length(); i++) {
-            if (s.charAt(i) == ',') {
-                integers.add(Integer.parseInt(s.substring(0, i)));
-                s = s.substring(i+1);
-                i = 0;//重新从0开始循环
-            }
-        }
-        integers.add(Integer.parseInt(s));
-        return integers;
+        return new InfoVO(avatar, username, perms, roles);
     }
 
     @Override
@@ -174,6 +146,16 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public String[] selectPermissionByRoleid(String roleId) {
         return adminMapper.selectPermissionByRoleid(roleId);
+    }
+
+    @Override
+    public String selectRoleidByUsername(String username) {
+        return adminMapper.selectRoleidByUsername(username);
+    }
+
+    @Override
+    public List<String> selectPasswordByName(String username) {
+        return adminMapper.selectPasswordByName(username);
     }
 
     /**
@@ -205,13 +187,9 @@ public class AdminServiceImpl implements AdminService {
         for (Admin admin : admins) {
             ArrayList<Integer> roles = new ArrayList<>();
             String roleIds = admin.getRoleIds();
-            roleIds = roleIds.replace("[", "");
-            roleIds = roleIds.replace("]", "");
-            roleIds = roleIds.replace(",", "");
-            roleIds = roleIds.replace(" ", "");
-            for (int i = 0; i < roleIds.length(); i++) {
-                String num = roleIds.substring(i, i + 1);
-                roles.add(Integer.parseInt(num));
+            String[] roleIdArray = CharacterArrayConversionUtils.stringConvertsAnArrayOfStrings(roleIds);
+            for (int i = 0; i < roleIdArray.length; i++) {
+                roles.add(Integer.parseInt(roleIdArray[i]));
             }
             AdminListVO adminVO = new AdminListVO(admin.getId(), roles, admin.getUsername(), admin.getAvatar());
             adminListVO.add(adminVO);

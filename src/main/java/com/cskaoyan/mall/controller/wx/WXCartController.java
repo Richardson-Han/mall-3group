@@ -115,11 +115,4 @@ public class WXCartController {
         Integer newOrderGoodsId = cartService.fastadd(map, username);
         return BaseRespVo.ok(newOrderGoodsId);
     }
-
-
-
-
-
-
-
 }

@@ -41,6 +41,13 @@ public class ShiroConfig {
         fiterChainDefinitionMap.put("/admin/storage/create", "anon");
         fiterChainDefinitionMap.put("/admin/auth/info", "anon");
 
+        fiterChainDefinitionMap.put("/wx/catalog/**","anon");
+        fiterChainDefinitionMap.put("/wx/home/index","anon");
+        fiterChainDefinitionMap.put("/wx/brand/list","anon");
+        fiterChainDefinitionMap.put("/wx/brand/detail","anon");
+        fiterChainDefinitionMap.put("/wx/coupon/list","anon");
+        fiterChainDefinitionMap.put("/wx/coupon/list","anon");
+
         // fiterChainDefinitionMap.put("/**","perms[*]");*不需要设置 自动全权限
 
         //("admin/category/read","perms["perms[admin:category:read]"]")
@@ -56,7 +63,7 @@ public class ShiroConfig {
             //取url和权限值 的键值对
             String[] permissionByRoleids = adminService.selectPermissionByRoleid(roleid);
             if (permissionByRoleids == null) {
-                System.out.println("roleid = " + roleid + ",this roleid not corresponding permissio");
+                System.out.println("roleid = " + roleid + ",this roleid not corresponding permission");
                 continue;
             }
             String perms;

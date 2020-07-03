@@ -64,31 +64,9 @@ public class TopicServiceImpl implements TopicService {
         return update;
     }
 
-    @Override
 
-    public Map<String, Object> selectDetail(Integer id) {
-        return null;
-    }
 
-    @Override
-    public List<Topic> selectRelated(Integer id) {
-        String sort="add_time";
-        String order="desc";
-        TopicExample topicExample = new TopicExample();
-        topicExample.setOrderByClause(sort + " " + order);
-        List<Topic> topics = topicMapper.selectByExample(topicExample);
-        List<Topic> list=new ArrayList<> ();
-        for (int i = 0; i < 4; i++) {
-            if(id !=topics.get (i).getId ()){
-                  list.add (topics.get (i)) ;
-            }
-            continue;
-        }
-        if (list.size ()!=4){
-            list.add (topics.get (5));
-        }
-        return list;
-    }
+
 
 
 
@@ -99,6 +77,38 @@ public class TopicServiceImpl implements TopicService {
     @Override
     public Integer selectLastId() {
         return topicMapper.selectLatId();
+    }
+
+    //胡小强
+    @Override
+    public Map<String, Object> selectDetail(Integer id) {
+        TopicExample topicExample = new TopicExample ();
+        topicExample.createCriteria ().andIdEqualTo (id).andDeletedEqualTo (false);
+        Topic topic=topicMapper.selectByPrimaryKey (id);
+        Map<String,Object> map =new HashMap<> ();
+        map.put ("goods",topic.getGoods ());
+        map.put ("topic",topic);
+        return map;
+    }
+
+    @Override
+    public List<Topic> selectRelated(Integer id) {
+        String sort="id";
+        String order="asc";
+        TopicExample topicExample = new TopicExample();
+        topicExample.setOrderByClause(sort + " " + order);
+        List<Topic> topics = topicMapper.selectByExample(topicExample);
+        List<Topic> list=new ArrayList<> ();
+        for (int i = 0; i < 4; i++) {
+            if(!id .equals (topics.get (i).getId ())){
+                list.add (topics.get (i)) ;
+            }
+            continue;
+        }
+        if (list.size ()!=4){
+            list.add (topics.get (5));
+        }
+        return list;
     }
 
 }

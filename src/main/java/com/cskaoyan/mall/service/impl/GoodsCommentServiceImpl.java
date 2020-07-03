@@ -16,6 +16,8 @@ import com.cskaoyan.mall.utils.WXTokenUtils;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authz.annotation.RequiresAuthentication;
+import org.apache.shiro.authz.annotation.RequiresGuest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -82,6 +84,7 @@ public class GoodsCommentServiceImpl implements GoodsCommentService {
      *  回复评论
      */
     @Override
+
     public int replyComment(GoodsCommentBO commentBO) {
         Integer id = commentBO.getCommentId();
         GoodsComment comment = commentMapper.selectByPrimaryKey(id);
@@ -93,12 +96,15 @@ public class GoodsCommentServiceImpl implements GoodsCommentService {
         }
         return 0;
     }
-//胡小强
+    //胡小强
     @Override
+    @RequiresAuthentication
+    @RequiresGuest
     public Map<String,Object>  getWXCommentList(WXGoodCommentBo wxGoodCommentBo){
         Map<String,Object> map =new HashMap<> ();
         List<Object> lsit = new ArrayList<> ();
         //查询测试用户名
+
         String username = (String) SecurityUtils.getSubject().getPrincipal();;
         UserExample userExample = new UserExample ();
         UserExample.Criteria criteria = userExample.createCriteria ().andUsernameEqualTo (username);
