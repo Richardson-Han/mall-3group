@@ -16,6 +16,9 @@ public class WXTokenUtils {
 
     public String requestToUsername(HttpServletRequest request) {
         String requestHeaderToken = request.getHeader("X-cskaoyan-mall-Admin-Token");
+        if (requestHeaderToken == null){
+            throw new RuntimeException("取不到对应的token值,请重新登陆账号");
+        }
         Subject subject = SecurityUtils.getSubject();
         Serializable token = subject.getSession().getId();
         String username;

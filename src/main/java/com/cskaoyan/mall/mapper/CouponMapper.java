@@ -5,6 +5,7 @@ import com.cskaoyan.mall.bean.CouponExample;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 public interface CouponMapper {
@@ -19,6 +20,8 @@ public interface CouponMapper {
     int insertSelective(Coupon record);
 
     List<Coupon> selectByExample(CouponExample example);
+
+    List<Coupon> selectByExampleFang(CouponExample example);
 
     Coupon selectByPrimaryKey(Integer id);
 
@@ -105,4 +108,8 @@ public interface CouponMapper {
 
     @Select("select LAST_INSERT_ID()")
     Integer selectLastId();
+
+    //Fang
+    @Select("select discount from cskaoyanmall_coupon where id = #{id}")
+    BigDecimal selectDiscountById(@Param("id") Integer id);
 }

@@ -40,11 +40,6 @@ public class ShiroConfig {
         fiterChainDefinitionMap.put("/admin/auth/401", "anon");
         fiterChainDefinitionMap.put("/admin/storage/create", "anon");
         fiterChainDefinitionMap.put("/admin/auth/info", "anon");
-        //微信权限设置，要是哪个网页不需要权限就能访问就在这添加fiterChainDefinitionMap.put("***", "anon");
-
-
-        //开发时先给全部权限
-
 
         // fiterChainDefinitionMap.put("/**","perms[*]");*不需要设置 自动全权限
 
@@ -59,38 +54,22 @@ public class ShiroConfig {
                 continue;
             }
             //取url和权限值 的键值对
-            LinkedHashMap<String, String> pathAndPerms = authorizationGroup(roleid);
-            if (pathAndPerms == null) {
+            String[] permissionByRoleids = adminService.selectPermissionByRoleid(roleid);
+            if (permissionByRoleids == null) {
                 System.out.println("roleid = " + roleid + ",this roleid not corresponding permissio");
                 continue;
             }
-            Iterator<Map.Entry<String, String>> iterator = pathAndPerms.entrySet().iterator();
-            while (iterator.hasNext()) {
-                Map.Entry<String, String> next = iterator.next();
-                //放键值对进去
-                fiterChainDefinitionMap.put(next.getKey(), next.getValue());
+            String perms;
+            for (String turePermission : permissionByRoleids) {
+                perms = "perms[" + turePermission + "]";
+                turePermission = turePermission.replace(":", "/");
+                fiterChainDefinitionMap.put(turePermission, perms);
             }
         }
         fiterChainDefinitionMap.put("/admin/**", "authc");
 
         shiroFilterFactoryBean.setFilterChainDefinitionMap(fiterChainDefinitionMap);
         return shiroFilterFactoryBean;
-    }
-
-    public LinkedHashMap<String, String> authorizationGroup(String RoleId) {
-        String[] permissionByRoleids = adminService.selectPermissionByRoleid(RoleId);
-        if (permissionByRoleids != null) {
-            LinkedHashMap<String, String> stringStringLinkedHashMap = new LinkedHashMap<>();
-            String perms;
-            for (String turePermission : permissionByRoleids) {
-                perms = "perms[" + turePermission + "]";
-                turePermission = turePermission.replace(":", "/");
-                stringStringLinkedHashMap.put(turePermission, perms);
-            }
-            return stringStringLinkedHashMap;
-        } else {
-            return null;
-        }
     }
 
     @Bean
@@ -127,8 +106,7 @@ public class ShiroConfig {
 
     @Bean
     public DefaultWebSessionManager webSecurityManager() {
-        CustomSessionManager customSessionManager = new CustomSessionManager();
-        return customSessionManager;
+        return new CustomSessionManager();
     }
 
     /**
