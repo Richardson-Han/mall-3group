@@ -96,6 +96,8 @@ public class CollectServiceImpl implements CollectService {
             customCollectVO = new CustomCollectVO(collect.getId(), collect.getValueId(), collect.getType(), goods.getName(),
                     goods.getPicUrl(), goods.getRetailPrice().doubleValue(), goods.getBrief());
             collectList.add(customCollectVO);
+            /*if(goods != null){
+            }*/
         }
         PageInfo<CustomCollectVO> customCollectVOPageInfo = new PageInfo<>(collectList);
         long total = customCollectVOPageInfo.getTotal();

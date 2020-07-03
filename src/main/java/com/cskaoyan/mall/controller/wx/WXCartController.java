@@ -56,22 +56,6 @@ public class WXCartController {
     }
 
     @RequiresAuthentication
-    @RequestMapping(value = "add", method = RequestMethod.POST)
-    public BaseRespVo add(@RequestBody Map map, HttpServletRequest request){
-        String username = WXTokenUtils.requestToUsername(request);
-        if (error.equals(username)) {
-            return BaseRespVo.error("请先登陆");
-        }
-        //加入购入车判断库存是否足够
-        //返回购物车商品的总数
-        Integer goodsCount = cartService.add(map, username);
-        if(goodsCount == null){
-            return BaseRespVo.error("库存不够");
-        }
-        return BaseRespVo.ok(goodsCount);
-    }
-
-    @RequiresAuthentication
     @RequestMapping("checked")
     public BaseRespVo checked(@RequestBody CartCheckBO cartCheckBO, HttpServletRequest request){
         String username = WXTokenUtils.requestToUsername(request);
@@ -104,12 +88,28 @@ public class WXCartController {
         return BaseRespVo.ok(checkout);
     }
 
-    @RequiresAuthentication
+    //@RequiresAuthentication
+    @RequestMapping(value = "add", method = RequestMethod.POST)
+    public BaseRespVo add(@RequestBody Map map, HttpServletRequest request){
+        String username = WXTokenUtils.requestToUsername(request);
+        if (error.equals(username)) {
+            return BaseRespVo.error("请先登陆", 501);
+        }
+        //加入购入车判断库存是否足够
+        //返回购物车商品的总数
+        Integer goodsCount = cartService.add(map, username);
+        if(goodsCount == null){
+            return BaseRespVo.error("库存不够");
+        }
+        return BaseRespVo.ok(goodsCount);
+    }
+
+    //@RequiresAuthentication
     @RequestMapping("fastadd")
     public BaseRespVo fastadd(@RequestBody Map map, HttpServletRequest request){
         String username = WXTokenUtils.requestToUsername(request);
         if (error.equals(username)) {
-            return BaseRespVo.error("请先登陆");
+            return BaseRespVo.error("请先登陆", 501);
         }
         //返回一个新生成的商品订单的id
         Integer newOrderGoodsId = cartService.fastadd(map, username);
