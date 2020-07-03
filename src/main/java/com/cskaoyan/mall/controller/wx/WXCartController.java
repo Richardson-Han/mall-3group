@@ -10,6 +10,7 @@ import com.cskaoyan.mall.bean.wx.VO.CartListVO;
 import com.cskaoyan.mall.service.CartService;
 import com.cskaoyan.mall.utils.WXTokenUtils;
 import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.apache.shiro.authz.annotation.RequiresGuest;
 import org.apache.shiro.authz.annotation.RequiresUser;
 import org.apache.shiro.subject.Subject;
@@ -33,13 +34,20 @@ public class WXCartController {
     @Autowired
     CartService cartService;
 
+    String error = "this token is error";
+
+    @RequiresAuthentication
     @RequestMapping(value = "/index", method = RequestMethod.GET)
     public BaseRespVo index(HttpServletRequest request){
         String username = WXTokenUtils.requestToUsername(request);
+        if (error.equals(username)) {
+            return BaseRespVo.error("请先登陆");
+        }
         CartListVO cartListVO = cartService.queryListByUsername(username);
         return BaseRespVo.ok(cartListVO);
     }
 
+    @RequiresAuthentication
     @RequestMapping("goodscount")
     public BaseRespVo goodscount(HttpServletRequest request){
         String username = WXTokenUtils.requestToUsername(request);
@@ -47,11 +55,15 @@ public class WXCartController {
         return BaseRespVo.ok(goodScount);
     }
 
+    @RequiresAuthentication
     @RequestMapping(value = "add", method = RequestMethod.POST)
     public BaseRespVo add(@RequestBody Map map, HttpServletRequest request){
         String username = WXTokenUtils.requestToUsername(request);
-        //加入购入车肯定成功，没库存的话会提前提示的
-        //但是要返回购物车商品的总数
+        if (error.equals(username)) {
+            return BaseRespVo.error("请先登陆");
+        }
+        //加入购入车判断库存是否足够
+        //返回购物车商品的总数
         Integer goodsCount = cartService.add(map, username);
         if(goodsCount == null){
             return BaseRespVo.error("库存不够");
@@ -59,6 +71,7 @@ public class WXCartController {
         return BaseRespVo.ok(goodsCount);
     }
 
+    @RequiresAuthentication
     @RequestMapping("checked")
     public BaseRespVo checked(@RequestBody CartCheckBO cartCheckBO, HttpServletRequest request){
         String username = WXTokenUtils.requestToUsername(request);
@@ -66,6 +79,7 @@ public class WXCartController {
         return BaseRespVo.ok(cartListVO);
     }
 
+    @RequiresAuthentication
     @RequestMapping("update")
     public BaseRespVo update(@RequestBody CartUpdateBO cartUpdateBO){
         //String username = WXTokenUtils.requestToUsername(request);
@@ -73,6 +87,7 @@ public class WXCartController {
         return BaseRespVo.ok();
     }
 
+    @RequiresAuthentication
     @RequestMapping("delete")
     public BaseRespVo delete(@RequestBody Map map, HttpServletRequest request){
         String username = WXTokenUtils.requestToUsername(request);
@@ -81,6 +96,7 @@ public class WXCartController {
         return BaseRespVo.ok(cartListVO);
     }
 
+    @RequiresAuthentication
     @RequestMapping("checkout")
     public BaseRespVo checkout(CartCheckoutBO checkoutBO, HttpServletRequest request){
         String username = WXTokenUtils.requestToUsername(request);
@@ -88,18 +104,15 @@ public class WXCartController {
         return BaseRespVo.ok(checkout);
     }
 
+    @RequiresAuthentication
     @RequestMapping("fastadd")
     public BaseRespVo fastadd(@RequestBody Map map, HttpServletRequest request){
         String username = WXTokenUtils.requestToUsername(request);
+        if (error.equals(username)) {
+            return BaseRespVo.error("请先登陆");
+        }
         //返回一个新生成的商品订单的id
         Integer newOrderGoodsId = cartService.fastadd(map, username);
         return BaseRespVo.ok(newOrderGoodsId);
     }
-
-
-
-
-
-
-
 }

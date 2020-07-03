@@ -77,20 +77,6 @@ public class AuthController {
 
     @RequestMapping(value = "401")
     public BaseRespVo four01(){
-        return BaseRespVo.ok();
-    }
-
-    private ArrayList<Integer> parseArrayList(String s) {
-        s = s.replace("[", "").replace("]", "");
-        ArrayList<Integer> integers = new ArrayList<>();
-        for (int i = 0; i < s.length(); i++) {
-            if (s.charAt(i) == ',') {
-                integers.add(Integer.parseInt(s.substring(0, i)));
-                s = s.substring(i+1);
-                i = 0;//重新从0开始循环
-            }
-        }
-        integers.add(Integer.parseInt(s));
-        return integers;
+        return BaseRespVo.error("您没有获得授权",401);
     }
 }

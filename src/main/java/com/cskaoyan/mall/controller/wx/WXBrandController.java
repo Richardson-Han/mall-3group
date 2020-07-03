@@ -23,14 +23,14 @@ public class WXBrandController {
     @Autowired
     BrandService brandService;
 
-    @RequiresGuest
+
     @RequestMapping("list")
     public BaseRespVo getBrandList(Integer page, Integer size) {
         WXBrandListData baseData = brandService.getBrandList(page, size);
         return BaseRespVo.ok(baseData);
     }
 
-    @RequiresGuest
+
     @RequestMapping("detail")
     public BaseRespVo getBrandDetail(Integer id) {
         Brand brand = brandService.getBrandDetail(id);

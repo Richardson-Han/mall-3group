@@ -4,6 +4,7 @@ import com.cskaoyan.mall.bean.Topic;
 import com.cskaoyan.mall.bean.TopicExample;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 
 import java.util.List;
 
@@ -39,4 +40,7 @@ public interface TopicMapper {
     @Select("select id,title,subtitle,price,read_count as readCount,pic_url as picUrl " +
             "from cskaoyanmall_topic order by id desc limit 0,4")
     List<Topic> selectNewTopic();
+
+    @Select("select LAST_INSERT_ID()")
+    Integer selectLatId();
 }
