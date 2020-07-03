@@ -10,6 +10,7 @@ import com.cskaoyan.mall.service.AddressService;
 import com.fasterxml.jackson.databind.ser.Serializers;
 import org.apache.ibatis.annotations.Param;
 import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -31,6 +32,7 @@ public class WXAddressController {
     @Autowired
     AddressService addressService;
 
+    @RequiresAuthentication
     @RequestMapping("list")
     public BaseRespVo wxAddressListGet() {
         Subject subject = SecurityUtils.getSubject();
@@ -39,6 +41,7 @@ public class WXAddressController {
         return BaseRespVo.ok(addressList);
     }
 
+    @RequiresAuthentication
     @RequestMapping("detail")
     public BaseRespVo wxAddressListGet(Integer id) {
         WXAddressDetailVO addressDetail = addressService.selectAddressDetailById(id);
@@ -49,6 +52,7 @@ public class WXAddressController {
         }
     }
 
+    @RequiresAuthentication
     @PostMapping("save")
     public BaseRespVo wxAddressSave(@RequestBody Address addressBO) {
         Subject subject = SecurityUtils.getSubject();
@@ -62,6 +66,7 @@ public class WXAddressController {
         }
     }
 
+    @RequiresAuthentication
     @PostMapping("delete")
     public BaseRespVo wxAddressDelete(@RequestBody Map map) {
         Integer id = (int)map.get("id");

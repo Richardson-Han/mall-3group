@@ -7,6 +7,8 @@ import com.cskaoyan.mall.bean.wx.CouponBase;
 import com.cskaoyan.mall.service.CouponService;
 import com.cskaoyan.mall.service.UserService;
 import com.cskaoyan.mall.utils.WXTokenUtils;
+import org.apache.shiro.authz.annotation.RequiresAuthentication;
+import org.apache.shiro.authz.annotation.RequiresGuest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -50,6 +52,7 @@ public class WXCouponContorller {
     /**
      * 我的优惠卷
      */
+    @RequiresAuthentication
     @RequestMapping("mylist")
     public BaseRespVo mylist(Integer status, Integer page, Integer size, HttpServletRequest request) {
         //后续要封装从request →username
@@ -72,6 +75,7 @@ public class WXCouponContorller {
      * {"id":8,"name":"可兑换优惠券","desc":"全场通用","tag":"仅兑换领券","min":"99.00",
      * "discount":"15.00","startTime":"2020-06-30 11:08:03","endTime":"2020-07-07 11:08:03"}],"errmsg":"成功"}
      */
+    @RequiresAuthentication
     @RequestMapping("selectlist")
     public BaseRespVo selectlist(Integer cartId, Integer grouponRulesId, HttpServletRequest request) {
         String username = WXTokenUtils.requestToUsername(request);
@@ -91,6 +95,7 @@ public class WXCouponContorller {
      * couponId → 卷ID
      * 通过token获取用户ID 将卷ID塞入库
      */
+    @RequiresAuthentication
     @RequestMapping("receive")
     public BaseRespVo receive(@RequestBody Map map, HttpServletRequest request) {
         Integer couponId = (Integer) map.get("couponId");
@@ -109,6 +114,7 @@ public class WXCouponContorller {
      * {"errno":740,"errmsg":"优惠券已兑换"}
      * {"errno":0,"errmsg":"成功"}
      */
+    @RequiresAuthentication
     @RequestMapping("exchange")
     public BaseRespVo exchange(@RequestBody Map map, HttpServletRequest request) {
         String code = (String) map.get("code");

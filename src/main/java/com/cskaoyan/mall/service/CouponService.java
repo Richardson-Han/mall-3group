@@ -3,6 +3,7 @@ package com.cskaoyan.mall.service;
 import com.cskaoyan.mall.bean.BaseData;
 import com.cskaoyan.mall.bean.Coupon;
 import com.cskaoyan.mall.bean.wx.CouponBase;
+import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
 
@@ -41,4 +42,6 @@ public interface CouponService {
     List<Coupon> wxselectCouponByCartId(Integer cartId, Integer grouponRulesId, Integer userId);
 
     List<Coupon> wxselectNewCoupons();
+
+    Integer selectLastId();
 }

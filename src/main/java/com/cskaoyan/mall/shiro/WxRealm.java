@@ -35,17 +35,6 @@ public class WxRealm extends AuthorizingRealm {
         return new SimpleAuthenticationInfo(username, credential, this.getName());
     }
 
-    /**
-     * 先全部允许
-     */
-    private AuthenticationInfo dealInfoByType(String type) {
-        if (type.equals("wx")) {
-            return new SimpleAuthenticationInfo();
-        }
-        //根据info不同处理不同的认证信息
-        return new SimpleAuthenticationInfo();
-    }
-
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
         String username = (String) principalCollection.getPrimaryPrincipal();

@@ -6,6 +6,7 @@ import com.cskaoyan.mall.bean.VO.wx.WXUserLoginVO;
 import com.cskaoyan.mall.service.UserService;
 import com.cskaoyan.mall.shiro.MallToken;
 import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.apache.shiro.authz.annotation.RequiresGuest;
 import org.apache.shiro.authz.annotation.RequiresUser;
 import org.apache.shiro.crypto.hash.Md5Hash;
@@ -52,7 +53,7 @@ public class WXAuthController {
             WXUserLoginVO loginVO = new WXUserLoginVO(token, tokenExpire, userInfoVO);
             return BaseRespVo.ok(loginVO);
         } catch (Exception e) {
-            System.out.println("*****************挂了*****************");
+            System.out.println("*****************************挂了*****************************");
             return BaseRespVo.error("用户名或密码错误", 401);
         }
     }
@@ -60,6 +61,7 @@ public class WXAuthController {
     /**
      * 退出已完成
      */
+    @RequiresAuthentication
     @RequiresUser
     @RequestMapping(value = "logout", method = RequestMethod.POST)
     public BaseRespVo logout() {

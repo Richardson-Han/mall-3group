@@ -37,6 +37,7 @@ public class CouponController {
         Integer insert = couponService.createCoupon(coupon);
         if (insert == 1) {
             coupon.setGoodsValue("[]");
+            coupon.setId(couponService.selectLastId());
             return BaseRespVo.ok(coupon);
         } else {
             return BaseRespVo.error("创建优惠卷失败", 888);

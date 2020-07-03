@@ -50,8 +50,7 @@ public class TopicServiceImpl implements TopicService {
 
     @Override
     public Integer updateTopic(Topic topic) {
-        int update = topicMapper.updateByPrimaryKey(topic);
-        return update;
+        return topicMapper.updateByPrimaryKey(topic);
     }
 
     /**
@@ -95,6 +94,11 @@ public class TopicServiceImpl implements TopicService {
 
     public List<Topic> wxselectNewTopic() {
         return topicMapper.selectNewTopic();
+    }
+
+    @Override
+    public Integer selectLastId() {
+        return topicMapper.selectLatId();
     }
 
 }

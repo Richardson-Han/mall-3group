@@ -3,6 +3,7 @@ package com.cskaoyan.mall.mapper;
 import com.cskaoyan.mall.bean.GoodsProduct;
 import com.cskaoyan.mall.bean.GoodsProductExample;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Update;
 
 import java.util.List;
 
@@ -30,4 +31,8 @@ public interface GoodsProductMapper {
     int updateByPrimaryKey(GoodsProduct record);
 
     List<GoodsProduct> selectByGoodsId(@Param("goodsId") Integer goodsId);
+
+    //WX
+    @Update("update num")
+    void updateNumberById(@Param("id") Integer id);
 }
