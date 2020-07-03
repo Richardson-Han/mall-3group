@@ -34,7 +34,6 @@ public class TopicController {
      * 创建
      * 因网页未提供updatetime、addtime 需自行注入（service）
      */
-    @RequiresPermissions("admin:topic:create")
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     public BaseRespVo create(@RequestBody Topic topic) {
         Integer insert = topicService.createTopic(topic);
@@ -47,7 +46,6 @@ public class TopicController {
         }
     }
 
-    @RequiresPermissions("admin:topic:update")
     @RequestMapping(value = "/update", method = RequestMethod.POST)
     public BaseRespVo update(@RequestBody Topic topic) {
         Integer update = topicService.updateTopic(topic);
@@ -58,7 +56,6 @@ public class TopicController {
         }
     }
 
-    @RequiresPermissions("admin:topic:delete")
     @RequestMapping(value = "/delete", method = RequestMethod.POST)
     public BaseRespVo delete(@RequestBody Topic topic) {
         Integer insert = topicService.deleteTopic(topic);
