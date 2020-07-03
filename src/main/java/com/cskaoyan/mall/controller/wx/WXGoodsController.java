@@ -24,6 +24,7 @@ public class WXGoodsController {
     @Autowired
     GoodsService goodsService;
 
+
     @RequestMapping("category")
     public BaseRespVo category(Integer id) {
         Map data = goodsService.category(id);
