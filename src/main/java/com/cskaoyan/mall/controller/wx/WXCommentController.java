@@ -7,6 +7,7 @@ import com.cskaoyan.mall.bean.Comment;
 import com.cskaoyan.mall.bean.GoodsComment;
 import com.cskaoyan.mall.bean.VO.BaseRespVo;
 import com.cskaoyan.mall.service.GoodsCommentService;
+import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,10 +21,12 @@ import java.util.Map;
 */
 @RestController
 @RequestMapping("/wx/comment")
+
 public class WXCommentController {
     @Autowired
     GoodsCommentService goodsCommentService;
 
+    @RequiresAuthentication
     @RequestMapping("/list")
     /*
         @RequestParam("valueId")Integer valueId,

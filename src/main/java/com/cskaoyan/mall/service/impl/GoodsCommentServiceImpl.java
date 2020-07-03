@@ -98,7 +98,7 @@ public class GoodsCommentServiceImpl implements GoodsCommentService {
     }
 //胡小强
     @Override
-    @RequiresAuthentication
+
     @RequiresGuest
     public Map<String,Object>  getWXCommentList(WXGoodCommentBo wxGoodCommentBo){
         Map<String,Object> map =new HashMap<> ();

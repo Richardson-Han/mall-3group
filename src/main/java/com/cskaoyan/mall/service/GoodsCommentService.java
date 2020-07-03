@@ -7,10 +7,12 @@ import com.cskaoyan.mall.bean.Comment;
 import com.cskaoyan.mall.bean.GoodsComment;
 import com.cskaoyan.mall.bean.BO.GoodsCommentBO;
 import com.cskaoyan.mall.bean.BO.GoodsCommentListBO;
+import org.apache.shiro.authz.annotation.RequiresAuthentication;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Map;
+
 
 public interface GoodsCommentService {
 
