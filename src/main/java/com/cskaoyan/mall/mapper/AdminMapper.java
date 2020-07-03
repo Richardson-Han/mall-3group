@@ -36,7 +36,7 @@ public interface AdminMapper {
     @Select("select password from cskaoyanmall_admin where username = #{username}")
     List<String> selectPasswordByName(@Param("username") String username);
 
-    @Select("SELECT role_ids FROM cskaoyanmall_admin WHERE username = #{username}")
+    @Select("SELECT role_ids FROM cskaoyanmall_admin WHERE username = #{username} and deleted = 0")
     String selectRoleidByUsername(@Param("username") String username);
 
     @Select("select permission from cskaoyanmall_role r left join " +
@@ -49,7 +49,7 @@ public interface AdminMapper {
 
     Integer updateByUsername(@Param("username") String username, @Param("password") String password);
 
-    @Select("select avatar from cskaoyanmall_admin where username = #{username}")
+    @Select("select avatar from cskaoyanmall_admin where username = #{username} and deleted = 0")
     String selectAvatarByUsername(@Param("username") String username);
 
     @Select("select LAST_INSERT_ID()")

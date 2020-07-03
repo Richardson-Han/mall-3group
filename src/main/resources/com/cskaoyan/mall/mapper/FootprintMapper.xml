@@ -79,6 +79,7 @@
     from cskaoyanmall_footprint
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
+      and deleted = 0
     </if>
     <if test="orderByClause != null">
       order by ${orderByClause}
@@ -225,8 +226,12 @@
       deleted = #{deleted,jdbcType=BIT}
     where id = #{id,jdbcType=INTEGER}
   </update>
+    <update id="updateTime">
+      update cskaoyanmall_footprint
+      set update_time = #{date} where user_id = #{userId} and goods_id = #{goodsId}
+    </update>
 
-  <select id="queryFootprintList" resultType="com.cskaoyan.mall.bean.Footprint">
+    <select id="queryFootprintList" resultType="com.cskaoyan.mall.bean.Footprint">
   select
   <include refid="Base_Column_List"/> from `cskaoyanmall_footprint`
 

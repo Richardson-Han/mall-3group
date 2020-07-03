@@ -4,6 +4,7 @@ import com.cskaoyan.mall.bean.Footprint;
 import com.cskaoyan.mall.bean.FootprintExample;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.Date;
 import java.util.List;
 
 public interface FootprintMapper {
@@ -30,4 +31,6 @@ public interface FootprintMapper {
     int updateByPrimaryKey(Footprint record);
 
     List<Footprint> queryFootprintList();
+
+    void updateTime(@Param("date") Date date, @Param("userId") Integer userId, @Param("goodsId") Integer goodsId);
 }

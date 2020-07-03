@@ -99,7 +99,7 @@
     select 
     <include refid="Base_Column_List" />
     from cskaoyanmall_role
-    where id = #{id,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER} and deleted = 0
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from cskaoyanmall_role

@@ -86,6 +86,7 @@
     from cskaoyanmall_address
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
+      and deleted = 0
     </if>
     <if test="orderByClause != null">
       order by ${orderByClause}

@@ -195,8 +195,8 @@
       <include refid="Example_Where_Clause" />
     </if>
   </select>
-  <select id="selectByValueId" resultType="com.cskaoyan.mall.bean.Comment">
-    select * from cskaoyanmall_comment where value_id = #{goodsId}
+  <select id="selectByValueId" resultMap="BaseResultMap">
+    select * from cskaoyanmall_comment where value_id = #{goodsId} limit 1
   </select>
   <update id="updateByExampleSelective" parameterType="map">
     update cskaoyanmall_comment

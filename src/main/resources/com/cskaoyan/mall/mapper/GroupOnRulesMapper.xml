@@ -191,10 +191,13 @@
   <select id="selectLastInsertId" resultType="java.lang.Integer">
     SELECT LAST_INSERT_ID()
   </select>
-    <select id="selectByGoodsId" resultType="com.cskaoyan.mall.bean.GroupOn">
+    <select id="selectByGoodsId" resultMap="BaseResultMap">
       select * from cskaoyanmall_groupon_rules where goods_id = #{goodsId}
     </select>
-    <update id="updateByExampleSelective" parameterType="map">
+  <select id="selectIdByGoodsId" resultType="java.lang.Integer">
+    select id from cskaoyanmall_groupon_rules where goods_id = #{goodsId}
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
     update cskaoyanmall_groupon_rules
     <set>
       <if test="record.id != null">

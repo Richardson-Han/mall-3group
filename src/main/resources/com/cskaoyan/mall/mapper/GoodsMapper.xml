@@ -120,6 +120,7 @@
     from cskaoyanmall_goods
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
+      and deleted=0
     </if>
     <if test="orderByClause != null">
       order by ${orderByClause}
@@ -131,7 +132,7 @@
     ,
     <include refid="Blob_Column_List" />
     from cskaoyanmall_goods
-    where id = #{id,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER} and deleted=0
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from cskaoyanmall_goods
@@ -306,8 +307,9 @@
     select brief, counter_price, id, is_hot, is_new, name, pic_url, retail_price
     from cskaoyanmall_goods
     <where>
+      deleted = 0
       <if test="keyword != null">
-        name like "%${keyword}%"
+        and name like "%${keyword}%"
       </if>
       <if test="categoryId != 0 &amp; categoryId != null">
         and category_id = #{categoryId}
