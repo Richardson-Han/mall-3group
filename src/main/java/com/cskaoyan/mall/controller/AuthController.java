@@ -3,6 +3,7 @@ package com.cskaoyan.mall.controller;
 
 import com.cskaoyan.mall.bean.VO.InfoVO;
 import com.cskaoyan.mall.service.AdminService;
+import com.cskaoyan.mall.service.LogService;
 import com.cskaoyan.mall.shiro.MallToken;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.crypto.hash.Md5Hash;
@@ -25,6 +26,9 @@ public class AuthController {
     @Autowired
     AdminService adminService;
 
+    @Autowired
+    LogService logService;
+
     /**
      * 整合shiro
      * 数据库原加密方式未知，为了登陆，
@@ -42,6 +46,7 @@ public class AuthController {
         try {
             subject.login(new MallToken(username,passwordDB,"admin"));
             Serializable id  = subject.getSession().getId();
+            logService.setLogin(username);
             return BaseRespVo.ok(id);
             //微信端传入
             //subject.login(new MallToken(username,passwordDB,"wx"));
@@ -69,8 +74,10 @@ public class AuthController {
      * 退出已完成
      */
     @RequestMapping(value = "logout", method = RequestMethod.POST)
-    public BaseRespVo logout() {
+        public BaseRespVo logout() {
         Subject subject = SecurityUtils.getSubject();
+        String username = (String) subject.getPrincipals().getPrimaryPrincipal();
+        logService.setLogout(username);
         subject.logout();
         return BaseRespVo.ok();
     }

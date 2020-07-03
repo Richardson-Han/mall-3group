@@ -59,6 +59,8 @@ public class GoodsController {
         if(i == 0){
             //表示当前操作失败，要有错误提示，暂时先没写
             return BaseRespVo.errorString("该商品编号已存在");
+        }else if(i == -1){
+            return BaseRespVo.errorString("请完整填写商品介绍的信息");
         }
         return BaseRespVo.ok();
     }
@@ -71,6 +73,8 @@ public class GoodsController {
         int i = goodsService.createGoods(goodsUpdateBO);
         if(i == 0){
             return BaseRespVo.errorString("该商品编号已存在");
+        }else if(i == -1){
+            return BaseRespVo.errorString("请完整填写商品介绍的信息");
         }
         return BaseRespVo.ok();
     }

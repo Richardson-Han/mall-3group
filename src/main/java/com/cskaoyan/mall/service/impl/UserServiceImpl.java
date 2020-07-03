@@ -11,6 +11,7 @@ import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.lang.System;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -84,7 +85,10 @@ public class UserServiceImpl implements UserService {
         Integer insert = userMapper.wxinsertCouponByUseridAndCouponid(userId, couponId, addtime);
         if (insert == 1 && total != 0) {
             total--;
-            userMapper.wxupdateCouponByCouponId(couponId, total);
+            Integer update = userMapper.wxupdateCouponByCouponId(couponId, total);
+            if (update != 1){
+                System.out.println("优惠卷数目更新失败");
+            }
             //当total从1变成0时
             if (total == 0) {
                 //虚拟删除

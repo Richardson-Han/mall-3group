@@ -20,7 +20,7 @@ public interface GoodsCommentService {
 
     void deleteComment(GoodsComment goodsComment);
 
-    int replyComment(GoodsCommentBO commentBO);
+    GoodsComment replyComment(GoodsCommentBO commentBO);
 
     //显示所有评论
     Map<String, Object> getWXCommentList(WXGoodCommentBo wxGoodCommentBo);
