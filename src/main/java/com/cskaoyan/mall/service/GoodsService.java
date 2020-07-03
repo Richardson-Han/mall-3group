@@ -45,4 +45,6 @@ public interface GoodsService {
     List<WXFloorGoods> wxselectCategoryFour();
 
     List<Goods> wxselectByCategoryid(Integer id);
+
+    //Integer selectLastId();
 }

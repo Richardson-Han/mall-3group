@@ -49,6 +49,11 @@ public class GoodsServiceImpl implements GoodsService {
     @Autowired
     CategoryMapper wxCategoryMapper;
 
+    /*@Override
+    public Integer selectLastId() {
+        return goodsMapper.selectLastId();
+    }*/
+
     /**
      *  返回商品数量
      */
@@ -174,10 +179,10 @@ public class GoodsServiceImpl implements GoodsService {
         Date date = new Date();
         //更新goods表
         Goods goods = goodsUpdateBO.getGoods();
-        int i = checkGoods(goods);
+       /* int i = checkGoods(goods);
         if(i == 1){
             return -1;
-        }
+        }*/
         //System.out.println(goods.getGallery().toString());
         goods.setUpdateTime(date);
         //商品编号与商品id保持一致
@@ -300,10 +305,10 @@ public class GoodsServiceImpl implements GoodsService {
     public int createGoods(GoodsUpdateBO goodsUpdateBO) {
         //判断商品信息是否为null
         Goods goods = goodsUpdateBO.getGoods();
-        int i = checkGoods(goods);
-        if(i == 1){
+        //int i = checkGoods(goods);
+        /*if(i == 1){
             return -1;
-        }
+        }*/
         //判断id是否已存在
         if(isExist(goods.getGoodsSn())){
             return 0;
@@ -571,14 +576,14 @@ public class GoodsServiceImpl implements GoodsService {
     /**
      *  GOODSX信息是否完整
      */
-    private int checkGoods(Goods goods){
-        if(goods.getId() == null || goods.getGoodsSn() ==null || goods.getCounterPrice() == null
+    /*private int checkGoods(Goods goods){
+        if(goods.getId() == null || goods.getGoodsSn().equals("") || goods.getCounterPrice() == null
             || goods.getRetailPrice() ==null || goods.getIsNew() == null || goods.getIsHot() == null
             || goods.getIsOnSale() == null || goods.getUnit() == null || goods.getCategoryId() == null){
             return 1;
         }
         return 0;
-    }
+    }*/
 
     /**
      *  判断修改 or 新增的 商品编号是否已存在

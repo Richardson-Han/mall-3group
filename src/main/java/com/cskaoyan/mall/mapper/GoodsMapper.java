@@ -70,4 +70,10 @@ public interface GoodsMapper {
     List<Goods> selectByCategoryid(@Param("id") Integer id);
 
     List<Goods> selectGoodsList(@Param("categoryId") Integer categoryId, @Param("keyword") String keyword, @Param("sort") String sort, @Param("order") String order, @Param("brandId") Integer brandId);
+
+    @Select("select * from cskaoyanmall_goods where id = #{id} and deleted = 0")
+    Goods selectByIdAndDeteled(@Param("id") Integer valueId);
+
+    /*@Select("select LAST_INSERT_ID()")
+    Integer selectLastId();*/
 }
