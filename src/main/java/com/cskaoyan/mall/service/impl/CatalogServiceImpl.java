@@ -24,17 +24,14 @@ public class CatalogServiceImpl implements CatalogService {
     @Override
     public CatalogVO catalogIndex() {
         //先获取主列表
-        CategoryExample categoryExample1 = new CategoryExample();
-        categoryExample1.createCriteria().andPidEqualTo(0);
-        List<Category> categoryList = categoryMapper.selectByExample(categoryExample1);
+        List<Category> categoryList = categoryMapper.selectCategoryList();
 
         //获取主列表的第一个元素
         Category currentCategory = categoryList.get(0);
-
         //获取首位元素的子列表
-        CategoryExample categoryExample2 = new CategoryExample();
-        categoryExample2.createCriteria().andPidEqualTo(currentCategory.getId());
-        List<Category> currentSubCategory = categoryMapper.selectByExample(categoryExample2);
+        CategoryExample categoryExample = new CategoryExample();
+        categoryExample.createCriteria().andPidEqualTo(currentCategory.getId());
+        List<Category> currentSubCategory = categoryMapper.selectByExample(categoryExample);
 
         CatalogVO catalogVO = new CatalogVO(categoryList,currentCategory,currentSubCategory);
         return catalogVO;

@@ -3,6 +3,7 @@ package com.cskaoyan.mall.controller;
 import com.cskaoyan.mall.bean.BaseData;
 import com.cskaoyan.mall.bean.VO.BaseRespVo;
 import com.cskaoyan.mall.service.FeedbackService;
+import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,6 +20,7 @@ public class FeedbackController {
     FeedbackService feedbackService;
 
     @RequestMapping("list")
+    @RequiresAuthentication
     public BaseRespVo list(Integer page, Integer limit, String sort, String order, String username, Integer id){
         BaseData baseData = feedbackService.queryFeedback(page, limit, sort, order, username, id);
         return BaseRespVo.ok(baseData);

@@ -159,9 +159,9 @@ public class AdminServiceImpl implements AdminService {
     }
 
     /**
-     * 权限解析，比如数据库中给的数据是 admin:brand:list，则转换为
-     * GET /admin/brand/list
-     *
+     * 权限解析，比如数据库中
+     *给的数据是 admin:brand:list，则转换为
+     *GET /admin/brand/list
      * @param permission
      */
     private String parse(String permission) {

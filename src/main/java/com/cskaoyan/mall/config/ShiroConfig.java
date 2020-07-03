@@ -46,7 +46,6 @@ public class ShiroConfig {
         fiterChainDefinitionMap.put("/wx/brand/list","anon");
         fiterChainDefinitionMap.put("/wx/brand/detail","anon");
         fiterChainDefinitionMap.put("/wx/coupon/list","anon");
-        fiterChainDefinitionMap.put("/wx/coupon/list","anon");
 
         fiterChainDefinitionMap.put("/wx/topic/**","anon");
         fiterChainDefinitionMap.put("/wx/comment/**","anon");
