@@ -7,7 +7,7 @@ import java.util.Map;
 @create 2020-06-30 19:12
 */
 public interface WXFootprintService {
- Map  queryWXFootprintList(Integer page, Integer size);
+    Map  queryWXFootprintList(Integer page, Integer size, Integer userId);
 
     boolean deleteWXFootprint(Integer id);
 }

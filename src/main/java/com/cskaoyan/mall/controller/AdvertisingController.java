@@ -61,7 +61,7 @@ public class AdvertisingController {
         if (updateAdvertising == 1) {
             String username = (String) SecurityUtils.getSubject().getPrincipals().getPrimaryPrincipal();
             if (username != null) {
-                logService.updateAdmin(username,advertising.getName(),operation);
+                logService.setUpdate(username,advertising.getName(),operation);
             }
             return BaseRespVo.ok(advertisingService.
                     queryAdvertising(1, 20, "add_time", "desc"));

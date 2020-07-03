@@ -77,7 +77,7 @@ public class CouponController {
         if (updateCoupon == 1) {
             String username = (String) SecurityUtils.getSubject().getPrincipals().getPrimaryPrincipal();
             String operationName = "优惠卷";
-            logService.updateAdmin(username,coupon.getName(),operationName);
+            logService.setUpdate(username,coupon.getName(),operationName);
             return BaseRespVo.ok();
         } else {
             return BaseRespVo.error("数据更新失败", 112);

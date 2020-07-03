@@ -81,8 +81,8 @@ public class WXHanShiroTest {
      */
     public Map<String, String> WXHanMD5test2() {
         Map<String, String> mall = new HashMap<>();
-        mall.put("username", "test2");
-        mall.put("password", "test2");
+        mall.put("username", "test4");
+        mall.put("password", "test4");
         return mall;
     }
 
@@ -91,8 +91,8 @@ public class WXHanShiroTest {
      */
     public Map<String, String> WXHanMD5test3() {
         Map<String, String> promotion = new HashMap<>();
-        promotion.put("username", "test3");
-        promotion.put("password", "test3");
+        promotion.put("username", "test5");
+        promotion.put("password", "test5");
         return promotion;
     }
 

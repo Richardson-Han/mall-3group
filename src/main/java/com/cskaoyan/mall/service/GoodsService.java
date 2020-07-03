@@ -46,5 +46,7 @@ public interface GoodsService {
 
     List<Goods> wxselectByCategoryid(Integer id);
 
-    //Integer selectLastId();
+    Integer selectLastId();
+
+    void insertfootprintByUseridAndGoodsid(Integer userId, Integer id);
 }

@@ -2,7 +2,9 @@ package com.cskaoyan.mall.controller.wx;
 
 import com.cskaoyan.mall.bean.VO.BaseRespVo;
 import com.cskaoyan.mall.bean.wx.WXFootprint;
+import com.cskaoyan.mall.service.UserService;
 import com.cskaoyan.mall.service.WXFootprintService;
+import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -20,12 +22,16 @@ public class WXFootprintController {
     @Autowired
     WXFootprintService wxFootprintService;
 
+    @Autowired
+    UserService userService;
+
     @GetMapping("/list")
     public BaseRespVo getWXFootprintList(@RequestParam("page") Integer page,
                                          @RequestParam("size") Integer size) {
-        Map<String, Object> map = wxFootprintService.queryWXFootprintList(page, size);
-
-        return BaseRespVo.ok(map);
+        String  username = (String)SecurityUtils.getSubject().getPrincipals().getPrimaryPrincipal();
+        Integer userId = userService.wxselectIdByUsername(username);
+        System.out.println(userId);
+        return BaseRespVo.ok(wxFootprintService.queryWXFootprintList(page, size,userId));
     }
 
     @PostMapping("/delete")

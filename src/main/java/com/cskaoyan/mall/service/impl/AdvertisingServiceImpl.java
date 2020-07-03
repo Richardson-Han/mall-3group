@@ -59,6 +59,7 @@ public class AdvertisingServiceImpl implements AdvertisingService {
     @Override
     public Integer deleteAdvertising(Advertising advertising) {
         advertising.setUpdateTime(new Date());
+        advertising.setDeleted(true);
         return advertisingMapper.updateByPrimaryKeySelective(advertising);
     }
 

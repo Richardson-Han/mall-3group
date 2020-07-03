@@ -4,9 +4,12 @@ import com.cskaoyan.mall.bean.Goods;
 import com.cskaoyan.mall.bean.GoodsExample;
 import com.cskaoyan.mall.bean.GoodsStat;
 import com.cskaoyan.mall.bean.wx.WXFloorGoods;
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 
+import java.util.Date;
 import java.util.List;
 
 public interface GoodsMapper {
@@ -73,6 +76,22 @@ public interface GoodsMapper {
 
     @Select("select * from cskaoyanmall_goods where id = #{id} and deleted = 0")
     Goods selectByIdAndDeteled(@Param("id") Integer valueId);
+
+    @Select("select LAST_INSERT_ID()")
+    Integer selectLastId();
+
+    @Insert("insert into cskaoyanmall_footprint(user_id,goods_id,add_time,update_time) " +
+            "values(#{userId},#{id},#{date},#{date})")
+    void insertfootprintByUseridAndGoodsid(@Param("userId") Integer userId,
+                                           @Param("id") Integer id, @Param("date") Date date);
+
+    @Select("select id from cskaoyanmall_footprint where user_id = #{userId} and goods_id = #{id}")
+    Integer selectfootprintByUseridAndGoodsid(@Param("userId") Integer userId, @Param("id") Integer id);
+
+    @Update("update cskaoyanmall_footprint set update_time = #{date} where id = #{oldId} " +
+            "and user_id =#{userId} and goods_id = #{id}")
+    void updatefootprintByUseridAndGoodsid(@Param("userId") Integer userId, @Param("id") Integer id,
+                                           @Param("date") Date date, @Param("oldId") Integer oldId);
 
     /*@Select("select LAST_INSERT_ID()")
     Integer selectLastId();*/

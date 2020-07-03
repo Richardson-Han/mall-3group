@@ -132,4 +132,24 @@ public class LogServiceImpl implements LogService {
         log.setResult("删除成功");
         logMapper.insertSelective(log);
     }
+
+    @Override
+    public void setUpdate(String username, String updateName, String operationName) {
+        Date date = new Date();
+        Log log = new Log();
+        try {
+            String address = InetAddress.getLocalHost().getHostAddress().toString();
+            log.setIp(address);
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        }
+        log.setAdmin(username);
+        log.setUpdateTime(date);
+        log.setAddTime(date);
+        log.setAction("管理员修改" + operationName);
+        log.setStatus(true);
+        log.setType(0);
+        log.setResult(updateName);
+        logMapper.insertSelective(log);
+    }
 }

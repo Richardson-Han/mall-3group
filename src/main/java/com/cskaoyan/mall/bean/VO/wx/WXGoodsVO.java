@@ -14,11 +14,18 @@ import java.util.Date;
 public class WXGoodsVO {
 
     private String brief;
+
     private String picUrl;
-//    @JsonFormat(pattern = "yyyy-MM-dd",timezone = "GMT +8")
+
+    @JsonFormat(pattern = "yyyy-MM-dd",timezone = "GMT +8")
     private Date addTime;
+
     private Integer goodsId;
+
     private String name;
+
     private Integer id;
+
     private BigDecimal retailPrice;
+
 }

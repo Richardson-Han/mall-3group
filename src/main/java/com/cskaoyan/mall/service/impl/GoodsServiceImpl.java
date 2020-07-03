@@ -55,15 +55,15 @@ public class GoodsServiceImpl implements GoodsService {
     }*/
 
     /**
-     *  返回商品数量
+     * 返回商品数量
      */
     @Override
-    public Long getGoodsTotal(){
+    public Long getGoodsTotal() {
         return goodsMapper.countByExample(new GoodsExample());
     }
 
     /**
-     *  首页返回货品数量
+     * 首页返回货品数量
      */
     @Override
     public Long getProductTotal() {
@@ -72,8 +72,8 @@ public class GoodsServiceImpl implements GoodsService {
 
 
     /**
-     *  显示全部商品信息
-     *  or 查询商品信息
+     * 显示全部商品信息
+     * or 查询商品信息
      */
     @Override
     public BaseData queryGoods(GoodsListBO goodsListBO) {
@@ -87,14 +87,14 @@ public class GoodsServiceImpl implements GoodsService {
         PageHelper.startPage(page, limit);
         List<Goods> goods = new ArrayList<>();
         long total = 0;
-        if(goodsListBO.getGoodsSn() == null && goodsListBO.getName() ==null){
+        if (goodsListBO.getGoodsSn() == null && goodsListBO.getName() == null) {
 
-        }else if(goodsListBO.getGoodsSn() == null && goodsListBO.getName() != null){
-            goodsExample.createCriteria().andNameLike("%"+ goodsListBO.getName() +"%");
-        }else if(goodsListBO.getGoodsSn() != null && goodsListBO.getName() == null){
+        } else if (goodsListBO.getGoodsSn() == null && goodsListBO.getName() != null) {
+            goodsExample.createCriteria().andNameLike("%" + goodsListBO.getName() + "%");
+        } else if (goodsListBO.getGoodsSn() != null && goodsListBO.getName() == null) {
             goodsExample.createCriteria().andIdEqualTo(goodsListBO.getGoodsSn());
-        }else {
-            goodsExample.createCriteria().andIdEqualTo(goodsListBO.getGoodsSn()).andNameLike("%"+ goodsListBO.getName() +"%");
+        } else {
+            goodsExample.createCriteria().andIdEqualTo(goodsListBO.getGoodsSn()).andNameLike("%" + goodsListBO.getName() + "%");
         }
         //注意虚拟删除
         goodsExample.createCriteria().andDeletedEqualTo(false);
@@ -105,7 +105,7 @@ public class GoodsServiceImpl implements GoodsService {
     }
 
     /**
-     *  查看商品详情
+     * 查看商品详情
      */
     @Override
     public GoodsDetailVO queryGoods(Integer id) {
@@ -122,7 +122,7 @@ public class GoodsServiceImpl implements GoodsService {
         Integer categoryId = goods.getCategoryId();
         GoodsCategory goodsCategory = categoryMapper.selectByPrimaryKey(categoryId);
         List<Object> categoryIds = new ArrayList<>();
-        if(goodsCategory.getPid() != null){
+        if (goodsCategory.getPid() != null) {
             categoryIds.add(goodsCategory.getPid());
         }
         categoryIds.add(goodsCategory.getId());
@@ -141,8 +141,9 @@ public class GoodsServiceImpl implements GoodsService {
     }
 
     /**
-     *  获取商品所有的类别及其产商信息
-     *  注意不显示deleted为1的数据
+     * 获取商品所有的类别及其产商信息
+     * 注意不显示deleted为1的数据
+     *
      * @return
      */
     @Override
@@ -170,8 +171,8 @@ public class GoodsServiceImpl implements GoodsService {
     }
 
     /**
-     *  更新商品相关的信息
-     *  以及删除某些标签
+     * 更新商品相关的信息
+     * 以及删除某些标签
      */
     @Override
     public int updateGoods(GoodsUpdateBO goodsUpdateBO) {
@@ -198,10 +199,10 @@ public class GoodsServiceImpl implements GoodsService {
                 return 0;
             }
         }*/
-        if(!id.equals(goodsId)){
+        if (!id.equals(goodsId)) {
             //再判断 修改后的商品编号 是否 存在与数据库中
             //然后再将商品编号与商品id保持一致
-            if(isExist(goods.getGoodsSn())){
+            if (isExist(goods.getGoodsSn())) {
                 return 0;
             }
         }
@@ -218,7 +219,7 @@ public class GoodsServiceImpl implements GoodsService {
         GoodsSpecExample specExample = new GoodsSpecExample();
         //若返回的specifications为null， 那么表示标签全部没了
         //需要把对应的spec的deleted全部设置为true
-        if(specifications.size() == 0){
+        if (specifications.size() == 0) {
             specExample.createCriteria().andGoodsIdEqualTo(goodsId);
             List<GoodsSpec> specs = specMapper.selectByExample(specExample);
             for (GoodsSpec spec : specs) {
@@ -228,11 +229,11 @@ public class GoodsServiceImpl implements GoodsService {
         }
         //用来获取更新后的specId
         List<Integer> specIds = new ArrayList<>();
-        for (GoodsSpec spec  : specifications) {
+        for (GoodsSpec spec : specifications) {
             specIds.add(spec.getId());
             spec.setGoodsId(id);
             specMapper.updateByPrimaryKeySelective(spec);
-            if(spec.getAddTime() == null){
+            if (spec.getAddTime() == null) {
                 GoodsSpec goodsSpec = new GoodsSpec(null, id, spec.getSpecification(), spec.getValue(), spec.getPicUrl(),
                         date, date, false);
                 specMapper.insertSelective(goodsSpec);
@@ -255,7 +256,7 @@ public class GoodsServiceImpl implements GoodsService {
         List<Integer> attIds = new ArrayList<>();
         GoodsAttributeExample attributeExample = new GoodsAttributeExample();
         //若为空
-        if(attributes.size() == 0){
+        if (attributes.size() == 0) {
             attributeExample.createCriteria().andGoodsIdEqualTo(goodsId);
             List<GoodsAttribute> atts = goodsAttributeMapper.selectByExample(attributeExample);
             for (GoodsAttribute att : atts) {
@@ -267,7 +268,7 @@ public class GoodsServiceImpl implements GoodsService {
             attribute.setGoodsId(id);
             attIds.add(attribute.getId());
             goodsAttributeMapper.updateByPrimaryKeySelective(attribute);
-            if(attribute.getAddTime() == null){
+            if (attribute.getAddTime() == null) {
                 GoodsAttribute goodsAttribute = new GoodsAttribute(null, id, attribute.getAttribute(), attribute.getValue(), date, date, false);
                 goodsAttributeMapper.insertSelective(goodsAttribute);
             }
@@ -286,11 +287,11 @@ public class GoodsServiceImpl implements GoodsService {
         List<GoodsProduct> products = goodsUpdateBO.getProducts();
         for (GoodsProduct product : products) {
             product.setGoodsId(id);
-            if(product.getId() == 0){
+            if (product.getId() == 0) {
                 GoodsProduct gp = new GoodsProduct(null, product.getGoodsId(), product.getSpecifications(), product.getPrice(),
                         product.getNumber(), product.getUrl(), date, date, false);
                 productMapper.insertSelective(gp);
-            }else {
+            } else {
                 productMapper.updateByPrimaryKeySelective(product);
             }
         }
@@ -298,7 +299,8 @@ public class GoodsServiceImpl implements GoodsService {
     }
 
     /**
-     *  增加商品信息及相关信息
+     * 增加商品信息及相关信息
+     *
      * @param goodsUpdateBO
      */
     @Override
@@ -310,7 +312,7 @@ public class GoodsServiceImpl implements GoodsService {
             return -1;
         }*/
         //判断id是否已存在
-        if(isExist(goods.getGoodsSn())){
+        if (isExist(goods.getGoodsSn())) {
             return 0;
         }
         //id
@@ -357,7 +359,8 @@ public class GoodsServiceImpl implements GoodsService {
     }
 
     /**
-     *  删除商品
+     * 删除商品
+     *
      * @param goods
      */
     @Override
@@ -373,7 +376,7 @@ public class GoodsServiceImpl implements GoodsService {
         Map map = new HashMap();
         Category category = wxCategoryMapper.selectByPrimaryKey(id);
         Integer pid = category.getPid();
-        if(pid == 0) pid = id;
+        if (pid == 0) pid = id;
         CategoryExample categoryExample = new CategoryExample();
         categoryExample.createCriteria().andPidEqualTo(pid);
         List<Category> brotherCategory = wxCategoryMapper.selectByExample(categoryExample);
@@ -429,8 +432,7 @@ public class GoodsServiceImpl implements GoodsService {
             }
             searchHistoryMapper.insert(
                     new SearchHistory(null, userMapper.selectUserIdByUsername(username), keyword, "wx", date, date, false));
-        }
-        else{
+        } else {
             searchHistoryMapper.insert(
                     new SearchHistory(null, userMapper.selectUserIdByUsername(username), keyword, "wx", date, date, false));
         }
@@ -469,7 +471,7 @@ public class GoodsServiceImpl implements GoodsService {
         //brand
         GoodsBrand brand = brandMapper.selectByPrimaryKey(goods.getBrandId());
         //comment
-         List<Object> commentList = new ArrayList<>();
+        List<Object> commentList = new ArrayList<>();
         GoodsCommentExample comExample = new GoodsCommentExample();
         comExample.setOrderByClause("add_time desc limit 2");
         comExample.createCriteria().andValueIdEqualTo(goodsId);
@@ -506,7 +508,7 @@ public class GoodsServiceImpl implements GoodsService {
         List list = new ArrayList();
         HashMap specificationList = new HashMap();
         specificationList.put("name", "规格");
-        specificationList.put("valueList",valueList);
+        specificationList.put("valueList", valueList);
         list.add(specificationList);
         //userHasCollect
         Subject subject = SecurityUtils.getSubject();
@@ -534,7 +536,7 @@ public class GoodsServiceImpl implements GoodsService {
             Date date = new Date();
             if (footprints.size() != 0) {
                 footprintMapper.updateTime(date, userId, goodsId);
-            }else{
+            } else {
                 footprintMapper.insert(new Footprint(null, userId, goodsId, date, date, false));
             }
         }
@@ -573,6 +575,23 @@ public class GoodsServiceImpl implements GoodsService {
         return goodsMapper.selectByCategoryid(id);
     }
 
+    @Override
+    public Integer selectLastId() {
+        return goodsMapper.selectLastId();
+    }
+
+    @Override
+    public void insertfootprintByUseridAndGoodsid(Integer userId, Integer id) {
+        Integer oldId = goodsMapper.selectfootprintByUseridAndGoodsid(userId, id);
+        Date date = new Date();
+        if (oldId == null || oldId == 0){
+            goodsMapper.insertfootprintByUseridAndGoodsid(userId, id, date);
+        }else {
+            goodsMapper.updatefootprintByUseridAndGoodsid(userId,id,date,oldId);
+        }
+
+    }
+
     /**
      *  GOODSX信息是否完整
      */
@@ -586,13 +605,13 @@ public class GoodsServiceImpl implements GoodsService {
     }*/
 
     /**
-     *  判断修改 or 新增的 商品编号是否已存在
+     * 判断修改 or 新增的 商品编号是否已存在
      */
-    private boolean isExist(String goodsSn){
+    private boolean isExist(String goodsSn) {
         GoodsExample goodsExample = new GoodsExample();
         goodsExample.createCriteria().andIdEqualTo(Integer.parseInt(goodsSn));
         List<Goods> goods = goodsMapper.selectByExample(goodsExample);
-        if(goods.size() == 0){
+        if (goods.size() == 0) {
             return false;
         }
         return true;
@@ -600,6 +619,7 @@ public class GoodsServiceImpl implements GoodsService {
 
     /**
      * 统计报表之商品统计
+     *
      * @return
      */
     @Override

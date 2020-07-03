@@ -31,13 +31,12 @@ public class WXFootprintServiceImpl implements WXFootprintService {
     *
     * */
     @Override
-    public Map queryWXFootprintList(Integer page, Integer size) {
+    public Map queryWXFootprintList(Integer page, Integer size, Integer userId) {
         Map<String,Object> map=new HashMap<> ();
-        PageHelper.startPage (page,size);
-        FootprintExample footprintExample = new FootprintExample();
-        FootprintExample.Criteria criteria = footprintExample.createCriteria().andDeletedEqualTo (false);
-        footprintExample.setOrderByClause ("id"+" "+"desc" );
-        List<Footprint> wxList=wxFootprintMapper.selectByExample (footprintExample);
+        // FootprintExample footprintExample = new FootprintExample();
+        // FootprintExample.Criteria criteria = footprintExample.createCriteria().andDeletedEqualTo (false);
+        // footprintExample.setOrderByClause ("id"+" "+"desc" );
+        List<Footprint> wxList =wxFootprintMapper.selectlistByPageAndSizeAndUserid(--page,size,userId);
         List<WXGoodsVO>  wxGoodsList=new ArrayList<> ();
         for (Footprint wxFootprint : wxList) {
             Goods good = goodsMapper.selectByPrimaryKey (wxFootprint.getGoodsId ());

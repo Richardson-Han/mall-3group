@@ -60,7 +60,7 @@ public class TopicController {
         if (update == 1) {
             String username = (String) SecurityUtils.getSubject().getPrincipals().getPrimaryPrincipal();
             String operationName = "专题";
-            logService.updateAdmin(username,topic.getTitle(),operationName);
+            logService.setUpdate(username,topic.getTitle(),operationName);
             return BaseRespVo.ok(topic);
         } else {
             return BaseRespVo.error("修改失败", 999);

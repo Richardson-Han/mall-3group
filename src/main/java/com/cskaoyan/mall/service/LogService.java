@@ -14,4 +14,6 @@ public interface LogService {
     void updateAdmin(String username,String updateName,String operationName);
 
     void deleteAdmin(String username,Integer id);
+
+    void setUpdate(String username, String name, String operationName);
 }
