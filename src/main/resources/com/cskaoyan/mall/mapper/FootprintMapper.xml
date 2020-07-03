@@ -70,7 +70,7 @@
   <sql id="Base_Column_List">
     id, user_id, goods_id, add_time, update_time, deleted
   </sql>
-  <select id="selectByExample" parameterType="com.cskaoyan.mall.bean.FootprintExample" resultMap="BaseResultMap">
+  <select id="selectByExample" parameterType="com.cskaoyan.mall.bean.FootprintExample" resultMap="BaseResultMap" >
     select
     <if test="distinct">
       distinct

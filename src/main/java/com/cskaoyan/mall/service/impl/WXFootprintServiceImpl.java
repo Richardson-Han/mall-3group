@@ -36,7 +36,7 @@ public class WXFootprintServiceImpl implements WXFootprintService {
         PageHelper.startPage (page,size);
         FootprintExample footprintExample = new FootprintExample();
         FootprintExample.Criteria criteria = footprintExample.createCriteria().andDeletedEqualTo (false);
-        footprintExample.setOrderByClause ("id"+" "+"desc" );
+        footprintExample.setOrderByClause ("add_time"+" "+"desc" );
         List<Footprint> wxList=wxFootprintMapper.selectByExample (footprintExample);
         List<WXGoodsVO>  wxGoodsList=new ArrayList<> ();
         for (Footprint wxFootprint : wxList) {
