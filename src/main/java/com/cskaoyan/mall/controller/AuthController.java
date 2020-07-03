@@ -74,7 +74,7 @@ public class AuthController {
      * 退出已完成
      */
     @RequestMapping(value = "logout", method = RequestMethod.POST)
-    public BaseRespVo logout() {
+        public BaseRespVo logout() {
         Subject subject = SecurityUtils.getSubject();
         String username = (String) subject.getPrincipals().getPrimaryPrincipal();
         logService.setLogout(username);
