@@ -7,10 +7,12 @@ import com.cskaoyan.mall.bean.Comment;
 import com.cskaoyan.mall.bean.GoodsComment;
 import com.cskaoyan.mall.bean.BO.GoodsCommentBO;
 import com.cskaoyan.mall.bean.BO.GoodsCommentListBO;
+import org.apache.shiro.authz.annotation.RequiresAuthentication;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Map;
+
 
 public interface GoodsCommentService {
 
@@ -21,7 +23,7 @@ public interface GoodsCommentService {
     int replyComment(GoodsCommentBO commentBO);
 
     //显示所有评论
-    Map<String,Object> getWXCommentList(WXGoodCommentBo wxGoodCommentBo);
+    Map<String, Object> getWXCommentList(WXGoodCommentBo wxGoodCommentBo);
 
 
     void insertComment(GoodsComment goodsComment);

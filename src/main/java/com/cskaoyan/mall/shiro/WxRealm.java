@@ -1,6 +1,5 @@
 package com.cskaoyan.mall.shiro;
 
-import com.cskaoyan.mall.mapper.UserMapper;
 import com.cskaoyan.mall.service.UserService;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
