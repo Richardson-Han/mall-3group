@@ -3,6 +3,8 @@ package com.cskaoyan.mall.controller.wx;
 import com.cskaoyan.mall.bean.BaseData;
 import com.cskaoyan.mall.bean.VO.BaseRespVo;
 import com.cskaoyan.mall.service.GoodsService;
+import org.apache.shiro.authz.annotation.RequiresAuthentication;
+import org.apache.shiro.authz.annotation.RequiresGuest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -21,6 +23,7 @@ import java.util.Map;
 public class WXGoodsController {
     @Autowired
     GoodsService goodsService;
+
 
     @RequestMapping("category")
     public BaseRespVo category(Integer id) {
