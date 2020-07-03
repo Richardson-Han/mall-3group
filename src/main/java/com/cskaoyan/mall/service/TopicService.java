@@ -22,13 +22,12 @@ public interface TopicService {
 
     Integer deleteTopic(Topic topic);
 
-
-    //用于小程序查询专题细节
-    Map<String, Object> selectDetail(Integer id);
-
-    List<Topic> selectRelated(Integer id);
-
     List<Topic> wxselectNewTopic();
 
     Integer selectLastId();
+
+    //用于小程序查询专题细节
+    Map<String, Object> selectDetail(Integer id);
+   // 用于小程序查询相关的专题
+    List<Topic> selectRelated(Integer id);
 }

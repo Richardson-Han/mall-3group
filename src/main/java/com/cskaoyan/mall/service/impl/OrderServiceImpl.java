@@ -15,10 +15,10 @@ import com.cskaoyan.mall.service.OrderService;
 import com.cskaoyan.mall.utils.WxHandleOptionUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.lang.System;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -275,10 +275,15 @@ public class OrderServiceImpl implements OrderService {
     RegionMapper regionMapper;
     @Autowired
     CartMapper cartMapper;
+    @Autowired
+    CouponMapper couponMapper;
+    @Autowired
+    GoodsProductMapper productMapper;
 
     /**
      *  提交订单，返回订单号
      *  要修改库存，以及商品订单表的order_id
+     *  还需要在orders_goods表新插入一条数据
      */
     @Override
     public OrderSubmitVO submit(Map map, String username) {
@@ -295,6 +300,15 @@ public class OrderServiceImpl implements OrderService {
         Integer grouponRulesId = (Integer) map.get("grouponRulesId");
         //获取备注信息
         String message = (String) map.get("message");
+
+        CartExample cartExample = new CartExample();
+        if(cartId == 0){
+            cartExample.createCriteria().andDeletedEqualTo(false).andUserIdEqualTo(userId).andCheckedEqualTo(true);
+        }else {
+            cartExample.createCriteria().andIdEqualTo(cartId);
+        }
+        List<Cart> cartList = cartMapper.selectByExample(cartExample);
+
 
         //订单号的生成，时间日期+随机数
         String orderSn = createOrderSn();
@@ -318,19 +332,75 @@ public class OrderServiceImpl implements OrderService {
         String province = provinceRegion.getName();
         //完整的地址为
         String wholeAddress = province + " " + city + " " + area + " " + address.getAddress();
-
         //商品价格
-        Cart cart = cartMapper.selectByPrimaryKey(cartId);
-        BigDecimal price = cart.getPrice();
+        //Cart cart = cartMapper.selectByPrimaryKey(cartId);
+        BigDecimal goodPrice = new BigDecimal(0);
+        //邮费，默认为0
+        BigDecimal freightPrice = new BigDecimal(0);
+        //优惠价格
+        BigDecimal couponPrice = couponMapper.selectDiscountById(couponId);
+        //优惠积分减免，integral_price, 设置为0
+        BigDecimal integralPrice = new BigDecimal(0);
+        //团购优惠价减免，不要求做
+        BigDecimal grouponPrice = new BigDecimal(0);
+        //订单费用
+        BigDecimal orderPrice = new BigDecimal(0);
+        //实付费用
+        BigDecimal actualPrice = new BigDecimal(0);
+        for (Cart cart : cartList) {
+            goodPrice = goodPrice.add(cart.getPrice().multiply(new BigDecimal(cart.getNumber())));
+            orderPrice = goodPrice.add(freightPrice).subtract(couponPrice);
+            actualPrice = orderPrice.subtract(integralPrice);
+        }
 
-        return null;
+        //新建order
+        Order order = new Order(null, userId, orderSn, orderStatus, consignee, mobile, wholeAddress, message, goodPrice,
+                freightPrice, couponPrice, integralPrice, grouponPrice, orderPrice, actualPrice, null, null, null, null,
+                null, null, (short) 0, null, new Date(), new Date(), false);
+        orderMapper.insertSelective(order);
+        Integer orderId = order.getId();
+
+        //向order_goods插入数据
+        //这里要根据cartList中的个数来插入了
+        for (Cart cart : cartList) {
+            //设置对应的deleted为true
+            cart.setDeleted(true);
+            cartMapper.updateByPrimaryKeySelective(cart);
+
+            //减少库存
+            Short number = cart.getNumber();
+            Integer productId = cart.getProductId();
+            GoodsProduct goodsProduct = productMapper.selectByPrimaryKey(productId);
+            goodsProduct.setNumber(goodsProduct.getNumber() - number );
+            productMapper.updateByPrimaryKeySelective(goodsProduct);
+
+            //goodsId
+            Integer goodsId = cart.getGoodsId();
+            //goodsName
+            String goodsName = cart.getGoodsName();
+            //productId,number 上面都有了
+            //售价
+            BigDecimal price = cart.getPrice();
+            //Spec
+            String[] specifications = cart.getSpecifications();
+            //pic
+            String picUrl = cart.getPicUrl();
+
+            OrderGoods orderGoods = new OrderGoods(null, orderId, goodsId, goodsName, goodsId.toString(), productId, number, price,
+                    specifications, picUrl, 0, new Date(), new Date(), false);
+            orderGoodsMapper.insertSelective(orderGoods);
+        }
+
+        return new OrderSubmitVO(orderId);
     }
 
     private String createOrderSn(){
         //当前日期 + 六位随机数
         String str = new SimpleDateFormat("yyyyMMdd").format(new Date());
-        Random random = new Random();
+        /*Random random = new Random();
         int r = (random.nextInt() * (999999 - 100000 +1)) + 100000;
-        return r + str;
+        r = r > 0 ? r : (-r);*/
+        int r = (int) ((Math.random()*9 + 1) * 100000);
+        return str + r;
     }
 }
